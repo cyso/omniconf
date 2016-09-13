@@ -19,31 +19,27 @@
 
 
 class SettingsRegistry(object):
-    registry = {}
+    def __init__(self):
+        self.registry = {}
 
-    @classmethod
-    def _key(cls, setting):
+    def _key(self, setting):
         if isinstance(setting, str):
             return setting
         else:
             return setting.key
 
-    @classmethod
-    def add(cls, setting):
-        cls.registry[setting.key] = setting
+    def add(self, setting):
+        self.registry[setting.key] = setting
         return setting
 
-    @classmethod
-    def has(cls, key):
-        return key in cls.registry
+    def has(self, key):
+        return key in self.registry
 
-    @classmethod
-    def get(cls, key):
-        return cls.registry[key]
+    def get(self, key):
+        return self.registry[key]
 
-    @classmethod
-    def remove(cls, setting):
-        del cls.registry[cls._key(setting)]
+    def remove(self, setting):
+        del self.registry[self._key(setting)]
 
 DEFAULT_REGISTRY = SettingsRegistry()
 
