@@ -32,9 +32,9 @@ section.subsection.key=value
 To use a configuration key in your application, simply use:
 
 ```python
-from omniconf import conf
+from omniconf import config
 
-variable = conf.get("section.key")
+variable = config.get("section.key")
 ```
 
 `omniconf` needs to be told what keys to expect, define these as follows:
