@@ -16,8 +16,8 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from .exceptions import UnknownSettingError, UnconfiguredSettingError
-from .settings import DEFAULT_REGISTRY as SETTINGS_REGISTRY
+from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
+from omniconf.setting import DEFAULT_REGISTRY as SETTINGS_REGISTRY
 
 
 class ConfigRegistry(object):
@@ -25,26 +25,28 @@ class ConfigRegistry(object):
         global SETTINGS_REGISTRY
         if not settings_registry:
             self.settings = SETTINGS_REGISTRY
+        else:
+            self.settings = settings_registry
         self.registry = {}
 
     def set(self, key, value):
         if not self.settings.has(key):
             raise UnknownSettingError("Trying to configure unregistered key {0}".format(key))
         setting = self.settings.get(key)
-        self.settings[key] = setting.type(value)
+        self.registry[key] = setting.type(value)
 
     def has(self, key):
         if key in self.registry:
             return True
-        elif key in self.settings and self.settings[key].default is not None:
+        elif self.settings.has(key) and self.settings.get(key).default is not None:
             return True
         return False
 
     def get(self, key):
         if key in self.registry:
             return self.registry[key]
-        elif key in self.settings and self.settings[key].default is not None:
-            return self.settings[key].default
+        elif self.settings.has(key) and self.settings.get(key).default is not None:
+            return self.settings.get(key).default
         raise UnconfiguredSettingError("No value or default available for {0}".format(key))
 
     def unset(self, key):

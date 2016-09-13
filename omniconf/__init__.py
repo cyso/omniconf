@@ -16,7 +16,7 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from .config import config
-from .setting import setting
+from omniconf.config import config
+from omniconf.setting import setting
 
 __all__ = ["config", "setting"]

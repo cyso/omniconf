@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-class SettingsRegistry(object):
+class SettingRegistry(object):
     def __init__(self):
         self.registry = {}
 
@@ -40,7 +40,7 @@ class SettingsRegistry(object):
     def remove(self, setting):
         del self.registry[self._key(setting)]
 
-DEFAULT_REGISTRY = SettingsRegistry()
+DEFAULT_REGISTRY = SettingRegistry()
 
 
 class Setting(object):
