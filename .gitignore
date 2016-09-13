@@ -1,0 +1,21 @@
+## Compiled Python files
+*.pyc
+
+## Config files
+*.config
+
+## Generated files
+/*.tar.bz2
+/.coverage
+
+## Pip files
+/*.egg-info
+/*.egg
+/.eggs
+
+## Test files
+/.coverage
+/cover
+/coverage.xml
+/nosetests.xml
+/vendor
