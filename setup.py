@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 #
 # Copyright (c) 2016 Cyso < development [at] cyso . com >
-# All rights reserved.
 #
 # This file is part of omniconf, a.k.a. python-omniconf .
 #
