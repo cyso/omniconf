@@ -21,6 +21,9 @@ from omniconf.setting import DEFAULT_REGISTRY as SETTINGS_REGISTRY
 
 
 class ConfigRegistry(object):
+    """
+    A registry of Configured values for a SettingRegistry.
+    """
     def __init__(self, settings_registry=None):
         global SETTINGS_REGISTRY
         if not settings_registry:
@@ -30,12 +33,20 @@ class ConfigRegistry(object):
         self.registry = {}
 
     def set(self, key, value):
+        """
+        Configures the value for the given key. The value will be converted to the type defined in
+        the Setting, by calling the type as a function with the value as the only argument.
+        Trying to configure a value under an unknown key will result in an UnknownSettingError.
+        """
         if not self.settings.has(key):
             raise UnknownSettingError("Trying to configure unregistered key {0}".format(key))
         setting = self.settings.get(key)
         self.registry[key] = setting.type(value)
 
     def has(self, key):
+        """
+        Checks if a value has been configured for the given key, or if a default value is present.
+        """
         if key in self.registry:
             return True
         elif self.settings.has(key) and self.settings.get(key).default is not None:
@@ -43,6 +54,10 @@ class ConfigRegistry(object):
         return False
 
     def get(self, key):
+        """
+        Returns the configured value for the given key, or the default value if the key was not
+        configured.
+        """
         if key in self.registry:
             return self.registry[key]
         elif self.settings.has(key) and self.settings.get(key).default is not None:
@@ -50,6 +65,9 @@ class ConfigRegistry(object):
         raise UnconfiguredSettingError("No value or default available for {0}".format(key))
 
     def unset(self, key):
+        """
+        Removes the value for a given key from the registry.
+        """
         if key in self.registry:
             del self.registry[key]
 
@@ -57,6 +75,11 @@ DEFAULT_REGISTRY = ConfigRegistry()
 
 
 def config(key, registry=None):
+    """
+    Retrieves the configured value for a given key. If no specific registry is specified, the
+    value will be retrieved from the default ConfigRegistry.
+    """
+
     global DEFAULT_REGISTRY
     if not registry:
         registry = DEFAULT_REGISTRY

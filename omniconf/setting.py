@@ -18,6 +18,9 @@
 
 
 class SettingRegistry(object):
+    """
+    A registry of defined Settings.
+    """
     def __init__(self):
         self.registry = {}
 
@@ -28,22 +31,42 @@ class SettingRegistry(object):
             return setting.key
 
     def add(self, setting):
+        """
+        Register a Setting.
+        """
         self.registry[setting.key] = setting
         return setting
 
     def has(self, key):
+        """
+        Check if a Setting has been registered under the specified key.
+        """
         return key in self.registry
 
     def get(self, key):
+        """
+        Retrieves the Setting for the given key.
+        """
         return self.registry[key]
 
     def remove(self, setting):
+        """
+        Removes the Setting with the given key.
+        """
         del self.registry[self._key(setting)]
 
 DEFAULT_REGISTRY = SettingRegistry()
 
 
 class Setting(object):
+    """
+    A particular Setting.
+
+    A Setting is registered under a specific key and with a specific type (str, dict, list, etc). A
+    default may also be specified, which allows a config to be returned without a value being
+    specifically defined (also see ConfigRegistry). A help message may be specified for documentation
+    purposes.
+    """
     def __init__(self, key, _type, default=None, help=None):
         self.key = key
         self.type = _type
@@ -52,6 +75,10 @@ class Setting(object):
 
 
 def setting(key, _type=str, default=None, help=None, registry=None):
+    """
+    Register a new Setting with the given key. By default the type will be set to str, and the Setting
+    will be registered in the default registry.
+    """
     global DEFAULT_REGISTRY
     if not registry:
         registry = DEFAULT_REGISTRY
