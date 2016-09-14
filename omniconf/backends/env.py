@@ -23,11 +23,10 @@ import os
 class EnvBackend(object):
     """
     Uses the current process Environment, and allows values in it to
-    be retrieved using dotted keys with a specific prefix. If no prefix is specified,
-    "OMNICONF" is assumed.
+    be retrieved using dotted keys with a specific prefix. By default no prefix is assumed.
     """
-    def __init__(self, conf=None, prefix="OMNICONF"):
-        self.prefix = prefix
+    def __init__(self, conf=None, prefix=None):
+        self.prefix = prefix if prefix else ""
 
     def get_value(self, key):
         """
