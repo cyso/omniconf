@@ -17,6 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from omniconf.setting import Setting
 from configobj import ConfigObj, Section
 
 
@@ -27,6 +28,22 @@ class ConfigObjBackend(object):
     """
     def __init__(self, conf):
         self.config = ConfigObj(conf)
+
+    @classmethod
+    def autodetect_settings(cls):
+        """
+        A configobj filename may be specified.
+        """
+        return (Setting(key="omniconf.configobj.filename", _type=str, required=False),)
+
+    @classmethod
+    def autoconfigure(cls, conf):
+        """
+        Creates an instance configured based on the passed ConfigRegistry.
+        """
+        if conf.has("omniconf.configobj.filename"):
+            return ConfigObjBackend(conf=conf.get("omniconf.configobj.filename"))
+        return None
 
     def get_value(self, key):
         """

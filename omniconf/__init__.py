@@ -18,5 +18,6 @@
 
 from omniconf.config import config
 from omniconf.setting import setting
+from omniconf.loader import omniconf_load
 
 __all__ = ["config", "setting"]

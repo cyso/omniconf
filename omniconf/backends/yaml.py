@@ -17,6 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from omniconf.setting import Setting
 import yaml
 
 
@@ -27,6 +28,22 @@ class YamlBackend(object):
     """
     def __init__(self, conf):
         self.config = yaml.load(conf)
+
+    @classmethod
+    def autodetect_settings(cls):
+        """
+        A configobj filename may be specified.
+        """
+        return (Setting(key="omniconf.yaml.filename", _type=str, required=False),)
+
+    @classmethod
+    def autoconfigure(cls, conf):
+        """
+        Creates an instance configured based on the passed ConfigRegistry.
+        """
+        if conf.has("omniconf.yaml.filename"):
+            return YamlBackend(conf=conf.get("omniconf.yaml.filename"))
+        return None
 
     def get_value(self, key):
         """

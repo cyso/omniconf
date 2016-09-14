@@ -17,6 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from omniconf.setting import Setting
 import json
 
 
@@ -27,6 +28,22 @@ class JsonBackend(object):
     """
     def __init__(self, conf):
         self.config = json.loads(conf)
+
+    @classmethod
+    def autodetect_settings(cls):
+        """
+        A configobj filename may be specified.
+        """
+        return (Setting(key="omniconf.json.filename", _type=str, required=False),)
+
+    @classmethod
+    def autoconfigure(cls, conf):
+        """
+        Creates an instance configured based on the passed ConfigRegistry.
+        """
+        if conf.has("omniconf.json.filename"):
+            return JsonBackend(conf=conf.get("omniconf.json.filename"))
+        return None
 
     def get_value(self, key):
         """

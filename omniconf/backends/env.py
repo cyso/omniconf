@@ -28,6 +28,20 @@ class EnvBackend(object):
     def __init__(self, conf=None, prefix=None):
         self.prefix = prefix if prefix else ""
 
+    @classmethod
+    def autodetect_settings(cls):
+        """
+        No specific settings needed, we rely on the global prefix setting.
+        """
+        return None
+
+    @classmethod
+    def autoconfigure(cls, conf):
+        """
+        Creates an instance configured based on the passed ConfigRegistry.
+        """
+        return EnvBackend(prefix=conf.get("omniconf.prefix"))
+
     def get_value(self, key):
         """
         Retrieves the value for the given key. Keys are converted as follows:

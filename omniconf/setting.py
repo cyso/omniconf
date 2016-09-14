@@ -49,6 +49,12 @@ class SettingRegistry(object):
         """
         return self.registry[key]
 
+    def list(self):
+        """
+        Returns the configured Settings as a list.
+        """
+        return self.registry.values()
+
     def remove(self, setting):
         """
         Removes the Setting with the given key.

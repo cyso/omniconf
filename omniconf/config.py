@@ -69,12 +69,36 @@ class ConfigRegistry(object):
             return None
         raise UnconfiguredSettingError("No value or default available for {0}".format(key))
 
+    def list(self):
+        """
+        Returns all configured values as a dict.
+        """
+        return self.registry
+
     def unset(self, key):
         """
         Removes the value for a given key from the registry.
         """
         if key in self.registry:
             del self.registry[key]
+
+    def load(self, backends):
+        """
+        Attempt to configure all settings defined in the SettingRegistry using the provided backends.
+        If a setting was attempting to load, and no value found and no default was set, an
+        UnconfiguredSettingError is raised.
+        """
+        for setting in self.settings.list():
+            if setting.key in self.registry:
+                continue
+            for backend in backends:
+                try:
+                    self.set(setting.key, backend.get_value(setting.key))
+                except KeyError:
+                    pass
+
+            if not self.has(setting.key) and setting.required:
+                raise UnconfiguredSettingError("No value was configured for {0}".format(setting.key))
 
 DEFAULT_REGISTRY = ConfigRegistry()
 
