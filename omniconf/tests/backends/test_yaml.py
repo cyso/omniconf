@@ -17,6 +17,9 @@
 # <http://www.gnu.org/licenses/>.
 
 from omniconf.backends.yaml import YamlBackend
+from omniconf.config import ConfigRegistry
+from omniconf.setting import SettingRegistry
+from mock import patch
 import nose.tools
 
 YAML_FILE = """
@@ -36,6 +39,19 @@ CONFIGS = [
     ("section", {"bar": "baz", "subsection": {"baz": "foo"}}, None),
     ("unknown", None, KeyError)
 ]
+
+@patch("yaml.load")
+def test_yaml_backend_autoconfigure(mock):
+    settings = SettingRegistry()
+    settings.add(YamlBackend.autodetect_settings[0])
+    conf = ConfigRegistry(setting_registry=settings)
+
+    backend = YamlBackend.autoconfigure(conf)
+    nose.tools.assert_is(backend, None)
+
+    conf.set("omniconf.yaml.filename", "bar")
+    backend = YamlBackend.autoconfigure(conf)
+    nose.tools.assert_is_instance(backend, YamlBackend)
 
 
 def test_yaml_backend_get_value():

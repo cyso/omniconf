@@ -17,6 +17,8 @@
 # <http://www.gnu.org/licenses/>.
 
 from omniconf.backends.configobj import ConfigObjBackend
+from omniconf.config import ConfigRegistry
+from omniconf.setting import SettingRegistry
 from StringIO import StringIO
 import nose.tools
 
@@ -35,9 +37,22 @@ CONFIGS = [
     ("section.bar", "baz", None),
     ("section.subsection.baz", "foo", None),
     ("", None, KeyError),
-    ("section", None, KeyError),
+    ("section", {"bar": "baz", "subsection": {"baz": "foo"}}, None),
     ("unknown", None, KeyError)
 ]
+
+
+def test_configobj_backend_autoconfigure():
+    settings = SettingRegistry()
+    settings.add(ConfigObjBackend.autodetect_settings[0])
+    conf = ConfigRegistry(setting_registry=settings)
+
+    backend = ConfigObjBackend.autoconfigure(conf)
+    nose.tools.assert_is(backend, None)
+
+    conf.set("omniconf.configobj.filename", "bar")
+    backend = ConfigObjBackend.autoconfigure(conf)
+    nose.tools.assert_is_instance(backend, ConfigObjBackend)
 
 
 def test_configobj_backend_get_value():

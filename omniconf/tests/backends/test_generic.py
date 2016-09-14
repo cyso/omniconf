@@ -16,24 +16,10 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
-from omniconf.setting import Setting
-import json
+import nose.tools
 
 
-class JsonBackend(ConfigBackend):
-    """
-    Uses a JSON string as a backend, and allows values in it to
-    be retrieved using dotted keys.
-    """
-    autodetect_settings = (Setting(key="omniconf.json.filename", _type=str, required=False),)
-
-    def __init__(self, conf):
-        super(JsonBackend, self).__init__(json.loads(conf))
-
-    @classmethod
-    def autoconfigure(cls, conf):
-        if conf.has("omniconf.json.filename"):
-            return JsonBackend(conf=conf.get("omniconf.json.filename"))
-        return None
+def test_config_backend_autoconfigure():
+    with nose.tools.assert_raises(NotImplementedError):
+        ConfigBackend.autoconfigure(None)

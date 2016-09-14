@@ -17,6 +17,9 @@
 # <http://www.gnu.org/licenses/>.
 
 from omniconf.backends.json import JsonBackend
+from omniconf.config import ConfigRegistry
+from omniconf.setting import SettingRegistry
+from mock import patch
 import nose.tools
 
 JSON_FILE = """
@@ -39,6 +42,20 @@ CONFIGS = [
     ("section", {"bar": "baz", "subsection": {"baz": "foo"}}, None),
     ("unknown", None, KeyError)
 ]
+
+
+@patch("json.loads")
+def test_json_backend_autoconfigure(mock):
+    settings = SettingRegistry()
+    settings.add(JsonBackend.autodetect_settings[0])
+    conf = ConfigRegistry(setting_registry=settings)
+
+    backend = JsonBackend.autoconfigure(conf)
+    nose.tools.assert_is(backend, None)
+
+    conf.set("omniconf.json.filename", "bar")
+    backend = JsonBackend.autoconfigure(conf)
+    nose.tools.assert_is_instance(backend, JsonBackend)
 
 
 def test_json_backend_get_value():

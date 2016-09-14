@@ -17,29 +17,23 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from omniconf.backends.generic import ConfigBackend
 import os
 
 
-class EnvBackend(object):
+class EnvBackend(ConfigBackend):
     """
     Uses the current process Environment, and allows values in it to
     be retrieved using dotted keys with a specific prefix. By default no prefix is assumed.
     """
+    autodetect_settings = None
+
     def __init__(self, conf=None, prefix=None):
+        super(EnvBackend, self).__init__()
         self.prefix = prefix if prefix else ""
 
     @classmethod
-    def autodetect_settings(cls):
-        """
-        No specific settings needed, we rely on the global prefix setting.
-        """
-        return None
-
-    @classmethod
     def autoconfigure(cls, conf):
-        """
-        Creates an instance configured based on the passed ConfigRegistry.
-        """
         return EnvBackend(prefix=conf.get("omniconf.prefix"))
 
     def get_value(self, key):

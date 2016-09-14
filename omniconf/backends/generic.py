@@ -16,24 +16,26 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
-from omniconf.backends.generic import ConfigBackend
-from omniconf.setting import Setting
-import json
 
-
-class JsonBackend(ConfigBackend):
+class ConfigBackend(object):
     """
-    Uses a JSON string as a backend, and allows values in it to
-    be retrieved using dotted keys.
+    Defines a configuration backend, which provides configuration values
+    based on keys.
     """
-    autodetect_settings = (Setting(key="omniconf.json.filename", _type=str, required=False),)
+    autodetect_settings = None
 
-    def __init__(self, conf):
-        super(JsonBackend, self).__init__(json.loads(conf))
+    def __init__(self, conf=None):
+        self.config = conf
 
     @classmethod
     def autoconfigure(cls, conf):
-        if conf.has("omniconf.json.filename"):
-            return JsonBackend(conf=conf.get("omniconf.json.filename"))
-        return None
+        raise NotImplementedError("This method must be implemented")
+
+    def get_value(self, key):
+        """
+        Retrieves the value for the given key.
+        """
+        section = self.config
+        for _key in key.split("."):
+            section = section[_key]
+        return section

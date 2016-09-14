@@ -27,7 +27,7 @@ def autoconfigure_backends():
 
     # Expand backend_settings with backend specific settings
     for backend in available_backends:
-        _settings = backend.autodetect_settings()
+        _settings = backend.autodetect_settings
         if _settings:
             for _setting in _settings:
                 backend_settings.add(_setting)

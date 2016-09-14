@@ -17,42 +17,23 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from omniconf.backends.generic import ConfigBackend
 from omniconf.setting import Setting
-from configobj import ConfigObj, Section
+from configobj import ConfigObj
 
 
-class ConfigObjBackend(object):
+class ConfigObjBackend(ConfigBackend):
     """
     Uses a ConfigObj file (or StringIO instance) as a backend, and allows values in it to
     be retrieved using dotted keys.
     """
-    def __init__(self, conf):
-        self.config = ConfigObj(conf)
+    autodetect_settings = (Setting(key="omniconf.configobj.filename", _type=str, required=False),)
 
-    @classmethod
-    def autodetect_settings(cls):
-        """
-        A configobj filename may be specified.
-        """
-        return (Setting(key="omniconf.configobj.filename", _type=str, required=False),)
+    def __init__(self, conf):
+        super(ConfigObjBackend, self).__init__(ConfigObj(conf).dict())
 
     @classmethod
     def autoconfigure(cls, conf):
-        """
-        Creates an instance configured based on the passed ConfigRegistry.
-        """
         if conf.has("omniconf.configobj.filename"):
             return ConfigObjBackend(conf=conf.get("omniconf.configobj.filename"))
         return None
-
-    def get_value(self, key):
-        """
-        Retrieves the value for the given key. Will raise a KeyError if the found value is a
-        ConfigObj Section rather than an actual value.
-        """
-        section = self.config
-        for _key in key.split("."):
-            section = section[_key]
-        if isinstance(section, Section):
-            raise KeyError(key)
-        return section
