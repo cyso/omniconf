@@ -27,6 +27,13 @@ ARGS_FILE = [
     "--section-subsection-baz", "foo"
 ]
 
+PREFIX_ARGS_FILE = [
+    "script.py",
+    "--prefix-foo", "bar",
+    "--prefix-section-bar", "baz",
+    "--prefix-section-subsection-baz", "foo"
+]
+
 CONFIGS = [
     ("foo", "bar", None),
     ("section.bar", "baz", None),
@@ -39,12 +46,13 @@ CONFIGS = [
 
 def test_argparse_backend_get_value():
     for key, value, sideeffect in CONFIGS:
-        yield _test_get_value, key, value, sideeffect
+        yield _test_get_value, key, value, sideeffect, None
+        yield _test_get_value, key, value, sideeffect, 'prefix'
 
 
-def _test_get_value(key, value, sideeffect):
-    with patch('sys.argv', ARGS_FILE):
-        backend = ArgparseBackend()
+def _test_get_value(key, value, sideeffect, prefix):
+    with patch('sys.argv', ARGS_FILE if not prefix else PREFIX_ARGS_FILE):
+        backend = ArgparseBackend(prefix=prefix)
         if sideeffect:
             with nose.tools.assert_raises(sideeffect):
                 backend.get_value(key)
