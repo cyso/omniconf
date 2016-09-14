@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-#
 # Copyright (c) 2016 Cyso < development [at] cyso . com >
 #
 # This file is part of omniconf, a.k.a. python-omniconf .
@@ -17,35 +15,3 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
-
-
-from setuptools import setup
-import linecache
-
-DESCRIPTION = linecache.getline("README.md", 4)
-NAME = "omniconf"
-VERSION = "0.1"
-BUILD = "AAAAAA"
-
-setup(
-    name=NAME,
-    version=VERSION,
-    description=DESCRIPTION,
-    license="LGPL3",
-    author="Nick Douma",
-    author_email="n.douma@nekoconeko.nl",
-    url="https://github.com/Cyso/omniconf",
-    packages=[NAME],
-    data_files=[],
-    install_requires=[],
-    setup_requires=[
-        "coverage",
-        "nose",
-        "mock"
-    ],
-    extras_require={
-        'configobj': [
-            "configobj"
-        ]
-    }
-)
