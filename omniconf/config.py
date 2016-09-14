@@ -30,6 +30,9 @@ class ConfigRegistry(object):
             self.settings = SETTING_REGISTRY
         else:
             self.settings = setting_registry
+        self.clear()
+
+    def clear(self):
         self.registry = {}
 
     def set(self, key, value):
