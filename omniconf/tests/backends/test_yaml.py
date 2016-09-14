@@ -20,15 +20,12 @@ from omniconf.backends.yaml import YamlBackend
 import nose.tools
 
 YAML_FILE = """
-{
-    "foo": "bar",
-    "section": {
-        "bar": "baz",
-        "subsection": {
-            "baz": "foo"
-        }
-    }
-}
+---
+foo: bar
+section:
+  bar: baz
+  subsection:
+    baz: foo
 """
 
 CONFIGS = [
