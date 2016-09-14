@@ -16,19 +16,18 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from mock import Mock
 import unittest
-from omniconf.config import ConfigRegistry, config, DEFAULT_REGISTRY, SETTINGS_REGISTRY
+from omniconf.config import ConfigRegistry, config, DEFAULT_REGISTRY, SETTING_REGISTRY
 from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
 from omniconf.setting import SettingRegistry, Setting
 
 
 class TestConfigRegistry(unittest.TestCase):
     def setUp(self):
-        self.settings_registry = SettingRegistry()
-        self.settings_registry.add(Setting("key", _type=str))
-        self.settings_registry.add(Setting("default", _type=str, default="present"))
-        self.config_registry = ConfigRegistry(settings_registry=self.settings_registry)
+        self.setting_registry = SettingRegistry()
+        self.setting_registry.add(Setting("key", _type=str))
+        self.setting_registry.add(Setting("default", _type=str, default="present"))
+        self.config_registry = ConfigRegistry(setting_registry=self.setting_registry)
 
     def test_config_registry_set_without_setting(self):
         with self.assertRaises(UnknownSettingError):
@@ -67,10 +66,10 @@ class TestConfigRegistry(unittest.TestCase):
 
 class TestConfigMethod(unittest.TestCase):
     def setUp(self):
-        self.settings_registry = SettingRegistry()
-        self.settings_registry.add(Setting("key", _type=str))
-        self.settings_registry.add(Setting("default", _type=str, default="present"))
-        self.config_registry = ConfigRegistry(settings_registry=self.settings_registry)
+        self.setting_registry = SettingRegistry()
+        self.setting_registry.add(Setting("key", _type=str))
+        self.setting_registry.add(Setting("default", _type=str, default="present"))
+        self.config_registry = ConfigRegistry(setting_registry=self.setting_registry)
 
     def test_config_method_without_config(self):
         with self.assertRaises(UnconfiguredSettingError):
@@ -88,9 +87,9 @@ class TestConfigMethod(unittest.TestCase):
             config("foo")
 
         _setting = Setting(key="foo", _type=str)
-        SETTINGS_REGISTRY.add(_setting)
+        SETTING_REGISTRY.add(_setting)
         DEFAULT_REGISTRY.set("foo", "bar")
         self.assertEqual(config("foo"), "bar")
 
         DEFAULT_REGISTRY.unset("foo")
-        SETTINGS_REGISTRY.remove(_setting)
+        SETTING_REGISTRY.remove(_setting)

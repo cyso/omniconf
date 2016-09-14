@@ -24,12 +24,12 @@ class ConfigRegistry(object):
     """
     A registry of Configured values for a SettingRegistry.
     """
-    def __init__(self, settings_registry=None):
-        global SETTINGS_REGISTRY
-        if not settings_registry:
-            self.settings = SETTINGS_REGISTRY
+    def __init__(self, setting_registry=None):
+        global SETTING_REGISTRY
+        if not setting_registry:
+            self.settings = SETTING_REGISTRY
         else:
-            self.settings = settings_registry
+            self.settings = setting_registry
         self.registry = {}
 
     def set(self, key, value):
