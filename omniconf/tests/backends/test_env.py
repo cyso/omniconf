@@ -63,7 +63,7 @@ CONFIGS = [
 ]
 
 
-def test_configobj_backend_get_value():
+def test_env_backend_get_value():
     for key, value, sideeffect in CONFIGS:
         yield _test_get_value, key, value, sideeffect
 
