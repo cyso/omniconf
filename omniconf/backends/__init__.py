@@ -15,3 +15,27 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
+
+from omniconf.backends.argparse import ArgparseBackend
+from omniconf.backends.env import EnvBackend
+from omniconf.backends.json import JsonBackend
+
+available_backends = []
+
+try:
+    from omniconf.backends.configobj import ConfigObjBackend
+    available_backends.append(ConfigObjBackend)
+except ImportError:
+    pass
+
+try:
+    from omniconf.backends.yaml import YamlBackend
+    available_backends.append(YamlBackend)
+except ImportError:
+    pass
+
+available_backends += [JsonBackend, EnvBackend, ArgparseBackend]
+autodetection_backends = [EnvBackend, ArgparseBackend]
+
+
+__all__ = available_backends
