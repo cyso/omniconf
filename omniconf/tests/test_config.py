@@ -25,7 +25,7 @@ from omniconf.setting import SettingRegistry, Setting
 class TestConfigRegistry(unittest.TestCase):
     def setUp(self):
         self.setting_registry = SettingRegistry()
-        self.setting_registry.add(Setting("key", _type=str))
+        self.setting_registry.add(Setting("key", _type=str, required=True))
         self.setting_registry.add(Setting("default", _type=str, default="present"))
         self.config_registry = ConfigRegistry(setting_registry=self.setting_registry)
 
@@ -67,7 +67,7 @@ class TestConfigRegistry(unittest.TestCase):
 class TestConfigMethod(unittest.TestCase):
     def setUp(self):
         self.setting_registry = SettingRegistry()
-        self.setting_registry.add(Setting("key", _type=str))
+        self.setting_registry.add(Setting("key", _type=str, required=True))
         self.setting_registry.add(Setting("default", _type=str, default="present"))
         self.config_registry = ConfigRegistry(setting_registry=self.setting_registry)
 

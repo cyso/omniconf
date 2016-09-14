@@ -67,9 +67,10 @@ class Setting(object):
     specifically defined (also see ConfigRegistry). A help message may be specified for documentation
     purposes.
     """
-    def __init__(self, key, _type, default=None, help=None):
+    def __init__(self, key, _type, required=False, default=None, help=None):
         self.key = key
         self.type = _type
+        self.required = required
         self.default = default
         self.help = help
 

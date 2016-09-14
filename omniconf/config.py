@@ -65,6 +65,8 @@ class ConfigRegistry(object):
             return self.registry[key]
         elif self.settings.has(key) and self.settings.get(key).default is not None:
             return self.settings.get(key).default
+        elif self.settings.has(key) and not self.settings.get(key).required:
+            return None
         raise UnconfiguredSettingError("No value or default available for {0}".format(key))
 
     def unset(self, key):
