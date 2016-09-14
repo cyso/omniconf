@@ -81,7 +81,7 @@ class Setting(object):
         self.help = help
 
 
-def setting(key, _type=str, default=None, help=None, registry=None):
+def setting(key, _type=str, required=False, default=None, help=None, registry=None):
     """
     Register a new Setting with the given key. By default the type will be set to str, and the Setting
     will be registered in the default registry.
@@ -90,4 +90,4 @@ def setting(key, _type=str, default=None, help=None, registry=None):
     if not registry:
         registry = DEFAULT_REGISTRY
 
-    return registry.add(Setting(key, _type, default, help))
+    return registry.add(Setting(key, _type, required, default, help))
