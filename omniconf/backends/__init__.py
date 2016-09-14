@@ -25,13 +25,13 @@ available_backends = []
 try:
     from omniconf.backends.configobj import ConfigObjBackend
     available_backends.append(ConfigObjBackend)
-except ImportError:
+except ImportError:  # pragma: nocover
     pass
 
 try:
     from omniconf.backends.yaml import YamlBackend
     available_backends.append(YamlBackend)
-except ImportError:
+except ImportError:  # pragma: nocover
     pass
 
 available_backends += [JsonBackend, EnvBackend, ArgparseBackend]
