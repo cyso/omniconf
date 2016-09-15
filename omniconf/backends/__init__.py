@@ -38,4 +38,4 @@ available_backends += [JsonBackend, EnvBackend, ArgparseBackend]
 autodetection_backends = [EnvBackend, ArgparseBackend]
 
 
-__all__ = available_backends
+__all__ = [available_backends, autodetection_backends]
