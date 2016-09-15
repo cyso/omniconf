@@ -16,8 +16,15 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
-from omniconf.setting import DEFAULT_REGISTRY as SETTINGS_REGISTRY
+from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError, InvalidConfigType
+from omniconf.setting import DEFAULT_REGISTRY as SETTING_REGISTRY
+import ast
+
+
+def unrepr(s):
+    if not s:
+        return s
+    return ast.literal_eval(s)
 
 
 class ConfigRegistry(object):
@@ -44,7 +51,11 @@ class ConfigRegistry(object):
         if not self.settings.has(key):
             raise UnknownSettingError("Trying to configure unregistered key {0}".format(key))
         setting = self.settings.get(key)
-        self.registry[key] = setting.type(value)
+
+        if setting.type in (list, dict, tuple, bool):
+            self.registry[key] = unrepr(value)
+        else:
+            self.registry[key] = setting.type(value)
 
     def has(self, key):
         """

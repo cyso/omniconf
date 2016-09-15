@@ -21,6 +21,7 @@ from omniconf.config import ConfigRegistry, config, DEFAULT_REGISTRY, SETTING_RE
 from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
 from omniconf.setting import SettingRegistry, Setting
 from mock import Mock, call
+import nose.tools
 
 
 class TestConfigRegistry(unittest.TestCase):
@@ -128,3 +129,30 @@ class TestConfigMethod(unittest.TestCase):
 
         DEFAULT_REGISTRY.unset("foo")
         SETTING_REGISTRY.remove(_setting)
+
+VALUE_TESTS = [
+    ("foobar", "foobar", str),
+    ("1234", 1234, int),
+    ("123.456", 123.456, float),
+    ("['a', 'b', '1', 'c']", ['a', 'b', '1', 'c'], list),
+    ("('a', 'b', '1', 'c')", ('a', 'b', '1', 'c'), tuple),
+    ("{'a': 'b', 'foo': 'bar'}", {'a': 'b', 'foo': 'bar'}, dict),
+    ("False", False, bool),
+    ("True", True, bool),
+    (False, False, bool),
+]
+
+
+def test_config_registry_set_value_conversion():
+    for _in, _out, _type in VALUE_TESTS:
+        yield _test_set_value, _in, _out, _type
+
+
+def _test_set_value(_in, _out, _type):
+    settings = SettingRegistry()
+    settings.add(Setting("test.value", _type=_type))
+
+    configs = ConfigRegistry(setting_registry=settings)
+    configs.set("test.value", _in)
+
+    nose.tools.assert_equal(configs.get("test.value"), _out)
