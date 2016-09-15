@@ -18,7 +18,7 @@
 
 from omniconf.backends import available_backends, autodetection_backends
 from omniconf.config import ConfigRegistry, DEFAULT_REGISTRY as CONFIG_REGISTRY
-from omniconf.setting import SettingRegistry, Setting, DEFAULT_REGISTRY as SETTING_REGISTRY
+from omniconf.setting import SettingRegistry, Setting
 
 
 def autoconfigure_backends():
@@ -26,7 +26,7 @@ def autoconfigure_backends():
     backend_settings.add(Setting("omniconf.prefix", _type=str))
 
     # Expand backend_settings with backend specific settings
-    for backend in available_backends:
+    for backend in autodetection_backends:
         _settings = backend.autodetect_settings
         if _settings:
             for _setting in _settings:
@@ -46,9 +46,7 @@ def autoconfigure_backends():
     return configured_backends
 
 
-def omniconf_load(setting_registry=None, config_registry=None, autodetect=True, backends=None):
-    if not setting_registry:
-        setting_registry = SETTING_REGISTRY
+def omniconf_load(config_registry=None, autodetect=True, backends=None):
     if not config_registry:
         config_registry = CONFIG_REGISTRY
     if not backends:

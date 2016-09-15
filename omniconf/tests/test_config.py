@@ -20,6 +20,7 @@ import unittest
 from omniconf.config import ConfigRegistry, config, DEFAULT_REGISTRY, SETTING_REGISTRY
 from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
 from omniconf.setting import SettingRegistry, Setting
+from mock import Mock, call
 
 
 class TestConfigRegistry(unittest.TestCase):
@@ -69,6 +70,33 @@ class TestConfigRegistry(unittest.TestCase):
         self.config_registry.unset("key")
         with self.assertRaises(UnconfiguredSettingError):
             self.config_registry.get("key")
+
+    def test_config_registry_load(self):
+        mock_backend = Mock()
+        mock_backend.get_value.return_value = "value"
+        self.config_registry.load([mock_backend])
+
+        mock_backend.get_value.assert_has_calls([call("key"), call("default")], any_order=True)
+        self.assertEqual(self.config_registry.get("key"), "value")
+        self.assertEqual(self.config_registry.get("default"), "value")
+
+    def test_config_registry_load_with_previous_values(self):
+        mock_backend = Mock()
+        mock_backend.get_value.return_value = "value"
+        self.config_registry.set("key", "other")
+        self.config_registry.set("default", "other")
+
+        self.config_registry.load([mock_backend])
+
+        self.assertEqual(self.config_registry.get("key"), "other")
+        self.assertEqual(self.config_registry.get("default"), "other")
+
+    def test_config_registry_load_with_unavailable_values(self):
+        mock_backend = Mock()
+        mock_backend.get_value.side_effect = KeyError("No value")
+
+        with self.assertRaises(UnconfiguredSettingError):
+            self.config_registry.load([mock_backend])
 
 
 class TestConfigMethod(unittest.TestCase):
