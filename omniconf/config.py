@@ -16,7 +16,7 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError, InvalidConfigType
+from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
 from omniconf.setting import DEFAULT_REGISTRY as SETTING_REGISTRY
 import ast
 
