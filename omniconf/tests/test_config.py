@@ -131,28 +131,38 @@ class TestConfigMethod(unittest.TestCase):
         SETTING_REGISTRY.remove(_setting)
 
 VALUE_TESTS = [
-    ("foobar", "foobar", str),
-    ("1234", 1234, int),
-    ("123.456", 123.456, float),
-    ("['a', 'b', '1', 'c']", ['a', 'b', '1', 'c'], list),
-    ("('a', 'b', '1', 'c')", ('a', 'b', '1', 'c'), tuple),
-    ("{'a': 'b', 'foo': 'bar'}", {'a': 'b', 'foo': 'bar'}, dict),
-    ("False", False, bool),
-    ("True", True, bool),
-    (False, False, bool),
+    ("foobar", "foobar", str, None),
+    (123456, "123456", str, None),
+    ("1234", 1234, int, None),
+    ("123.456", 123.456, float, None),
+    ("['a', 'b', '1', 'c']", ['a', 'b', '1', 'c'], list, None),
+    ("('a', 'b', '1', 'c')", ('a', 'b', '1', 'c'), tuple, None),
+    ("{'a': 'b', 'foo': 'bar'}", {'a': 'b', 'foo': 'bar'}, dict, None),
+    ("False", False, bool, None),
+    ("True", True, bool, None),
+    (False, False, bool, None),
+
+    ("foobar", None, int, ValueError),
+    ("foobar", None, float, ValueError),
+    ("foobar", None, list, ValueError),
+    ("foobar", None, dict, ValueError)
 ]
 
 
 def test_config_registry_set_value_conversion():
-    for _in, _out, _type in VALUE_TESTS:
-        yield _test_set_value, _in, _out, _type
+    for _in, _out, _type, sideeffect in VALUE_TESTS:
+        yield _test_set_value, _in, _out, _type, sideeffect
 
 
-def _test_set_value(_in, _out, _type):
+def _test_set_value(_in, _out, _type, sideeffect):
     settings = SettingRegistry()
     settings.add(Setting("test.value", _type=_type))
 
     configs = ConfigRegistry(setting_registry=settings)
-    configs.set("test.value", _in)
 
-    nose.tools.assert_equal(configs.get("test.value"), _out)
+    if sideeffect:
+        with nose.tools.assert_raises(sideeffect):
+            configs.set("test.value", _in)
+    else:
+        configs.set("test.value", _in)
+        nose.tools.assert_equal(configs.get("test.value"), _out)
