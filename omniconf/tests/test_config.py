@@ -56,6 +56,13 @@ class TestConfigRegistry(unittest.TestCase):
     def test_config_registry_get_with_default(self):
         self.assertEqual(self.config_registry.get("default"), "present")
 
+    def test_config_registry_get_not_required_no_value(self):
+        self.setting_registry.add(Setting("unneeded", _type=str))
+        self.assertIs(self.config_registry.get("unneeded"), None)
+
+    def test_config_registry_list(self):
+        self.assertEqual(self.config_registry.list(), self.config_registry.registry)
+
     def test_config_registry_unset(self):
         self.config_registry.set("key", "soon")
         self.assertEqual(self.config_registry.get("key"), "soon")
