@@ -25,4 +25,6 @@
 /cover
 /coverage.xml
 /nosetests.xml
+/.tox
+/tox
 /vendor
