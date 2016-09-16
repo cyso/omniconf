@@ -62,17 +62,20 @@ class SettingRegistry(object):
         del self.registry[self._key(setting)]
 
 DEFAULT_REGISTRY = SettingRegistry()
+"""
+Global SettingRegistry which will be used when no specific SettingRegistry
+is defined.
+"""
 
 
 class Setting(object):
     """
-    A particular Setting.
-
     A Setting is registered under a specific key and with a specific type (str,
     dict, list, etc). A default may also be specified, which allows a config to
     be returned without a value being specifically defined (also see
-    ConfigRegistry). A help message may be specified for documentation
-    purposes.
+    ConfigRegistry). A Setting may be marked as required, which will cause an
+    exception to be thrown when no value is found when autoconfiguring. A help
+    message may be specified for documentation purposes.
     """
     def __init__(self, key, _type, required=False, default=None, help=None):
         self.key = key
@@ -85,8 +88,7 @@ class Setting(object):
 def setting(key, _type=str, required=False, default=None, help=None,
             registry=None):
     """
-    Register a new Setting with the given key. By default the type will be set
-    to str, and the Setting will be registered in the default registry.
+    Register a new Setting with the given key. Also see Setting.
     """
     global DEFAULT_REGISTRY
     if not registry:

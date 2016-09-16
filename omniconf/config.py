@@ -120,6 +120,10 @@ class ConfigRegistry(object):
                                                "{0}".format(setting.key))
 
 DEFAULT_REGISTRY = ConfigRegistry()
+"""
+Global ConfigRegistry which will be used when no specific ConfigRegistry
+is defined.
+"""
 
 
 def config(key, registry=None):
