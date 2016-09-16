@@ -24,8 +24,8 @@ from omniconf.setting import SettingRegistry, Setting
 def autoconfigure_backends():
     """
     Determine available backends, based on the current configuration available
-    in the environment and command line. Backends can define a Setting that
-    is required for proper autodetection.
+    in the environment and command line. Backends can define a
+    :class:`.Setting` that is required for proper autodetection.
 
     The result of this function is a list of backends, that are configured and
     ready to use.
@@ -56,9 +56,10 @@ def autoconfigure_backends():
 
 def omniconf_load(config_registry=None, backends=None):
     """
-    Fill the provided ConfigRegistry, by default using all available backends
-    (as determined by autoconfigure_backends). If not ConfigRegistry is
-    provided, the default ConfigRegistry is used.
+    Fill the provided :class:`.ConfigRegistry`, by default using all available
+    backends (as determined by :func:`autoconfigure_backends`. If no
+    :class:`ConfigRegistry` is provided, the default :class:`.ConfigRegistry`
+    is used.
     """
     if not config_registry:
         config_registry = CONFIG_REGISTRY

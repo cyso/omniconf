@@ -19,7 +19,7 @@
 
 class SettingRegistry(object):
     """
-    A registry of defined Settings.
+    A registry of defined :class:`Setting`s.
     """
     def __init__(self):
         self.registry = {}
@@ -63,19 +63,20 @@ class SettingRegistry(object):
 
 DEFAULT_REGISTRY = SettingRegistry()
 """
-Global SettingRegistry which will be used when no specific SettingRegistry
-is defined.
+Global :class:`.SettingRegistry` which will be used when no specific
+:class:`.SettingRegistry` is defined.
 """
 
 
 class Setting(object):
     """
-    A Setting is registered under a specific key and with a specific type (str,
-    dict, list, etc). A default may also be specified, which allows a config to
-    be returned without a value being specifically defined (also see
-    ConfigRegistry). A Setting may be marked as required, which will cause an
-    exception to be thrown when no value is found when autoconfiguring. A help
-    message may be specified for documentation purposes.
+    A :class:`.Setting` is registered under a specific key and with a specific
+    type (:class:`str`, :class:`dict`, :class:`list`, etc). A default may also
+    be specified, which allows a config to be returned without a value being
+    specifically defined (also see :class:`.ConfigRegistry`). A
+    :class:`.Setting` may be marked as required, which will cause an exception
+    to be thrown when no value is found when autoconfiguring. A help message
+    may be specified for documentation purposes.
     """
     def __init__(self, key, _type, required=False, default=None, help=None):
         self.key = key
@@ -88,7 +89,7 @@ class Setting(object):
 def setting(key, _type=str, required=False, default=None, help=None,
             registry=None):
     """
-    Register a new Setting with the given key. Also see Setting.
+    Register a new :class:`.Setting` with the given key.
     """
     global DEFAULT_REGISTRY
     if not registry:

@@ -25,8 +25,8 @@ class ConfigBackend(object):
 
     autodetect_settings = None
     """
-    A tuple of Settings, that are required for autoconfigure() to complete
-    successfully.
+    A tuple of :class:`.Setting`s, that are required for :func: autoconfigure`
+    to complete successfully.
     """
 
     def __init__(self, conf=None):
@@ -35,9 +35,9 @@ class ConfigBackend(object):
     @classmethod
     def autoconfigure(cls, conf):
         """
-        Called with a ConfigRegistry, the result of this method must be either
-        a new instance of this class, or `None`. This method is automatically
-        called during the autoconfigure phase.
+        Called with a :class:`.ConfigRegistry`, the result of this method must
+        be either a new instance of this class, or :any:`None`. This method
+        is automatically called during the autoconfigure phase.
         """
         raise NotImplementedError("This method must be implemented")
 

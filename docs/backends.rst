@@ -23,7 +23,7 @@ All backends implement the same interface, which allows for easy addition of new
 commandline arguments
 ---------------------
 
-Command line arguments are implemented using argparse. This backend is enabled by default.
+Command line arguments are implemented using :mod:`argparse`. This backend is enabled by default.
 
 .. autoclass :: omniconf.backends.argparse.ArgparseBackend
    :members:
@@ -32,7 +32,7 @@ Command line arguments are implemented using argparse. This backend is enabled b
 environment variables
 ---------------------
 
-Environments are read from os.environ. This backend is enabled by default.
+Environments are read from :any:`os.environ`. This backend is enabled by default.
 
 .. autoclass :: omniconf.backends.env.EnvBackend
    :members:
