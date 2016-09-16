@@ -19,7 +19,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-from setuptools import setup
+from setuptools import setup, find_packages
 import linecache
 
 DESCRIPTION = linecache.getline("README.md", 4)
@@ -35,7 +35,7 @@ setup(
     author="Nick Douma",
     author_email="n.douma@nekoconeko.nl",
     url="https://github.com/Cyso/omniconf",
-    packages=[NAME],
+    packages=find_packages(),
     data_files=[],
     install_requires=[],
     setup_requires=[
@@ -45,10 +45,10 @@ setup(
         "Sphinx"
     ],
     extras_require={
-        'configobj': [
+        "configobj": [
             "configobj"
         ],
-        'yaml': [
+        "yaml": [
             "PyYAML"
         ]
     }
