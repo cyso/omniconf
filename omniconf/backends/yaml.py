@@ -27,7 +27,8 @@ class YamlBackend(ConfigBackend):
     Uses a YAML string as a backend, and allows values in it to
     be retrieved using dotted keys.
     """
-    autodetect_settings = (Setting(key="omniconf.yaml.filename", _type=str, required=False),)
+    autodetect_settings = (Setting(key="omniconf.yaml.filename", _type=str,
+                                   required=False),)
 
     def __init__(self, conf):
         super(YamlBackend, self).__init__(yaml.load(conf))

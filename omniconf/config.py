@@ -44,12 +44,14 @@ class ConfigRegistry(object):
 
     def set(self, key, value):
         """
-        Configures the value for the given key. The value will be converted to the type defined in
-        the Setting, by calling the type as a function with the value as the only argument.
-        Trying to configure a value under an unknown key will result in an UnknownSettingError.
+        Configures the value for the given key. The value will be converted to
+        the type defined in the Setting, by calling the type as a function with
+        the value as the only argument. Trying to configure a value under an
+        unknown key will result in an UnknownSettingError.
         """
         if not self.settings.has(key):
-            raise UnknownSettingError("Trying to configure unregistered key {0}".format(key))
+            raise UnknownSettingError("Trying to configure unregistered key "
+                                      "{0}".format(key))
         setting = self.settings.get(key)
 
         if setting.type in (list, dict, tuple, bool):
@@ -59,26 +61,30 @@ class ConfigRegistry(object):
 
     def has(self, key):
         """
-        Checks if a value has been configured for the given key, or if a default value is present.
+        Checks if a value has been configured for the given key, or if a
+        default value is present.
         """
         if key in self.registry:
             return True
-        elif self.settings.has(key) and self.settings.get(key).default is not None:
+        elif self.settings.has(key) and \
+                self.settings.get(key).default is not None:
             return True
         return False
 
     def get(self, key):
         """
-        Returns the configured value for the given key, or the default value if the key was not
-        configured.
+        Returns the configured value for the given key, or the default value if
+        the key was not configured.
         """
         if key in self.registry:
             return self.registry[key]
-        elif self.settings.has(key) and self.settings.get(key).default is not None:
+        elif self.settings.has(key) and \
+                self.settings.get(key).default is not None:
             return self.settings.get(key).default
         elif self.settings.has(key) and not self.settings.get(key).required:
             return None
-        raise UnconfiguredSettingError("No value or default available for {0}".format(key))
+        raise UnconfiguredSettingError("No value or default available for {0}"
+                                       .format(key))
 
     def list(self):
         """
@@ -95,9 +101,10 @@ class ConfigRegistry(object):
 
     def load(self, backends):
         """
-        Attempt to configure all settings defined in the SettingRegistry using the provided backends.
-        If a setting was attempting to load, and no value found and no default was set, an
-        UnconfiguredSettingError is raised.
+        Attempt to configure all settings defined in the SettingRegistry using
+        the provided backends. If a setting was attempting to load, and no
+        value found and no default was set, an UnconfiguredSettingError is
+        raised.
         """
         for setting in self.settings.list():
             if setting.key in self.registry:
@@ -109,15 +116,16 @@ class ConfigRegistry(object):
                     pass
 
             if not self.has(setting.key) and setting.required:
-                raise UnconfiguredSettingError("No value was configured for {0}".format(setting.key))
+                raise UnconfiguredSettingError("No value was configured for "
+                                               "{0}".format(setting.key))
 
 DEFAULT_REGISTRY = ConfigRegistry()
 
 
 def config(key, registry=None):
     """
-    Retrieves the configured value for a given key. If no specific registry is specified, the
-    value will be retrieved from the default ConfigRegistry.
+    Retrieves the configured value for a given key. If no specific registry is
+    specified, the value will be retrieved from the default ConfigRegistry.
     """
 
     global DEFAULT_REGISTRY

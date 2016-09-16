@@ -23,7 +23,8 @@ from mock import Mock, PropertyMock, patch
 import unittest
 
 autodetection_mock = Mock(autospec=ConfigBackend)
-autodetect_settings_mock = PropertyMock(return_value=[Setting("omniconf.foo", _type=str, required=True)])
+autodetect_settings_mock = PropertyMock(return_value=[Setting("omniconf.foo",
+                                        _type=str, required=True)])
 type(autodetection_mock).autodetect_settings = autodetect_settings_mock
 
 autoconfigure_mock = Mock(autospec=ConfigBackend)

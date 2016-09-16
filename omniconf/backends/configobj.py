@@ -24,10 +24,11 @@ from configobj import ConfigObj
 
 class ConfigObjBackend(ConfigBackend):
     """
-    Uses a ConfigObj file (or StringIO instance) as a backend, and allows values in it to
-    be retrieved using dotted keys.
+    Uses a ConfigObj file (or StringIO instance) as a backend, and allows
+    values in it to be retrieved using dotted keys.
     """
-    autodetect_settings = (Setting(key="omniconf.configobj.filename", _type=str, required=False),)
+    autodetect_settings = (Setting(key="omniconf.configobj.filename",
+                                   _type=str, required=False),)
 
     def __init__(self, conf):
         super(ConfigObjBackend, self).__init__(ConfigObj(conf).dict())
@@ -35,5 +36,6 @@ class ConfigObjBackend(ConfigBackend):
     @classmethod
     def autoconfigure(cls, conf):
         if conf.has("omniconf.configobj.filename"):
-            return ConfigObjBackend(conf=conf.get("omniconf.configobj.filename"))
+            return ConfigObjBackend(
+                conf=conf.get("omniconf.configobj.filename"))
         return None

@@ -18,7 +18,8 @@
 
 from mock import Mock
 import unittest
-from omniconf.setting import SettingRegistry, Setting, setting, DEFAULT_REGISTRY
+from omniconf.setting import SettingRegistry, Setting, setting, \
+                                DEFAULT_REGISTRY
 
 
 class TestSettingsRegistry(unittest.TestCase):
@@ -30,7 +31,8 @@ class TestSettingsRegistry(unittest.TestCase):
     def test_setting_registry_key_with_string(self):
         self.assertEqual('foo', self.registry._key('foo'))
         self.assertEqual('section.foo', self.registry._key('section.foo'))
-        self.assertEqual('section.subsection.foo', self.registry._key('section.subsection.foo'))
+        self.assertEqual('section.subsection.foo',
+                         self.registry._key('section.subsection.foo'))
 
     def test_setting_registry_key_with_object(self):
         obj = Mock()

@@ -68,9 +68,10 @@ class Setting(object):
     """
     A particular Setting.
 
-    A Setting is registered under a specific key and with a specific type (str, dict, list, etc). A
-    default may also be specified, which allows a config to be returned without a value being
-    specifically defined (also see ConfigRegistry). A help message may be specified for documentation
+    A Setting is registered under a specific key and with a specific type (str,
+    dict, list, etc). A default may also be specified, which allows a config to
+    be returned without a value being specifically defined (also see
+    ConfigRegistry). A help message may be specified for documentation
     purposes.
     """
     def __init__(self, key, _type, required=False, default=None, help=None):
@@ -81,10 +82,11 @@ class Setting(object):
         self.help = help
 
 
-def setting(key, _type=str, required=False, default=None, help=None, registry=None):
+def setting(key, _type=str, required=False, default=None, help=None,
+            registry=None):
     """
-    Register a new Setting with the given key. By default the type will be set to str, and the Setting
-    will be registered in the default registry.
+    Register a new Setting with the given key. By default the type will be set
+    to str, and the Setting will be registered in the default registry.
     """
     global DEFAULT_REGISTRY
     if not registry:

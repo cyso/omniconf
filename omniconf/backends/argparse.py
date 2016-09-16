@@ -24,7 +24,8 @@ import argparse
 class ArgparseBackend(ConfigBackend):
     """
     Uses the current process arguments, and allows values in it to
-    be retrieved using dotted keys with a specific prefix. By default no prefix is assumed.
+    be retrieved using dotted keys with a specific prefix. By default no
+    prefix is assumed.
     """
     autodetect_settings = None
 
@@ -44,7 +45,8 @@ class ArgparseBackend(ConfigBackend):
         * The key is lowercased.
         * A prefix is attached to the key, if specified
 
-        This means that a key like section.value will be queried like --prefix-section-value.
+        This means that a key like section.value will be queried like
+        --prefix-section-value.
         """
         _key = key.replace(".", "-").lower()
         _prop = key.replace(".", "_").lower()

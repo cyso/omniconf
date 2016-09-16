@@ -40,6 +40,7 @@ CONFIGS = [
     ("unknown", None, KeyError)
 ]
 
+
 @patch("yaml.load")
 def test_yaml_backend_autoconfigure(mock):
     settings = SettingRegistry()

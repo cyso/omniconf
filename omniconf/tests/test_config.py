@@ -17,8 +17,10 @@
 # <http://www.gnu.org/licenses/>.
 
 import unittest
-from omniconf.config import ConfigRegistry, config, DEFAULT_REGISTRY, SETTING_REGISTRY
-from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
+from omniconf.config import ConfigRegistry, config, DEFAULT_REGISTRY, \
+                            SETTING_REGISTRY
+from omniconf.exceptions import UnknownSettingError, \
+                                UnconfiguredSettingError
 from omniconf.setting import SettingRegistry, Setting
 from mock import Mock, call
 import nose.tools
@@ -28,8 +30,10 @@ class TestConfigRegistry(unittest.TestCase):
     def setUp(self):
         self.setting_registry = SettingRegistry()
         self.setting_registry.add(Setting("key", _type=str, required=True))
-        self.setting_registry.add(Setting("default", _type=str, default="present"))
-        self.config_registry = ConfigRegistry(setting_registry=self.setting_registry)
+        self.setting_registry.add(Setting("default", _type=str,
+                                          default="present"))
+        self.config_registry = ConfigRegistry(
+                                setting_registry=self.setting_registry)
 
     def test_config_registry_set_without_setting(self):
         with self.assertRaises(UnknownSettingError):
@@ -63,7 +67,8 @@ class TestConfigRegistry(unittest.TestCase):
         self.assertIs(self.config_registry.get("unneeded"), None)
 
     def test_config_registry_list(self):
-        self.assertEqual(self.config_registry.list(), self.config_registry.registry)
+        self.assertEqual(self.config_registry.list(),
+                         self.config_registry.registry)
 
     def test_config_registry_unset(self):
         self.config_registry.set("key", "soon")
@@ -77,7 +82,8 @@ class TestConfigRegistry(unittest.TestCase):
         mock_backend.get_value.return_value = "value"
         self.config_registry.load([mock_backend])
 
-        mock_backend.get_value.assert_has_calls([call("key"), call("default")], any_order=True)
+        mock_backend.get_value.assert_has_calls([call("key"), call("default")],
+                                                any_order=True)
         self.assertEqual(self.config_registry.get("key"), "value")
         self.assertEqual(self.config_registry.get("default"), "value")
 
@@ -104,8 +110,10 @@ class TestConfigMethod(unittest.TestCase):
     def setUp(self):
         self.setting_registry = SettingRegistry()
         self.setting_registry.add(Setting("key", _type=str, required=True))
-        self.setting_registry.add(Setting("default", _type=str, default="present"))
-        self.config_registry = ConfigRegistry(setting_registry=self.setting_registry)
+        self.setting_registry.add(Setting("default", _type=str,
+                                          default="present"))
+        self.config_registry = ConfigRegistry(
+                                setting_registry=self.setting_registry)
 
     def test_config_method_without_config(self):
         with self.assertRaises(UnconfiguredSettingError):
@@ -116,7 +124,8 @@ class TestConfigMethod(unittest.TestCase):
         self.assertEqual(config("key", registry=self.config_registry), "value")
 
     def test_config_method_with_default(self):
-        self.assertEqual(config("default", registry=self.config_registry), "present")
+        self.assertEqual(config("default", registry=self.config_registry),
+                         "present")
 
     def test_config_method_with_default_registry(self):
         with self.assertRaises(UnconfiguredSettingError):

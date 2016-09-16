@@ -24,7 +24,8 @@ import os
 class EnvBackend(ConfigBackend):
     """
     Uses the current process Environment, and allows values in it to
-    be retrieved using dotted keys with a specific prefix. By default no prefix is assumed.
+    be retrieved using dotted keys with a specific prefix. By default no
+    prefix is assumed.
     """
     autodetect_settings = None
 
@@ -44,7 +45,8 @@ class EnvBackend(ConfigBackend):
         * The key is uppercased.
         * A prefix is attached to the key
 
-        This means that a key like section.value will be queried like PREFIX_SECTION_VALUE.
+        This means that a key like section.value will be queried like
+        PREFIX_SECTION_VALUE.
         """
         _key = key.replace(".", "_").upper()
         if self.prefix:
