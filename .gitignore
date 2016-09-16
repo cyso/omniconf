@@ -8,6 +8,13 @@
 /*.tar.bz2
 /.coverage
 
+## Docs
+/docs/_build/*
+!/docs/_build/.empty
+/docs/_includes/*
+/docs/_tmp/*
+!/docs/_tmp/.empty
+
 ## Pip files
 /*.egg-info
 /*.egg

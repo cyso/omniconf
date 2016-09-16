@@ -29,7 +29,7 @@ def unrepr(s):
 
 class ConfigRegistry(object):
     """
-    A registry of Configured values for a SettingRegistry.
+    A registry of Configured values for a :class:`.SettingRegistry`.
     """
     def __init__(self, setting_registry=None):
         global SETTING_REGISTRY
@@ -45,9 +45,9 @@ class ConfigRegistry(object):
     def set(self, key, value):
         """
         Configures the value for the given key. The value will be converted to
-        the type defined in the Setting, by calling the type as a function with
-        the value as the only argument. Trying to configure a value under an
-        unknown key will result in an UnknownSettingError.
+        the type defined in the :class:`.Setting`, by calling the type as a
+        function with the value as the only argument. Trying to configure a
+        value under an unknown key will result in an UnknownSettingError.
         """
         if not self.settings.has(key):
             raise UnknownSettingError("Trying to configure unregistered key "
@@ -101,10 +101,10 @@ class ConfigRegistry(object):
 
     def load(self, backends):
         """
-        Attempt to configure all settings defined in the SettingRegistry using
-        the provided backends. If a setting was attempting to load, and no
-        value found and no default was set, an UnconfiguredSettingError is
-        raised.
+        Attempt to configure all settings defined in the
+        :class:`.SettingRegistry` using the provided backends. If a setting
+        was attempting to load, and no value found and no default was set, an
+        UnconfiguredSettingError is raised.
         """
         for setting in self.settings.list():
             if setting.key in self.registry:
@@ -120,12 +120,17 @@ class ConfigRegistry(object):
                                                "{0}".format(setting.key))
 
 DEFAULT_REGISTRY = ConfigRegistry()
+"""
+Global :class:`.ConfigRegistry` which will be used when no specific
+:class:`.ConfigRegistry` is defined.
+"""
 
 
 def config(key, registry=None):
     """
     Retrieves the configured value for a given key. If no specific registry is
-    specified, the value will be retrieved from the default ConfigRegistry.
+    specified, the value will be retrieved from the default
+    :class:`.ConfigRegistry`.
     """
 
     global DEFAULT_REGISTRY

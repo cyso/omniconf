@@ -24,8 +24,16 @@ from configobj import ConfigObj
 
 class ConfigObjBackend(ConfigBackend):
     """
-    Uses a ConfigObj file (or StringIO instance) as a backend, and allows
-    values in it to be retrieved using dotted keys.
+    Uses a ConfigObj file (or :mod:`StringIO` instance) as a backend, and
+    allows values in it to be retrieved using dotted keys.
+
+    Dots in the keys denote a section in the ConfigObj document. For instance,
+    the key `section.subsection.key` will correspond to this document::
+
+        [section]
+        [[subsection]]
+        key=value
+
     """
     autodetect_settings = (Setting(key="omniconf.configobj.filename",
                                    _type=str, required=False),)
