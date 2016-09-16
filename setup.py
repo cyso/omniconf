@@ -41,7 +41,8 @@ setup(
     setup_requires=[
         "coverage",
         "nose",
-        "mock"
+        "mock",
+        "Sphinx"
     ],
     extras_require={
         'configobj': [
