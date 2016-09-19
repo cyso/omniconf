@@ -1,5 +1,6 @@
 ## Compiled Python files
 *.pyc
+*.class
 
 ## Config files
 *.config
@@ -25,4 +26,7 @@
 /cover
 /coverage.xml
 /nosetests.xml
+/.tox
+/reports
+/tox
 /vendor

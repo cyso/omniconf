@@ -19,7 +19,10 @@
 from omniconf.backends.configobj import ConfigObjBackend
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry
-from StringIO import StringIO
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 import nose.tools
 
 CONFIGOBJ_FILE = """

@@ -19,7 +19,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-from setuptools import setup
+from setuptools import setup, find_packages
 import linecache
 
 DESCRIPTION = linecache.getline("README.md", 4)
@@ -35,21 +35,41 @@ setup(
     author="Nick Douma",
     author_email="n.douma@nekoconeko.nl",
     url="https://github.com/Cyso/omniconf",
-    packages=[NAME],
+    packages=find_packages(),
     data_files=[],
     install_requires=[],
-    setup_requires=[
-        "coverage",
-        "nose",
-        "mock",
-        "Sphinx"
-    ],
     extras_require={
-        'configobj': [
+        "configobj": [
             "configobj"
         ],
-        'yaml': [
+        "yaml": [
             "PyYAML"
         ]
-    }
+    },
+    classifiers=[
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Information Technology",
+        "Intended Audience :: System Administrators",
+        "License :: OSI Approved :: "
+            "GNU Lesser General Public License v3 or later (LGPLv3+)",
+        "Operating System :: POSIX",
+        "Operating System :: POSIX :: Linux",
+        "Operating System :: Unix",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 3.3",
+        "Programming Language :: Python :: 3.4",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: "
+            "Implementation :: CPython",
+        "Programming Language :: Python :: "
+            "Implementation :: Jython",
+        "Programming Language :: Python :: "
+            "Implementation :: PyPy",
+        "Topic :: Software Development :: "
+            "Libraries :: Python Modules",
+        "Topic :: Software Development :: User Interfaces",
+        "Topic :: System :: Installation/Setup",
+        "Topic :: Utilities"
+    ]
 )
