@@ -38,12 +38,6 @@ setup(
     packages=find_packages(),
     data_files=[],
     install_requires=[],
-    setup_requires=[
-        "coverage",
-        "nose",
-        "mock",
-        "Sphinx"
-    ],
     extras_require={
         "configobj": [
             "configobj"
