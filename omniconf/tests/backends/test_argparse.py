@@ -57,7 +57,7 @@ def test_argparse_backend_get_value():
 
 
 def _test_get_value(key, value, sideeffect, prefix):
-    with patch('sys.argv', ARGS_FILE if not prefix else PREFIX_ARGS_FILE):
+    with patch('omniconf.backends.argparse.ARGPARSE_SOURCE', ARGS_FILE if not prefix else PREFIX_ARGS_FILE):
         backend = ArgparseBackend(prefix=prefix)
         if sideeffect:
             with nose.tools.assert_raises(sideeffect):

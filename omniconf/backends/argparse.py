@@ -19,6 +19,9 @@
 from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
 import argparse
+import sys
+
+ARGPARSE_SOURCE = sys.argv[1:]
 
 
 class ArgparseBackend(ConfigBackend):
@@ -59,7 +62,7 @@ class ArgparseBackend(ConfigBackend):
             raise KeyError("Empty keys are not allowed")
         parser = argparse.ArgumentParser()
         parser.add_argument(_arg)
-        args = parser.parse_known_args()[0]
+        args = parser.parse_known_args(args=ARGPARSE_SOURCE)[0]
         if getattr(args, _prop) is None:
             raise KeyError("{0} has no value".format(_key))
         return getattr(args, _prop)
