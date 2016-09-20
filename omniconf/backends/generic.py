@@ -29,7 +29,7 @@ class ConfigBackend(object):
     @classmethod
     def autodetect_settings(cls, autoconfigure_prefix):
         """
-        Returns a tuple of :class:`.Setting`s, that are required for
+        Returns a tuple of :class:`.Setting` objects, that are required for
         :func:`autoconfigure` to complete successfully.
         """
         return ()

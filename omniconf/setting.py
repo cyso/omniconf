@@ -19,7 +19,7 @@
 
 class SettingRegistry(object):
     """
-    A registry of defined :class:`Setting`s.
+    A registry of defined :class:`Setting` objects.
     """
     def __init__(self):
         self.registry = {}
