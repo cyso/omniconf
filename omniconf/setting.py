@@ -91,7 +91,6 @@ def setting(key, _type=str, required=False, default=None, help=None,
     """
     Register a new :class:`.Setting` with the given key.
     """
-    global DEFAULT_REGISTRY
     if not registry:
         registry = DEFAULT_REGISTRY
 

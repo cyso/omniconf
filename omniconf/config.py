@@ -32,7 +32,6 @@ class ConfigRegistry(object):
     A registry of Configured values for a :class:`.SettingRegistry`.
     """
     def __init__(self, setting_registry=None):
-        global SETTING_REGISTRY
         if not setting_registry:
             self.settings = SETTING_REGISTRY
         else:
@@ -132,8 +131,6 @@ def config(key, registry=None):
     specified, the value will be retrieved from the default
     :class:`.ConfigRegistry`.
     """
-
-    global DEFAULT_REGISTRY
     if not registry:
         registry = DEFAULT_REGISTRY
 
