@@ -30,7 +30,7 @@ def autoconfigure_backends(autoconfigure_prefix=None):
     The result of this function is a list of backends, that are configured and
     ready to use.
     """
-    if not autoconfigure_prefix:
+    if autoconfigure_prefix is None:
         autoconfigure_prefix = "omniconf"
     backend_settings = SettingRegistry()
     backend_settings.add(Setting("{0}.prefix".format(autoconfigure_prefix),
