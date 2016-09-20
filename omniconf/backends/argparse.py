@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
+from omniconf.keys import join_key
 import argparse
 import sys
 
@@ -37,8 +38,8 @@ class ArgparseBackend(ConfigBackend):
 
     @classmethod
     def autoconfigure(cls, conf, autoconfigure_prefix):
-        return ArgparseBackend(prefix=conf.get("{0}.prefix"
-                                               .format(autoconfigure_prefix)))
+        return ArgparseBackend(prefix=conf.get(join_key(autoconfigure_prefix,
+                                                        "prefix")))
 
     def get_value(self, key):
         """

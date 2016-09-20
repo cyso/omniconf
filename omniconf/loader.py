@@ -18,6 +18,7 @@
 
 from omniconf.backends import available_backends, autodetection_backends
 from omniconf.config import ConfigRegistry, DEFAULT_REGISTRY as CONFIG_REGISTRY
+from omniconf.keys import join_key
 from omniconf.setting import SettingRegistry, Setting
 
 
@@ -33,7 +34,7 @@ def autoconfigure_backends(autoconfigure_prefix=None):
     if autoconfigure_prefix is None:
         autoconfigure_prefix = "omniconf"
     backend_settings = SettingRegistry()
-    backend_settings.add(Setting("{0}.prefix".format(autoconfigure_prefix),
+    backend_settings.add(Setting(join_key(autoconfigure_prefix, "prefix"),
                                  _type=str))
 
     # Expand backend_settings with backend specific settings

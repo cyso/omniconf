@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
+from omniconf.keys import join_key
 import os
 
 
@@ -34,8 +35,8 @@ class EnvBackend(ConfigBackend):
 
     @classmethod
     def autoconfigure(cls, conf, autoconfigure_prefix):
-        return EnvBackend(prefix=conf.get("{0}.prefix"
-                                          .format(autoconfigure_prefix)))
+        return EnvBackend(prefix=conf.get(join_key(autoconfigure_prefix,
+                                                   "prefix")))
 
     def get_value(self, key):
         """
@@ -46,8 +47,8 @@ class EnvBackend(ConfigBackend):
         * A prefix is attached to the key
 
         This means that a key like section.value will be queried like
-        ``PREFIX_SECTION_VALUE``. When no prefix is specified, ``SECTION_VALUE``
-        is queried instead.
+        ``PREFIX_SECTION_VALUE``. When no prefix is specified,
+        ``SECTION_VALUE`` is queried instead.
         """
         _key = key.replace(".", "_").upper()
         if self.prefix:

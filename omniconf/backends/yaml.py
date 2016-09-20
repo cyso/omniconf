@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
+from omniconf.keys import join_key
 from omniconf.setting import Setting
 import yaml
 
@@ -33,11 +34,12 @@ class YamlBackend(ConfigBackend):
 
     @classmethod
     def autodetect_settings(cls, autoconfigure_prefix):
-        return (Setting(key="{0}.yaml.filename".format(autoconfigure_prefix),
+        return (Setting(key=join_key(autoconfigure_prefix, "yaml", "filename"),
                         _type=str, required=False),)
 
     @classmethod
     def autoconfigure(cls, conf, autoconfigure_prefix):
-        if conf.has("{0}.yaml.filename".format(autoconfigure_prefix)):
-            return YamlBackend(conf=conf.get("{0}.yaml.filename"
-                                             .format(autoconfigure_prefix)))
+        filename_key = join_key(autoconfigure_prefix, "yaml", "filename")
+        if conf.has(filename_key):
+            return YamlBackend(conf=conf.get(filename_key))
+        return None

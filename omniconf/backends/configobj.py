@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
+from omniconf.keys import join_key
 from omniconf.setting import Setting
 from configobj import ConfigObj
 
@@ -41,14 +42,12 @@ class ConfigObjBackend(ConfigBackend):
 
     @classmethod
     def autodetect_settings(cls, autoconfigure_prefix):
-        return (Setting(key="{0}.configobj.filename"
-                            .format(autoconfigure_prefix),
-                            _type=str, required=False),)
+        return (Setting(key=join_key(autoconfigure_prefix, "configobj",
+                                     "filename"), _type=str, required=False),)
 
     @classmethod
     def autoconfigure(cls, conf, autoconfigure_prefix):
-        if conf.has("{0}.configobj.filename".format(autoconfigure_prefix)):
-            return ConfigObjBackend(
-                conf=conf.get("{0}.configobj.filename"
-                              .format(autoconfigure_prefix)))
+        filename_key = join_key(autoconfigure_prefix, "configobj", "filename")
+        if conf.has(filename_key):
+            return ConfigObjBackend(conf=conf.get(filename_key))
         return None

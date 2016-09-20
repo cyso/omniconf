@@ -18,6 +18,7 @@
 
 from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
+from omniconf.keys import join_key
 from omniconf.setting import Setting
 import json
 
@@ -33,12 +34,12 @@ class JsonBackend(ConfigBackend):
 
     @classmethod
     def autodetect_settings(cls, autoconfigure_prefix):
-        return (Setting(key="{0}.json.filename".format(autoconfigure_prefix),
+        return (Setting(key=join_key(autoconfigure_prefix, "json", "filename"),
                         _type=str, required=False),)
 
     @classmethod
     def autoconfigure(cls, conf, autoconfigure_prefix):
-        if conf.has("{0}.json.filename".format(autoconfigure_prefix)):
-            return JsonBackend(conf=conf.get("{0}.json.filename"
-                                             .format(autoconfigure_prefix)))
+        filename_key = join_key(autoconfigure_prefix, "json", "filename")
+        if conf.has(filename_key):
+            return JsonBackend(conf=conf.get(filename_key))
         return None
