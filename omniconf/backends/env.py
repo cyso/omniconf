@@ -46,7 +46,8 @@ class EnvBackend(ConfigBackend):
         * A prefix is attached to the key
 
         This means that a key like section.value will be queried like
-        PREFIX_SECTION_VALUE.
+        ``PREFIX_SECTION_VALUE``. When no prefix is specified, ``SECTION_VALUE``
+        is queried instead.
         """
         _key = key.replace(".", "_").upper()
         if self.prefix:

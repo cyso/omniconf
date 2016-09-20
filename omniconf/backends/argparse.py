@@ -49,7 +49,8 @@ class ArgparseBackend(ConfigBackend):
         * A prefix is attached to the key, if specified
 
         This means that a key like section.value will be queried like
-        --prefix-section-value.
+        ``--prefix-section-value``. When no prefix is specified,
+        ``--section-value`` is queried instead.
         """
         _key = key.replace(".", "-").lower()
         _prop = key.replace(".", "_").lower()
