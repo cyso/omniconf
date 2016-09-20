@@ -21,7 +21,9 @@ from omniconf.setting import DEFAULT_REGISTRY as SETTING_REGISTRY
 import ast
 
 
-def unrepr(s):
+def unrepr(s, _type):
+    if isinstance(s, _type):
+        return s
     if not s:
         return s
     return ast.literal_eval(s)
@@ -54,7 +56,7 @@ class ConfigRegistry(object):
         setting = self.settings.get(key)
 
         if setting.type in (list, dict, tuple, bool):
-            self.registry[key] = unrepr(value)
+            self.registry[key] = unrepr(value, setting.type)
         else:
             self.registry[key] = setting.type(value)
 
