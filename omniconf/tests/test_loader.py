@@ -23,10 +23,10 @@ from mock import Mock, patch
 import unittest
 
 autodetection_mock = Mock(autospec=ConfigBackend)
-autodetection_mock.autodetect_settings.return_value = [
-    Setting("omniconf.foo", _type=str, required=True)]
 
 autoconfigure_mock = Mock(autospec=ConfigBackend)
+autoconfigure_mock.autodetect_settings.return_value = [
+    Setting("omniconf.foo", _type=str, required=True)]
 autoconfigure_mock.autoconfigure.return_value = autoconfigure_mock
 
 
@@ -41,7 +41,7 @@ class TestLoader(unittest.TestCase):
         prefix = "testconf"
         configured_backends = autoconfigure_backends(prefix)
 
-        autodetection_mock.autodetect_settings.assert_called_once_with(prefix)
+        autoconfigure_mock.autodetect_settings.assert_called_once_with(prefix)
         autodetection_mock.assert_called_once_with()
         self.assertEqual(configured_backends, [autoconfigure_mock])
 

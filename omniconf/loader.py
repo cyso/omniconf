@@ -38,7 +38,7 @@ def autoconfigure_backends(autoconfigure_prefix=None):
                                  _type=str))
 
     # Expand backend_settings with backend specific settings
-    for backend in autodetection_backends:
+    for backend in available_backends:
         _settings = backend.autodetect_settings(autoconfigure_prefix)
         if _settings:
             for _setting in _settings:
