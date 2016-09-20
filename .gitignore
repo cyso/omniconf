@@ -1,6 +1,7 @@
 ## Compiled Python files
 *.pyc
 *.class
+__pycache__
 
 ## Config files
 *.config
