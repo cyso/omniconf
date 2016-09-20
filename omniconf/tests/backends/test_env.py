@@ -64,7 +64,9 @@ CONFIGS = [
 
 
 def test_env_backend_autoconfigure():
-    backend = EnvBackend.autoconfigure({"omniconf.prefix": "bla"})
+    prefix = "testconf"
+    backend = EnvBackend.autoconfigure(
+        {"{0}.prefix".format(prefix): "bla"}, prefix)
     nose.tools.assert_is_instance(backend, EnvBackend)
     nose.tools.assert_equal(backend.prefix, "bla")
 

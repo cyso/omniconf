@@ -23,17 +23,19 @@ class ConfigBackend(object):
     based on keys.
     """
 
-    autodetect_settings = None
-    """
-    A tuple of :class:`.Setting`s, that are required for :func: autoconfigure`
-    to complete successfully.
-    """
-
     def __init__(self, conf=None):
         self.config = conf
 
     @classmethod
-    def autoconfigure(cls, conf):
+    def autodetect_settings(cls, autoconfigure_prefix):
+        """
+        Returns a tuple of :class:`.Setting`s, that are required for
+        :func:`autoconfigure` to complete successfully.
+        """
+        return ()
+
+    @classmethod
+    def autoconfigure(cls, conf, autoconfigure_prefix):
         """
         Called with a :class:`.ConfigRegistry`, the result of this method must
         be either a new instance of this class, or :any:`None`. This method

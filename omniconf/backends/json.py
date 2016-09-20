@@ -27,14 +27,18 @@ class JsonBackend(ConfigBackend):
     Uses a JSON string as a backend, and allows values in it to
     be retrieved using dotted keys.
     """
-    autodetect_settings = (Setting(key="omniconf.json.filename", _type=str,
-                                   required=False),)
 
     def __init__(self, conf):
         super(JsonBackend, self).__init__(json.loads(conf))
 
     @classmethod
-    def autoconfigure(cls, conf):
-        if conf.has("omniconf.json.filename"):
-            return JsonBackend(conf=conf.get("omniconf.json.filename"))
+    def autodetect_settings(cls, autoconfigure_prefix):
+        return (Setting(key="{0}.json.filename".format(autoconfigure_prefix),
+                        _type=str, required=False),)
+
+    @classmethod
+    def autoconfigure(cls, conf, autoconfigure_prefix):
+        if conf.has("{0}.json.filename".format(autoconfigure_prefix)):
+            return JsonBackend(conf=conf.get("{0}.json.filename"
+                                             .format(autoconfigure_prefix)))
         return None

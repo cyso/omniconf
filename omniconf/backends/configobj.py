@@ -35,15 +35,20 @@ class ConfigObjBackend(ConfigBackend):
         key=value
 
     """
-    autodetect_settings = (Setting(key="omniconf.configobj.filename",
-                                   _type=str, required=False),)
 
     def __init__(self, conf):
         super(ConfigObjBackend, self).__init__(ConfigObj(conf).dict())
 
     @classmethod
-    def autoconfigure(cls, conf):
-        if conf.has("omniconf.configobj.filename"):
+    def autodetect_settings(cls, autoconfigure_prefix):
+        return (Setting(key="{0}.configobj.filename"
+                            .format(autoconfigure_prefix),
+                            _type=str, required=False),)
+
+    @classmethod
+    def autoconfigure(cls, conf, autoconfigure_prefix):
+        if conf.has("{0}.configobj.filename".format(autoconfigure_prefix)):
             return ConfigObjBackend(
-                conf=conf.get("omniconf.configobj.filename"))
+                conf=conf.get("{0}.configobj.filename"
+                              .format(autoconfigure_prefix)))
         return None

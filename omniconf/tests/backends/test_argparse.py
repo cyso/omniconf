@@ -45,7 +45,9 @@ CONFIGS = [
 
 
 def test_argparse_backend_autoconfigure():
-    backend = ArgparseBackend.autoconfigure({"omniconf.prefix": "bar"})
+    prefix = "testconf"
+    backend = ArgparseBackend.autoconfigure(
+        {"{0}.prefix".format(prefix): "bar"}, prefix)
     nose.tools.assert_is_instance(backend, ArgparseBackend)
     nose.tools.assert_equal(backend.prefix, "bar")
 

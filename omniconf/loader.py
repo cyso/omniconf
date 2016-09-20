@@ -21,7 +21,7 @@ from omniconf.config import ConfigRegistry, DEFAULT_REGISTRY as CONFIG_REGISTRY
 from omniconf.setting import SettingRegistry, Setting
 
 
-def autoconfigure_backends():
+def autoconfigure_backends(autoconfigure_prefix=None):
     """
     Determine available backends, based on the current configuration available
     in the environment and command line. Backends can define a
@@ -30,12 +30,15 @@ def autoconfigure_backends():
     The result of this function is a list of backends, that are configured and
     ready to use.
     """
+    if not autoconfigure_prefix:
+        autoconfigure_prefix = "omniconf"
     backend_settings = SettingRegistry()
-    backend_settings.add(Setting("omniconf.prefix", _type=str))
+    backend_settings.add(Setting("{0}.prefix".format(autoconfigure_prefix),
+                                 _type=str))
 
     # Expand backend_settings with backend specific settings
     for backend in autodetection_backends:
-        _settings = backend.autodetect_settings
+        _settings = backend.autodetect_settings(autoconfigure_prefix)
         if _settings:
             for _setting in _settings:
                 backend_settings.add(_setting)
@@ -47,24 +50,25 @@ def autoconfigure_backends():
     # Initialize backends based on detected config
     configured_backends = []
     for backend in available_backends:
-        _backend = backend.autoconfigure(backend_config)
+        _backend = backend.autoconfigure(backend_config, autoconfigure_prefix)
         if _backend:
             configured_backends.append(_backend)
 
     return configured_backends
 
 
-def omniconf_load(config_registry=None, backends=None):
+def omniconf_load(config_registry=None, backends=None,
+                  autoconfigure_prefix=None):
     """
     Fill the provided :class:`.ConfigRegistry`, by default using all available
     backends (as determined by :func:`autoconfigure_backends`. If no
     :class:`ConfigRegistry` is provided, the default :class:`.ConfigRegistry`
-    is used.
+    is used. If unset, autoconfigure_prefix will default to "omniconf".
     """
     if not config_registry:
         config_registry = CONFIG_REGISTRY
     if not backends:
         backends = []
 
-    configured_backends = autoconfigure_backends()
+    configured_backends = autoconfigure_backends(autoconfigure_prefix)
     config_registry.load(configured_backends)

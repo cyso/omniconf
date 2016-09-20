@@ -22,4 +22,4 @@ import nose.tools
 
 def test_config_backend_autoconfigure():
     with nose.tools.assert_raises(NotImplementedError):
-        ConfigBackend.autoconfigure(None)
+        ConfigBackend.autoconfigure(None, None)

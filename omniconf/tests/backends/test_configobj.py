@@ -46,15 +46,16 @@ CONFIGS = [
 
 
 def test_configobj_backend_autoconfigure():
+    prefix = "testconf"
     settings = SettingRegistry()
-    settings.add(ConfigObjBackend.autodetect_settings[0])
+    settings.add(ConfigObjBackend.autodetect_settings(prefix)[0])
     conf = ConfigRegistry(setting_registry=settings)
 
-    backend = ConfigObjBackend.autoconfigure(conf)
+    backend = ConfigObjBackend.autoconfigure(conf, prefix)
     nose.tools.assert_is(backend, None)
 
-    conf.set("omniconf.configobj.filename", "bar")
-    backend = ConfigObjBackend.autoconfigure(conf)
+    conf.set("{0}.configobj.filename".format(prefix), "bar")
+    backend = ConfigObjBackend.autoconfigure(conf, prefix)
     nose.tools.assert_is_instance(backend, ConfigObjBackend)
 
 

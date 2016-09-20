@@ -19,13 +19,12 @@
 from omniconf.backends.generic import ConfigBackend
 from omniconf.loader import autoconfigure_backends, omniconf_load
 from omniconf.setting import Setting
-from mock import Mock, PropertyMock, patch
+from mock import Mock, patch
 import unittest
 
 autodetection_mock = Mock(autospec=ConfigBackend)
-autodetect_settings_mock = PropertyMock(return_value=[Setting("omniconf.foo",
-                                        _type=str, required=True)])
-type(autodetection_mock).autodetect_settings = autodetect_settings_mock
+autodetection_mock.autodetect_settings.return_value = [
+    Setting("omniconf.foo", _type=str, required=True)]
 
 autoconfigure_mock = Mock(autospec=ConfigBackend)
 autoconfigure_mock.autoconfigure.return_value = autoconfigure_mock
@@ -34,15 +33,15 @@ autoconfigure_mock.autoconfigure.return_value = autoconfigure_mock
 class TestLoader(unittest.TestCase):
     def setUp(self):
         autodetection_mock.reset_mock()
-        autodetect_settings_mock.reset_mock()
         autoconfigure_mock.reset_mock()
 
     @patch("omniconf.loader.autodetection_backends", new=[autodetection_mock])
     @patch("omniconf.loader.available_backends", new=[autoconfigure_mock])
     def test_autoconfigure_backends(self):
-        configured_backends = autoconfigure_backends()
+        prefix = "testconf"
+        configured_backends = autoconfigure_backends(prefix)
 
-        autodetect_settings_mock.assert_called_once_with()
+        autodetection_mock.autodetect_settings.assert_called_once_with(prefix)
         autodetection_mock.assert_called_once_with()
         self.assertEqual(configured_backends, [autoconfigure_mock])
 

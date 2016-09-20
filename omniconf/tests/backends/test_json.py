@@ -46,15 +46,16 @@ CONFIGS = [
 
 @patch("json.loads")
 def test_json_backend_autoconfigure(mock):
+    prefix = "testconf"
     settings = SettingRegistry()
-    settings.add(JsonBackend.autodetect_settings[0])
+    settings.add(JsonBackend.autodetect_settings(prefix)[0])
     conf = ConfigRegistry(setting_registry=settings)
 
-    backend = JsonBackend.autoconfigure(conf)
+    backend = JsonBackend.autoconfigure(conf, prefix)
     nose.tools.assert_is(backend, None)
 
-    conf.set("omniconf.json.filename", "bar")
-    backend = JsonBackend.autoconfigure(conf)
+    conf.set("{0}.json.filename".format(prefix), "bar")
+    backend = JsonBackend.autoconfigure(conf, prefix)
     nose.tools.assert_is_instance(backend, JsonBackend)
 
 

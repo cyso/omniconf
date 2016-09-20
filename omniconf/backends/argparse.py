@@ -30,15 +30,15 @@ class ArgparseBackend(ConfigBackend):
     be retrieved using dotted keys with a specific prefix. By default no
     prefix is assumed.
     """
-    autodetect_settings = None
 
     def __init__(self, conf=None, prefix=None):
         super(ArgparseBackend, self).__init__()
         self.prefix = prefix if prefix else ""
 
     @classmethod
-    def autoconfigure(cls, conf):
-        return ArgparseBackend(prefix=conf.get("omniconf.prefix"))
+    def autoconfigure(cls, conf, autoconfigure_prefix):
+        return ArgparseBackend(prefix=conf.get("{0}.prefix"
+                                               .format(autoconfigure_prefix)))
 
     def get_value(self, key):
         """

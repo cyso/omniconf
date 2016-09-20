@@ -43,15 +43,16 @@ CONFIGS = [
 
 @patch("yaml.load")
 def test_yaml_backend_autoconfigure(mock):
+    prefix = "testconf"
     settings = SettingRegistry()
-    settings.add(YamlBackend.autodetect_settings[0])
+    settings.add(YamlBackend.autodetect_settings(prefix)[0])
     conf = ConfigRegistry(setting_registry=settings)
 
-    backend = YamlBackend.autoconfigure(conf)
+    backend = YamlBackend.autoconfigure(conf, prefix)
     nose.tools.assert_is(backend, None)
 
-    conf.set("omniconf.yaml.filename", "bar")
-    backend = YamlBackend.autoconfigure(conf)
+    conf.set("{0}.yaml.filename".format(prefix), "bar")
+    backend = YamlBackend.autoconfigure(conf, prefix)
     nose.tools.assert_is_instance(backend, YamlBackend)
 
 
