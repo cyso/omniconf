@@ -35,6 +35,11 @@ class TestConfigRegistry(unittest.TestCase):
         self.config_registry = ConfigRegistry(
                                 setting_registry=self.setting_registry)
 
+    def test_config_registry_clear(self):
+        self.assertEqual(len(self.setting_registry.registry), 2)
+        self.setting_registry.clear()
+        self.assertEqual(len(self.setting_registry.registry), 0)
+
     def test_config_registry_set_without_setting(self):
         with self.assertRaises(UnknownSettingError):
             self.config_registry.set("nope", "value")
