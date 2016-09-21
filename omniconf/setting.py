@@ -30,6 +30,9 @@ class SettingRegistry(object):
         else:
             return setting.key
 
+    def clear(self):
+        self.registry = {}
+
     def add(self, setting):
         """
         Register a Setting.

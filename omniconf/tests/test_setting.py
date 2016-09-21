@@ -43,6 +43,11 @@ class TestSettingsRegistry(unittest.TestCase):
         obj.key = "section.subsection.foo"
         self.assertEqual('section.subsection.foo', self.registry._key(obj))
 
+    def test_setting_registry_clear(self):
+        self.assertEqual(len(self.registry.registry), 1)
+        self.registry.clear()
+        self.assertEqual(len(self.registry.registry), 0)
+
     def test_setting_registry_add(self):
         self.assertIn(self.setting, self.registry.registry.values())
 
