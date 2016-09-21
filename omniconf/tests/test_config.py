@@ -145,6 +145,7 @@ class TestConfigMethod(unittest.TestCase):
         SETTING_REGISTRY.remove(_setting)
 
 VALUE_TESTS = [
+    # Normal values
     ("foobar", "foobar", str, None),
     (123456, "123456", str, None),
     ("1234", 1234, int, None),
@@ -156,6 +157,10 @@ VALUE_TESTS = [
     ("True", True, bool, None),
     (False, False, bool, None),
 
+    # Value is False codepath
+    (False, False, list, None),
+
+    # Exception codepath
     ("foobar", None, int, ValueError),
     ("foobar", None, float, ValueError),
     ("foobar", None, list, ValueError),
