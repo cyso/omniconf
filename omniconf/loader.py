@@ -69,7 +69,5 @@ def omniconf_load(config_registry=None, backends=None,
     if not config_registry:
         config_registry = CONFIG_REGISTRY
     if not backends:
-        backends = []
-
-    configured_backends = autoconfigure_backends(autoconfigure_prefix)
-    config_registry.load(configured_backends)
+        backends = autoconfigure_backends(autoconfigure_prefix)
+    config_registry.load(backends)

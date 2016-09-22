@@ -51,3 +51,8 @@ class TestLoader(unittest.TestCase):
     def test_omniconf_load(self, registry_mock):
         omniconf_load()
         registry_mock.load.assert_called_once_with([autoconfigure_mock])
+
+    @patch("omniconf.loader.CONFIG_REGISTRY")
+    def test_omniconf_load_with_backends(self, registry_mock):
+        omniconf_load(backends="FOO")
+        registry_mock.load.assert_called_once_with("FOO")
