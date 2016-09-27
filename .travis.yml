@@ -1,0 +1,34 @@
+sudo: false
+language: python
+addons:
+    apt:
+        sources:
+            - deadsnakes
+        packages:
+            - python3.5
+            - python3.5-dev
+env:
+    - TOX_ENV=py27
+    - TOX_ENV=py33
+    - TOX_ENV=py34
+    - TOX_ENV=py35
+    - TOX_ENV=pypy
+    - TOX_ENV=jython
+    - TOX_ENV=flake8
+
+before_install:
+    - export JYTHON_URL='http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar'
+    - if [ "$TOX_ENV" == "jython" ]; then wget $JYTHON_URL -O jython_installer.jar; java -jar jython_installer.jar -s -d $HOME/jython; fi
+
+install:
+    - pip install tox python-coveralls
+
+before_script:
+    - if [ "$TOX_ENV" == "jython" ]; then export PATH=$HOME/jython/bin:$PATH; fi
+    - tox -e setup
+
+script:
+    - tox -e $TOX_ENV
+
+after_success:
+    - coveralls -i -d reports/coverage-*.dat
