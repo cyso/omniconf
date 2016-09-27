@@ -24,8 +24,8 @@ import linecache
 
 DESCRIPTION = linecache.getline("README.md", 4)
 NAME = "omniconf"
-VERSION = "1.0"
-BUILD = "181c192"
+VERSION = "1.0.1"
+BUILD = "48437d1"
 
 
 long_description = open('README.rst').read()
