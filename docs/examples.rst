@@ -109,3 +109,82 @@ For instance. if ``omniconf.prefix`` is not set, :class:`.EnvBackend` will load 
 ``SOME_SETTING`` environment variable. If ``omniconf.prefix`` is set to ``app``, the value is loaded from
 ``APP_SOME_SETTING`` instead. See the :ref:`supported-backends` section for which Backends allow a prefix to be
 configured, and how this changes the loading of values.
+
+
+Prefix usage examples
+---------------------
+
+Working with prefixes can be a little tricky. The thing to keep in mind is that there are two prefix types, one that is
+used during the autoconfigure step where the backends are initialized (the autoconfiguration prefix), and one that is
+used when loading the configuration (the backend prefix).
+
+Given this code snippet:
+
+.. code-block:: python
+
+   from omniconf import omniconf_load, config, setting
+
+   setting("db.url", required=True)
+   omniconf_load(autoconfigure_prefix="test")
+
+   print config("db.url")
+
+
+A step-by-step analysis:
+
+1. The setting `db.url` is defined and marked as required.
+2. Autoconfiguration is started and the `autoconfigure_prefix` is defined as 'test'.
+
+   a. During autoconfiguration, by default `omniconf.prefix` will be looked up. Because we override `autoconfigure_prefix`,
+      `test.prefix` is looked up instead.
+   b. The contents of `test.prefix` is used by certain backends (:class:`.EnvBackend` in this example) to determine where
+      they should look for their settings.
+
+3. Config values are loaded, and the backend prefix is used to determine how it should be loaded.
+
+Example 1
+^^^^^^^^^
+
+.. code-block:: shell
+
+   $ python test.py
+
+   Traceback (most recent call last):
+   ...
+   omniconf.exceptions.UnconfiguredSettingError: No value was configured for db.url
+
+An error is raised because we don't set any config values at all, and `db.url` is marked as required.
+
+Example 2
+^^^^^^^^^
+
+.. code-block:: shell
+
+   $ TEST_DB_URL=bla python test.py
+   Traceback (most recent call last):
+   ...
+   omniconf.exceptions.UnconfiguredSettingError: No value was configured for db.url
+
+An error is raised because we set `TEST_DB_URL`, but no backend prefix has been configured. The value of `db.url` is
+looked up in `DB_URL` which is not set.
+
+Example 3
+^^^^^^^^^
+
+.. code-block:: shell
+
+   $ TEST_PREFIX=OTHER OTHER_DB_URL=foo python test.py
+   foo
+
+The backend prefix is set to `OTHER`. This means that the setting for `db.url` is looked up in `OTHER_DB_URL`, which is
+also set.
+
+Example 4
+^^^^^^^^^
+
+.. code-block:: shell
+
+   $ DB_URL=foo python test.py
+   foo
+
+No backend prefix is set. This means that the setting for `db.url` is looked up in `DB_URL`, which is also set.
