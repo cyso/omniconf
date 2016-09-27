@@ -58,3 +58,29 @@ setting('key')
 # A more complex example
 setting('section.subsection.key', _type=dict, default={"foo": "bar"}, help="This is a very import key")
 ```
+
+License
+-------
+
+omniconf is licensed under LGPLv3. See the LICENSE file for details.
+
+
+Contributing
+------------
+
+To contribute, base your changes on the develop branch. Make sure your contribution doesn't break any existing tests, and add relevant new tests.
+
+You can run the test suite using tox, which by default will run tests for all supported Python versions. You probably want to run just a few of them at a time, use the -e switch for that:
+
+```bash
+$ tox -e py27
+$ tox -e py34
+```
+
+To check for style issues, run flake8:
+
+```bash
+$ tox -e flake8
+```
+
+When you're done, open a pull request on Github.
