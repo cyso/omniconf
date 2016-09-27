@@ -21,6 +21,10 @@ omniconf
    :alt: Supported Python versions
    :target: https://pypi.python.org/pypi/omniconf
 
+.. image:: https://img.shields.io/pypi/implementation/omniconf.svg?maxAge=2592000
+   :alt: Supported Python implementations
+   :target: https://pypi.python.org/pypi/omniconf
+
 A Python library that makes configuring your application independent from your configuration backend.
 
 Documentation
