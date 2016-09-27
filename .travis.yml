@@ -17,10 +17,18 @@ env:
     - TOX_ENV=flake8
 
 before_install:
-  - export JYTHON_URL='http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar'
-  - if [ "$TOX_ENV" == "jython" ]; then wget $JYTHON_URL -O jython_installer.jar; java -jar jython_installer.jar -s -d $HOME/jython; fi
+    - export JYTHON_URL='http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar'
+    - if [ "$TOX_ENV" == "jython" ]; then wget $JYTHON_URL -O jython_installer.jar; java -jar jython_installer.jar -s -d $HOME/jython; fi
 
-before_script: if [ "$TOX_ENV" == "jython" ]; then export PATH=$HOME/jython/bin:$PATH; fi
+install:
+    - pip install tox python-coveralls
 
-install: pip install tox
-script: tox -e setup,$TOX_ENV
+before_script:
+    - if [ "$TOX_ENV" == "jython" ]; then export PATH=$HOME/jython/bin:$PATH; fi
+    - tox -e setup
+
+script:
+    - tox -e $TOX_ENV
+
+after_success:
+    - coveralls -i -d reports/coverage-*.dat
