@@ -20,21 +20,20 @@
 
 
 from setuptools import setup, find_packages
-import linecache
 
-DESCRIPTION = linecache.getline("README.md", 4)
+DESCRIPTION = "A Python library that makes configuring your application "\
+              "independent from your configuration backend."
+LONG_DESCRIPTION = open('README.rst').read()
 NAME = "omniconf"
-VERSION = "1.0"
-BUILD = "181c192"
+VERSION = "1.0.1"
+BUILD = "48437d1"
 
-
-long_description = open('README.rst').read()
 
 setup(
     name=NAME,
     version=VERSION,
     description=DESCRIPTION,
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     license="LGPL3",
     author="Nick Douma",
     author_email="n.douma@nekoconeko.nl",
