@@ -21,6 +21,8 @@ __pycache__
 /*.egg-info
 /*.egg
 /.eggs
+/build
+/dist
 
 ## Test files
 /.coverage
