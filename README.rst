@@ -1,18 +1,32 @@
 omniconf
 ========
 
-[![Travis build status](https://img.shields.io/travis/cyso/omniconf.svg?maxAge=2592000)](https://travis-ci.org/cyso/omniconf)
-[![Coveralls](https://img.shields.io/coveralls/cyso/omniconf.svg?maxAge=2592000)](https://coveralls.io/github/cyso/omniconf)
-[![License](https://img.shields.io/pypi/l/omniconf.svg?maxAge=2592000)](https://pypi.python.org/pypi/omniconf)
-[![PyPI version](https://img.shields.io/pypi/v/omniconf.svg?maxAge=2592000)](https://pypi.python.org/pypi/omniconf)
-[![Supported Python versions](https://img.shields.io/pypi/pyversions/omniconf.svg?maxAge=2592000)](https://pypi.python.org/pypi/omniconf)
+.. image:: https://img.shields.io/travis/cyso/omniconf.svg?maxAge=2592000
+   :alt: Travis build status
+   :target: https://travis-ci.org/cyso/omniconf
+
+.. image:: https://img.shields.io/coveralls/cyso/omniconf.svg?maxAge=2592000
+   :alt: Coveralls
+   :target: https://coveralls.io/github/cyso/omniconf
+
+.. image:: https://img.shields.io/pypi/l/omniconf.svg?maxAge=2592000
+   :alt: License
+   :target: https://pypi.python.org/pypi/omniconf
+
+.. image:: https://img.shields.io/pypi/v/omniconf.svg?maxAge=2592000
+   :alt: PyPI version
+   :target: https://pypi.python.org/pypi/omniconf
+
+.. image:: https://img.shields.io/pypi/pyversions/omniconf.svg?maxAge=2592000
+   :alt: Supported Python versions
+   :target: https://pypi.python.org/pypi/omniconf
 
 A Python library that makes configuring your application independent from your configuration backend.
 
 Documentation
 -------------
 
-Read the documentation on [Read the Docs](http://omniconf.readthedocs.io/en/latest/).
+Read the documentation on `Read the Docs <http://omniconf.readthedocs.io/en/latest/>`_.
 
 Design choices
 --------------
@@ -30,34 +44,34 @@ This library aims to make configuring the application easier, and allows you to 
 
 To do this, configuration keys are defined as simple key / value pairs:
 
-```
-key=value
-```
+.. code-block:: ini
+
+   key=value
 
 Sections and subsections are also supported, by using dot notated syntax:
 
-```
-section.subsection.key=value
-```
+.. code-block:: ini
+
+   section.subsection.key=value
 
 To use a configuration key in your application, simply use:
 
-```python
-from omniconf import config
+.. code-block:: python
 
-variable = config.get("section.key")
-```
+   from omniconf import config
+
+   variable = config.get("section.key")
 
 `omniconf` needs to be told what keys to expect, define these as follows:
 
-```python
-from omniconf import setting
-# Simplest way to define a key
-setting('key')
+.. code-block:: python
 
-# A more complex example
-setting('section.subsection.key', _type=dict, default={"foo": "bar"}, help="This is a very import key")
-```
+   from omniconf import setting
+   # Simplest way to define a key
+   setting('key')
+
+   # A more complex example
+   setting('section.subsection.key', _type=dict, default={"foo": "bar"}, help="This is a very import key")
 
 License
 -------
@@ -72,15 +86,15 @@ To contribute, base your changes on the develop branch. Make sure your contribut
 
 You can run the test suite using tox, which by default will run tests for all supported Python versions. You probably want to run just a few of them at a time, use the -e switch for that:
 
-```bash
-$ tox -e py27
-$ tox -e py34
-```
+.. code-block:: bash
+
+   $ tox -e py27
+   $ tox -e py34
 
 To check for style issues, run flake8:
 
-```bash
-$ tox -e flake8
-```
+.. code-block:: bash
+
+   $ tox -e flake8
 
 When you're done, open a pull request on Github.

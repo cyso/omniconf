@@ -27,16 +27,20 @@ NAME = "omniconf"
 VERSION = "1.0"
 BUILD = "181c192"
 
+
+long_description = open('README.rst').read()
+
 setup(
     name=NAME,
     version=VERSION,
     description=DESCRIPTION,
+    long_description=long_description,
     license="LGPL3",
     author="Nick Douma",
     author_email="n.douma@nekoconeko.nl",
     url="https://github.com/cyso/omniconf",
     packages=find_packages(),
-    data_files=[],
+    data_files=[('', ['README.rst'])],
     install_requires=[],
     extras_require={
         "configobj": [
