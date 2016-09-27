@@ -24,8 +24,8 @@ import linecache
 
 DESCRIPTION = linecache.getline("README.md", 4)
 NAME = "omniconf"
-VERSION = "0.1"
-BUILD = "AAAAAA"
+VERSION = "1.0"
+BUILD = "181c192"
 
 setup(
     name=NAME,
@@ -34,7 +34,7 @@ setup(
     license="LGPL3",
     author="Nick Douma",
     author_email="n.douma@nekoconeko.nl",
-    url="https://github.com/Cyso/omniconf",
+    url="https://github.com/cyso/omniconf",
     packages=find_packages(),
     data_files=[],
     install_requires=[],
