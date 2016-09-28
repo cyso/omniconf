@@ -64,7 +64,7 @@ To use a configuration key in your application, simply use:
 
    from omniconf import config
 
-   variable = config.get("section.key")
+   variable = config("section.key")
 
 `omniconf` needs to be told what keys to expect, define these as follows:
 

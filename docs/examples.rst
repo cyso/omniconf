@@ -32,7 +32,7 @@ Afterwards, you can use :func:`config` to retrieve values.
 .. code-block:: python
 
    >>> from omniconf import config
-   >>> print config.get("app.username")
+   >>> print config("app.username")
    "user"
 
 
