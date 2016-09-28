@@ -1,27 +1,27 @@
 omniconf
 ========
 
-.. image:: https://img.shields.io/travis/cyso/omniconf.svg?maxAge=2592000
+.. image:: https://img.shields.io/travis/cyso/omniconf.svg?maxAge=900
    :alt: Travis build status
    :target: https://travis-ci.org/cyso/omniconf
 
-.. image:: https://img.shields.io/coveralls/cyso/omniconf.svg?maxAge=2592000
+.. image:: https://img.shields.io/coveralls/cyso/omniconf.svg?maxAge=900
    :alt: Coveralls
    :target: https://coveralls.io/github/cyso/omniconf
 
-.. image:: https://img.shields.io/pypi/l/omniconf.svg?maxAge=2592000
+.. image:: https://img.shields.io/pypi/l/omniconf.svg?maxAge=900
    :alt: License
    :target: https://pypi.python.org/pypi/omniconf
 
-.. image:: https://img.shields.io/pypi/v/omniconf.svg?maxAge=2592000
+.. image:: https://img.shields.io/pypi/v/omniconf.svg?maxAge=900
    :alt: PyPI version
    :target: https://pypi.python.org/pypi/omniconf
 
-.. image:: https://img.shields.io/pypi/pyversions/omniconf.svg?maxAge=2592000
+.. image:: https://img.shields.io/pypi/pyversions/omniconf.svg?maxAge=900
    :alt: Supported Python versions
    :target: https://pypi.python.org/pypi/omniconf
 
-.. image:: https://img.shields.io/pypi/implementation/omniconf.svg?maxAge=2592000
+.. image:: https://img.shields.io/pypi/implementation/omniconf.svg?maxAge=900
    :alt: Supported Python implementations
    :target: https://pypi.python.org/pypi/omniconf
 
