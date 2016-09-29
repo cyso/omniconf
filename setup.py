@@ -45,6 +45,9 @@ setup(
         "configobj": [
             "configobj"
         ],
+        "vault": [
+            "hvac"
+        ],
         "yaml": [
             "PyYAML"
         ]
