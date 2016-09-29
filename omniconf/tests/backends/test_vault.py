@@ -18,8 +18,13 @@
 
 import hvac
 from hvac.tests.util import ServerManager
+from mock import patch, ANY
 from omniconf.backends.vault import VaultBackend
+from omniconf.config import ConfigRegistry
+from omniconf.exceptions import InvalidBackendConfiguration
+from omniconf.setting import SettingRegistry
 from tempfile import NamedTemporaryFile
+import nose.tools
 import unittest
 
 VAULT_CONFIG = """
@@ -57,7 +62,7 @@ DENY_TOKEN = {
 }
 
 
-class TestVault(unittest.TestCase):
+class TestVaultBackend(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         with NamedTemporaryFile() as f:
@@ -125,3 +130,108 @@ class TestVault(unittest.TestCase):
         self.write_key("secret/foo", bar="baz")
         self.vault.prefix = "secret"
         self.assertEqual(self.vault.get_value("foo.bar"), "baz")
+
+
+def _setup_vault_autoconfig(prefix):
+    settings = SettingRegistry()
+    for setting in VaultBackend.autodetect_settings(prefix):
+        settings.add(setting)
+    return ConfigRegistry(setting_registry=settings)
+
+
+def test_vault_backend_autoconfigure_invalid_auth():
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    backend = VaultBackend.autoconfigure(configs, prefix)
+    nose.tools.assert_is(backend, None)
+
+
+@patch("hvac.Client", autospec=True)
+def test_vault_backend_autoconfigure_token(hvac_mock):
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    configs.set(VaultBackend._config_keys(prefix)["token"], "Bla")
+    backend = VaultBackend.autoconfigure(configs, prefix)
+    hvac_mock.assert_called_with(url=ANY, token="Bla")
+    nose.tools.assert_is_instance(backend, VaultBackend)
+
+
+@patch("hvac.Client", autospec=True)
+def test_vault_backend_autoconfigure_client_cert(hvac_mock):
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    configs.set(VaultBackend._config_keys(prefix)["tls_cert"], "CERT")
+    configs.set(VaultBackend._config_keys(prefix)["tls_key"], "KEY")
+    backend = VaultBackend.autoconfigure(configs, prefix)
+
+    hvac_mock.assert_called_with(url=ANY, cert=("CERT", "KEY"))
+    nose.tools.assert_is_instance(backend, VaultBackend)
+
+
+@patch("hvac.Client", autospec=True)
+def test_vault_backend_autoconfigure_userpass(hvac_mock):
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    configs.set(VaultBackend._config_keys(prefix)["username"], "USER")
+    configs.set(VaultBackend._config_keys(prefix)["password"], "PASS")
+    backend = VaultBackend.autoconfigure(configs, prefix)
+
+    hvac_mock.assert_called_with(url=ANY)
+    hvac_mock().auth_userpass.assert_called_with("USER", "PASS")
+    nose.tools.assert_is_instance(backend, VaultBackend)
+
+
+@patch("hvac.Client", autospec=True)
+def test_vault_backend_autoconfigure_ldap(hvac_mock):
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    configs.set(VaultBackend._config_keys(prefix)["ldap_user"], "USER")
+    configs.set(VaultBackend._config_keys(prefix)["ldap_pass"], "PASS")
+    backend = VaultBackend.autoconfigure(configs, prefix)
+
+    hvac_mock.assert_called_with(url=ANY)
+    hvac_mock().auth_ldap.assert_called_with("USER", "PASS")
+    nose.tools.assert_is_instance(backend, VaultBackend)
+
+
+@patch("hvac.Client", autospec=True)
+def test_vault_backend_autoconfigure_app_id(hvac_mock):
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    configs.set(VaultBackend._config_keys(prefix)["app_id"], "APPID")
+    configs.set(VaultBackend._config_keys(prefix)["user_id"], "USERID")
+    backend = VaultBackend.autoconfigure(configs, prefix)
+
+    hvac_mock.assert_called_with(url=ANY)
+    hvac_mock().auth_app_id.assert_called_with("APPID", "USERID")
+    nose.tools.assert_is_instance(backend, VaultBackend)
+
+
+@patch("hvac.Client", autospec=True)
+def test_vault_backend_autoconfigure_approle(hvac_mock):
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    configs.set(VaultBackend._config_keys(prefix)["app_role"], "ROLE")
+    configs.set(VaultBackend._config_keys(prefix)["app_secret"], "SECRET")
+    backend = VaultBackend.autoconfigure(configs, prefix)
+
+    hvac_mock.assert_called_with(url=ANY)
+    hvac_mock().auth_approle.assert_called_with("ROLE", "SECRET")
+    nose.tools.assert_is_instance(backend, VaultBackend)
+
+
+@patch("hvac.Client", autospec=True)
+def test_vault_backend_autoconfigure_not_authenticated(hvac_mock):
+    prefix = "autoconf"
+    configs = _setup_vault_autoconfig(prefix)
+    configs.set(VaultBackend._config_keys(prefix)["username"], "USER")
+    configs.set(VaultBackend._config_keys(prefix)["password"], "PASS")
+
+    hvac_mock().is_authenticated.return_value = False
+    with nose.tools.assert_raises(InvalidBackendConfiguration):
+        VaultBackend.autoconfigure(configs, prefix)
+
+
+def test_vault_backend_invalid_auth_mechanism():
+    with nose.tools.assert_raises(InvalidBackendConfiguration):
+        VaultBackend()
