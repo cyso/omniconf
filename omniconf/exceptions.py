@@ -29,3 +29,10 @@ class UnconfiguredSettingError(Exception):
     Trying to retrieve a value which has not been configured yet.
     """
     pass
+
+
+class InvalidBackendConfiguration(Exception):
+    """
+    Trying to configure a backend with invalid configuration.
+    """
+    pass
