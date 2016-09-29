@@ -70,7 +70,8 @@ class TestVaultBackend(unittest.TestCase):
             f.flush()
 
             cls.root_client = hvac.Client(url="http://localhost:18200")
-            cls.manager = ServerManager(config_path=f.name, client=cls.root_client)
+            cls.manager = ServerManager(config_path=f.name,
+                                        client=cls.root_client)
             cls.manager.start()
 
             try:
@@ -79,8 +80,10 @@ class TestVaultBackend(unittest.TestCase):
                 cls.root_client.token = cls.manager.root_token
                 cls.root_client.set_policy("deny", DENY_POLICY)
                 cls.root_client.set_policy("normal", NORMAL_POLICY)
-                cls.deny_token = cls.root_client.create_token(id="DENY", policies=["deny"])['auth']['client_token']
-                cls.normal_token = cls.root_client.create_token(id="NORMAL", policies=["normal"])['auth']['client_token']
+                cls.deny_token = cls.root_client.create_token(
+                    id="DENY", policies=["deny"])['auth']['client_token']
+                cls.normal_token = cls.root_client.create_token(
+                    id="NORMAL", policies=["normal"])['auth']['client_token']
             except:
                 cls.manager.stop()
                 raise

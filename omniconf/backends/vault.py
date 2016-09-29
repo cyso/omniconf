@@ -30,7 +30,8 @@ class VaultBackend(ConfigBackend):
     be retrieved using dotted keys.
     """
 
-    def __init__(self, conf=None, prefix=None, url=None, auth=None, credentials=None):
+    def __init__(self, conf=None, prefix=None, url=None, auth=None,
+                 credentials=None):
         if not prefix:
             prefix = ""
         self.prefix = prefix
@@ -55,26 +56,38 @@ class VaultBackend(ConfigBackend):
                 self.client.auth_approle(identifier, secret)
 
         else:
-            raise InvalidBackendConfiguration("Invalid authentication mechanism selected for Vault backend.")
+            raise InvalidBackendConfiguration(
+                "Invalid authentication mechanism selected for Vault backend.")
 
         if not self.client.is_authenticated():
-            raise InvalidBackendConfiguration("Vault backend is not authenticated")
+            raise InvalidBackendConfiguration(
+                "Vault backend is not authenticated")
 
     @classmethod
     def _config_keys(cls, autoconfigure_prefix):
         return {
             "url": join_key(autoconfigure_prefix, "vault", "url"),
             "token": join_key(autoconfigure_prefix, "vault", "auth", "token"),
-            "tls_cert": join_key(autoconfigure_prefix, "vault", "auth", "tls", "cert", "filename"),
-            "tls_key": join_key(autoconfigure_prefix, "vault", "auth", "tls", "key", "filename"),
-            "username": join_key(autoconfigure_prefix, "vault", "auth", "userpass", "username"),
-            "password": join_key(autoconfigure_prefix, "vault", "auth", "userpass", "password"),
-            "ldap_user": join_key(autoconfigure_prefix, "vault", "auth", "ldap", "username"),
-            "ldap_pass": join_key(autoconfigure_prefix, "vault", "auth", "ldap", "password"),
-            "app_id": join_key(autoconfigure_prefix, "vault", "auth", "appid", "app_id"),
-            "user_id": join_key(autoconfigure_prefix, "vault", "auth", "appid", "user_id"),
-            "app_role": join_key(autoconfigure_prefix, "vault", "auth", "approle", "role_id"),
-            "app_secret": join_key(autoconfigure_prefix, "vault", "auth", "approle", "secret_id")
+            "tls_cert": join_key(autoconfigure_prefix, "vault", "auth", "tls",
+                                 "cert", "filename"),
+            "tls_key": join_key(autoconfigure_prefix, "vault", "auth", "tls",
+                                "key", "filename"),
+            "username": join_key(autoconfigure_prefix, "vault", "auth",
+                                 "userpass", "username"),
+            "password": join_key(autoconfigure_prefix, "vault", "auth",
+                                 "userpass", "password"),
+            "ldap_user": join_key(autoconfigure_prefix, "vault", "auth",
+                                  "ldap", "username"),
+            "ldap_pass": join_key(autoconfigure_prefix, "vault", "auth",
+                                  "ldap", "password"),
+            "app_id": join_key(autoconfigure_prefix, "vault", "auth", "appid",
+                               "app_id"),
+            "user_id": join_key(autoconfigure_prefix, "vault", "auth", "appid",
+                                "user_id"),
+            "app_role": join_key(autoconfigure_prefix, "vault", "auth",
+                                 "approle", "role_id"),
+            "app_secret": join_key(autoconfigure_prefix, "vault", "auth",
+                                   "approle", "secret_id")
         }
 
     @classmethod
@@ -82,7 +95,8 @@ class VaultBackend(ConfigBackend):
         settings = []
         for name, key in cls._config_keys(autoconfigure_prefix).iteritems():
             if name == "url":
-                settings.append(Setting(key=key, _type=str, required=False, default="http://localhost:8200"))
+                settings.append(Setting(key=key, _type=str, required=False,
+                                        default="http://localhost:8200"))
             else:
                 settings.append(Setting(key=key, _type=str, required=False))
         return settings
@@ -93,22 +107,33 @@ class VaultBackend(ConfigBackend):
         url = conf.get(keys['url'])
 
         if conf.has(keys['token']):
-            return VaultBackend(url=url, auth="token", credentials=conf.get(keys['token']))
+            return VaultBackend(url=url, auth="token",
+                                credentials=conf.get(keys['token']))
 
         elif conf.has(keys['tls_cert']) and conf.has(keys['tls_key']):
-            return VaultBackend(url=url, auth="client_cert", credentials=(conf.get(keys['tls_cert']), conf.get(keys['tls_key'])))
+            return VaultBackend(url=url, auth="client_cert",
+                                credentials=(conf.get(keys['tls_cert']),
+                                             conf.get(keys['tls_key'])))
 
         elif conf.has(keys['username']) and conf.has(keys['password']):
-            return VaultBackend(url=url, auth="userpass", credentials=(conf.get(keys['username']), conf.get(keys['password'])))
+            return VaultBackend(url=url, auth="userpass",
+                                credentials=(conf.get(keys['username']),
+                                             conf.get(keys['password'])))
 
         elif conf.has(keys['ldap_user']) and conf.has(keys['ldap_pass']):
-            return VaultBackend(url=url, auth="ldap", credentials=(conf.get(keys['ldap_user']), conf.get(keys['ldap_pass'])))
+            return VaultBackend(url=url, auth="ldap",
+                                credentials=(conf.get(keys['ldap_user']),
+                                             conf.get(keys['ldap_pass'])))
 
         elif conf.has(keys['app_id']) and conf.has(keys['user_id']):
-            return VaultBackend(url=url, auth="appid", credentials=(conf.get(keys['app_id']), conf.get(keys['user_id'])))
+            return VaultBackend(url=url, auth="appid",
+                                credentials=(conf.get(keys['app_id']),
+                                             conf.get(keys['user_id'])))
 
         elif conf.has(keys['app_role']) and conf.has(keys['app_secret']):
-            return VaultBackend(url=url, auth="approle", credentials=(conf.get(keys['app_role']), conf.get(keys['app_secret'])))
+            return VaultBackend(url=url, auth="approle",
+                                credentials=(conf.get(keys['app_role']),
+                                             conf.get(keys['app_secret'])))
 
         return None
 
