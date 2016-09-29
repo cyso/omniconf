@@ -93,7 +93,7 @@ class VaultBackend(ConfigBackend):
     @classmethod
     def autodetect_settings(cls, autoconfigure_prefix):
         settings = []
-        for name, key in cls._config_keys(autoconfigure_prefix).iteritems():
+        for name, key in cls._config_keys(autoconfigure_prefix).items():
             if name == "url":
                 settings.append(Setting(key=key, _type=str, required=False,
                                         default="http://localhost:8200"))
