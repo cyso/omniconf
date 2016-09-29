@@ -120,7 +120,10 @@ class VaultBackend(ConfigBackend):
         data_key = parts.pop()
         path = join_key_parts("/", parts)
 
-        node = self.client.read(path)
+        try:
+            node = self.client.read(path)
+        except hvac.exceptions.Forbidden:
+            raise KeyError("No access to Vault data node at {0}".format(path))
         if not node:
             raise KeyError("No Vault data node at {0}".format(path))
         return node['data'][data_key]
