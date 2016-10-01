@@ -31,9 +31,11 @@ class VaultBackend(ConfigBackend):
     """
 
     def __init__(self, conf=None, prefix=None, url=None, auth=None,
-                 credentials=None):
+                 credentials=None, base_path=None):
         if not prefix:
             prefix = ""
+        if base_path:
+            prefix = base_path
         self.prefix = prefix
 
         if auth == "token":
@@ -67,6 +69,7 @@ class VaultBackend(ConfigBackend):
     def _config_keys(cls, autoconfigure_prefix):
         return {
             "url": join_key(autoconfigure_prefix, "vault", "url"),
+            "base_path": join_key(autoconfigure_prefix, "vault", "base_path"),
             "token": join_key(autoconfigure_prefix, "vault", "auth", "token"),
             "tls_cert": join_key(autoconfigure_prefix, "vault", "auth", "tls",
                                  "cert", "filename"),

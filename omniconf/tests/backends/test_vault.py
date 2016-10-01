@@ -139,6 +139,29 @@ class TestVaultBackend(unittest.TestCase):
         self.vault.prefix = "secret"
         self.assertEqual(self.vault.get_value("foo.bar"), "baz")
 
+    def test_vault_backend_without_prefix_or_basepath(self):
+        vault = VaultBackend(url="http://localhost:18200",
+                             auth="token", credentials=self.normal_token)
+        self.assertEqual(vault.prefix, "")
+
+    def test_vault_backend_with_prefix_no_basepath(self):
+        vault = VaultBackend(url="http://localhost:18200",
+                             auth="token", credentials=self.normal_token,
+                             prefix="foo")
+        self.assertEqual(vault.prefix, "foo")
+
+    def test_vault_backend_with_basepath_no_prefix(self):
+        vault = VaultBackend(url="http://localhost:18200",
+                             auth="token", credentials=self.normal_token,
+                             base_path="base")
+        self.assertEqual(vault.prefix, "base")
+
+    def test_vault_backend_with_prefix_and_basepath(self):
+        vault = VaultBackend(url="http://localhost:18200",
+                             auth="token", credentials=self.normal_token,
+                             prefix="foo", base_path="base")
+        self.assertEqual(vault.prefix, "base")
+
 
 def _setup_vault_autoconfig(prefix):
     settings = SettingRegistry()
