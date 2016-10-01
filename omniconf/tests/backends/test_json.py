@@ -16,6 +16,7 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from omniconf.backends import available_backends
 from omniconf.backends.json import JsonBackend
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry
@@ -42,6 +43,10 @@ CONFIGS = [
     ("section", {"bar": "baz", "subsection": {"baz": "foo"}}, None),
     ("unknown", None, KeyError)
 ]
+
+
+def test_json_backend_in_available_backends():
+    nose.tools.assert_in(JsonBackend, available_backends)
 
 
 @patch("json.loads")

@@ -16,6 +16,7 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from omniconf.backends import available_backends
 from omniconf.backends.configobj import ConfigObjBackend
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry
@@ -43,6 +44,10 @@ CONFIGS = [
     ("section", {"bar": "baz", "subsection": {"baz": "foo"}}, None),
     ("unknown", None, KeyError)
 ]
+
+
+def test_configobj_backend_in_available_backends():
+    nose.tools.assert_in(ConfigObjBackend, available_backends)
 
 
 def test_configobj_backend_autoconfigure():

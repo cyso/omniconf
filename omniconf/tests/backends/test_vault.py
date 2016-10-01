@@ -19,6 +19,7 @@
 import hvac
 from hvac.tests.util import ServerManager
 from mock import patch, ANY
+from omniconf.backends import available_backends
 from omniconf.backends.vault import VaultBackend
 from omniconf.config import ConfigRegistry
 from omniconf.exceptions import InvalidBackendConfiguration
@@ -60,6 +61,10 @@ DENY_TOKEN = {
     "id": "DENY",
     "policies": ["deny"]
 }
+
+
+def test_vault_backend_in_available_backends():
+    nose.tools.assert_in(VaultBackend, available_backends)
 
 
 class TestVaultBackend(unittest.TestCase):

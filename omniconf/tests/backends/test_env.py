@@ -16,6 +16,7 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from omniconf.backends import available_backends
 from omniconf.backends.env import EnvBackend
 from mock import patch
 import nose.tools
@@ -61,6 +62,10 @@ CONFIGS = [
     ("section", None, KeyError),
     ("unknown", None, KeyError)
 ]
+
+
+def test_env_backend_in_available_backends():
+    nose.tools.assert_in(EnvBackend, available_backends)
 
 
 def test_env_backend_autoconfigure():
