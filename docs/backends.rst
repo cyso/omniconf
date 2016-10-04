@@ -5,11 +5,7 @@ Supported backends
 
 The following backends are supported as of version |version|:
 
-* commandline arguments (using argparse)
-* environment variables
-* ConfigObj files
-* JSON files
-* YAML files (using PyYAML)
+.. contents :: :local:
 
 backend interface
 -----------------
