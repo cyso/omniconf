@@ -26,8 +26,72 @@ import hvac
 
 class VaultBackend(ConfigBackend):
     """
-    Uses Hashicorp's Vault as a backend, and allows values in it to
-    be retrieved using dotted keys.
+    Uses Hashicorp's Vault as a backend, and allows values in it to be
+    retrieved using dotted keys.
+
+    **Key translation**
+
+    Dotted keys are translated into an URL path, which is then optionally
+    prepended by the configured backend prefix. The last part of the path is
+    used as a property to retrieve. If a base_path is also configured, it
+    overrides the backend prefix.
+
+    For instance, a setting with key `setting.foo.bar` will be translated into
+    path ``setting/foo``, from which the property with key ``bar`` will be
+    retrieved. Because Vault nodes are grouped by backend, it usually makes
+    sense to define `base_path` as `secret`, which corresponds to the Generic
+    backend of Vault. In this example, the example key will be translated into
+    path ``secret/setting/foo``, from which the property with key `bar` will be
+    retrieved.
+
+    **API Connection**
+
+    The URL endpoint which |project| will default to ``http://localhost:8200``,
+    and can be configured using the configuration key ``omniconf.vault.url``,
+    assuming the ``autoconfigure_prefix`` is set to `omniconf`.
+
+    **Authentication**
+
+    Vault's API requires some form of authentication, of which the following
+    are supported:
+
+        * `Tokens <https://www.vaultproject.io/docs/auth/token.html>`_
+        * `TLS certificates <https://www.vaultproject.io/docs/auth/cert.html>`_
+        * `Username & Password \
+           <https://www.vaultproject.io/docs/auth/userpass.html>`_
+        * `LDAP <https://www.vaultproject.io/docs/auth/ldap.html>`_
+        * `App ID <https://www.vaultproject.io/docs/auth/app-id.html>`_
+        * `AppRole <https://www.vaultproject.io/docs/auth/approle.html>`_
+
+    Retrieval of Vault data requires an ACL to be defined, which goes beyond
+    the scope of this documentation. |project| only needs read rights on the
+    keys it tries to access.
+
+    Selection of what authentication method is used depends on which
+    configuration is present during setup. For all the following examples, the
+    ``autoconfigure_prefix`` is assumed to be `omniconf`:
+
+        * Token authentication is used if ``omniconf.vault.auth.token``
+          is defined.
+        * TLS certificates authentication is used if both
+          ``omniconf.vault.auth.tls.cert.filename`` and
+          ``omniconf.vault.auth.tls.key.filename`` are defined.
+        * Username and Password authentication is used if both
+          ``omniconf.vault.auth.userpass.username`` and
+          ``omniconf.vault.auth.userpass.password`` are defined.
+        * LDAP authentication is used if both
+          ``omniconf.vault.auth.ldap.username`` and
+          ``omniconf.vault.auth.ldap.password`` are defined.
+        * App ID authentication is used if both
+          ``omniconf.vault.auth.appid.app_id`` and
+          ``omniconf.vault.auth.appid.user_id`` are defined.
+        * AppRole authentication is used if both
+          ``omniconf.vault.auth.approle.role_id`` and
+          ``omniconf.vault.auth.approle.secret_id`` are defined.
+
+    The above order is also the order in which the configuration values are
+    looked up. The first one to satisfy the conditions is used, and no further
+    attepts are made if configuration fails.
     """
 
     def __init__(self, conf=None, prefix=None, url=None, auth=None,

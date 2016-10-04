@@ -63,3 +63,12 @@ Files in YAML format are supported. This backend is only enabled if `omniconf.ya
 
 .. autoclass :: omniconf.backends.yaml.YamlBackend
    :members:
+
+Hashicorp Vault
+---------------
+
+Hashicorp's Vault is supported by using its API. This backend requires several configuration keys to be defined during
+setup, see the documentation below for details.
+
+.. autoclass :: omniconf.backends.vault.VaultBackend
+   :members:
