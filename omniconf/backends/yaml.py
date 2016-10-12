@@ -41,5 +41,6 @@ class YamlBackend(ConfigBackend):
     def autoconfigure(cls, conf, autoconfigure_prefix):
         filename_key = join_key(autoconfigure_prefix, "yaml", "filename")
         if conf.has(filename_key):
-            return YamlBackend(conf=conf.get(filename_key))
+            with open(conf.get(filename_key)) as config_file:
+                return YamlBackend(conf=config_file)
         return None

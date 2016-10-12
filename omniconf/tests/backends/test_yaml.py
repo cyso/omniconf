@@ -19,7 +19,7 @@
 from omniconf.backends.yaml import YamlBackend
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry
-from mock import patch
+from mock import patch, mock_open, Mock
 import nose.tools
 
 YAML_FILE = """
@@ -42,7 +42,9 @@ CONFIGS = [
 
 
 @patch("yaml.load")
-def test_yaml_backend_autoconfigure(mock):
+def test_yaml_backend_autoconfigure(yaml_load):
+    from omniconf.backends import yaml as omniconf_backend_yaml
+    omniconf_backend_yaml.open = mock_open(read_data='foo');
     prefix = "testconf"
     settings = SettingRegistry()
     settings.add(YamlBackend.autodetect_settings(prefix)[0])
