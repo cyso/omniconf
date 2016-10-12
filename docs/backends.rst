@@ -60,6 +60,7 @@ YAML files
 ----------
 
 Files in YAML format are supported. This backend is only enabled if `omniconf.yaml.filename` is specified during setup.
+All YAML documents in the file are consumed.
 
 .. autoclass :: omniconf.backends.yaml.YamlBackend
    :members:

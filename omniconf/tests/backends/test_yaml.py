@@ -19,7 +19,7 @@
 from omniconf.backends.yaml import YamlBackend
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry
-from mock import patch
+from mock import patch, mock_open
 import nose.tools
 
 YAML_FILE = """
@@ -29,6 +29,9 @@ section:
   bar: baz
   subsection:
     baz: foo
+---
+bar:
+  sub: bar-sub-value
 """
 
 CONFIGS = [
@@ -37,12 +40,15 @@ CONFIGS = [
     ("section.subsection.baz", "foo", None),
     ("", None, KeyError),
     ("section", {"bar": "baz", "subsection": {"baz": "foo"}}, None),
-    ("unknown", None, KeyError)
+    ("unknown", None, KeyError),
+    ("bar.sub", "bar-sub-value", None)
 ]
 
 
 @patch("yaml.load")
 def test_yaml_backend_autoconfigure(mock):
+    from omniconf.backends import yaml as omniconf_backend_yaml
+    omniconf_backend_yaml.open = mock_open(read_data=YAML_FILE)
     prefix = "testconf"
     settings = SettingRegistry()
     settings.add(YamlBackend.autodetect_settings(prefix)[0])

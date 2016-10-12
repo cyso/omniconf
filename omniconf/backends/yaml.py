@@ -30,7 +30,11 @@ class YamlBackend(ConfigBackend):
     """
 
     def __init__(self, conf):
-        super(YamlBackend, self).__init__(yaml.load(conf))
+        loaded_conf = {}
+        for doc in yaml.load_all(conf):
+            loaded_conf.update(doc)
+
+        super(YamlBackend, self).__init__(loaded_conf)
 
     @classmethod
     def autodetect_settings(cls, autoconfigure_prefix):
@@ -41,5 +45,6 @@ class YamlBackend(ConfigBackend):
     def autoconfigure(cls, conf, autoconfigure_prefix):
         filename_key = join_key(autoconfigure_prefix, "yaml", "filename")
         if conf.has(filename_key):
-            return YamlBackend(conf=conf.get(filename_key))
+            with open(conf.get(filename_key)) as config_file:
+                return YamlBackend(conf=config_file)
         return None
