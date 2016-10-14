@@ -18,6 +18,7 @@
 
 from omniconf.backends import available_backends
 from omniconf.backends.argparse import ArgparseBackend
+from omniconf.setting import Setting
 from mock import patch
 import nose.tools
 
@@ -67,8 +68,9 @@ def _test_get_value(key, value, sideeffect, prefix):
     with patch('omniconf.backends.argparse.ARGPARSE_SOURCE',
                ARGS_FILE if not prefix else PREFIX_ARGS_FILE):
         backend = ArgparseBackend(prefix=prefix)
+        setting = Setting(key=key, _type=str)
         if sideeffect:
             with nose.tools.assert_raises(sideeffect):
-                backend.get_value(key)
+                backend.get_value(setting)
         else:
-            nose.tools.assert_equal(backend.get_value(key), value)
+            nose.tools.assert_equal(backend.get_value(setting), value)

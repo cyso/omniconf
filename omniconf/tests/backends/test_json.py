@@ -19,7 +19,7 @@
 from omniconf.backends import available_backends
 from omniconf.backends.json import JsonBackend
 from omniconf.config import ConfigRegistry
-from omniconf.setting import SettingRegistry
+from omniconf.setting import SettingRegistry, Setting
 from mock import patch
 import nose.tools
 
@@ -71,8 +71,9 @@ def test_json_backend_get_value():
 
 def _test_get_value(key, value, sideeffect):
     backend = JsonBackend(JSON_FILE)
+    setting = Setting(key=key, _type=str)
     if sideeffect:
         with nose.tools.assert_raises(sideeffect):
-            backend.get_value(key)
+            backend.get_value(setting)
     else:
-        nose.tools.assert_equal(backend.get_value(key), value)
+        nose.tools.assert_equal(backend.get_value(setting), value)

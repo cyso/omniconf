@@ -19,7 +19,7 @@
 from omniconf.backends import available_backends
 from omniconf.backends.configobj import ConfigObjBackend
 from omniconf.config import ConfigRegistry
-from omniconf.setting import SettingRegistry
+from omniconf.setting import SettingRegistry, Setting
 try:
     from StringIO import StringIO
 except ImportError:  # pragma: nocover
@@ -71,8 +71,9 @@ def test_configobj_backend_get_value():
 
 def _test_get_value(key, value, sideeffect):
     backend = ConfigObjBackend(StringIO(CONFIGOBJ_FILE))
+    setting = Setting(key=key, _type=str)
     if sideeffect:
         with nose.tools.assert_raises(sideeffect):
-            backend.get_value(key)
+            backend.get_value(setting)
     else:
-        nose.tools.assert_equal(backend.get_value(key), value)
+        nose.tools.assert_equal(backend.get_value(setting), value)
