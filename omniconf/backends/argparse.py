@@ -41,9 +41,10 @@ class ArgparseBackend(ConfigBackend):
         return ArgparseBackend(prefix=conf.get(join_key(autoconfigure_prefix,
                                                         "prefix")))
 
-    def get_value(self, key):
+    def get_value(self, setting):
         """
-        Retrieves the value for the given key. Keys are converted as follows:
+        Retrieves the value for the given :class:``.Setting`. Keys are
+        converted as follows:
 
         * Dots are replaced by dashes (-).
         * The key is lowercased.
@@ -53,8 +54,8 @@ class ArgparseBackend(ConfigBackend):
         ``--prefix-section-value``. When no prefix is specified,
         ``--section-value`` is queried instead.
         """
-        _key = key.replace(".", "-").lower()
-        _prop = key.replace(".", "_").lower()
+        _key = setting.key.replace(".", "-").lower()
+        _prop = setting.key.replace(".", "_").lower()
         if self.prefix:
             _key = "{0}-{1}".format(self.prefix, _key)
             _prop = "{0}_{1}".format(self.prefix, _prop)

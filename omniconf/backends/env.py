@@ -38,9 +38,10 @@ class EnvBackend(ConfigBackend):
         return EnvBackend(prefix=conf.get(join_key(autoconfigure_prefix,
                                                    "prefix")))
 
-    def get_value(self, key):
+    def get_value(self, setting):
         """
-        Retrieves the value for the given key. Keys are converted as follows:
+        Retrieves the value for the given :class:`.Setting`. Keys are converted
+        as follows:
 
         * Dots are replaced by underscores
         * The key is uppercased.
@@ -50,7 +51,7 @@ class EnvBackend(ConfigBackend):
         ``PREFIX_SECTION_VALUE``. When no prefix is specified,
         ``SECTION_VALUE`` is queried instead.
         """
-        _key = key.replace(".", "_").upper()
+        _key = setting.key.replace(".", "_").upper()
         if self.prefix:
             _key = "{0}_{1}".format(self.prefix, _key)
         return os.environ[_key]
