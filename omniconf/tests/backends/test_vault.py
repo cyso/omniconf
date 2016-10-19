@@ -98,7 +98,6 @@ class TestVaultBackend(unittest.TestCase):
         cls.manager.stop()
 
     def setUp(self):
-        self.assertTrue(self.root_client.is_authenticated)
         self.vault = VaultBackend(url="http://localhost:18200",
                                   auth="token", credentials=self.normal_token)
         self.keys = []
