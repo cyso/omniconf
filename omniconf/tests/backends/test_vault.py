@@ -24,7 +24,7 @@ from omniconf.backends import available_backends
 from omniconf.backends.vault import VaultBackend
 from omniconf.config import ConfigRegistry
 from omniconf.exceptions import InvalidBackendConfiguration
-from omniconf.setting import SettingRegistry
+from omniconf.setting import SettingRegistry, Setting
 from tempfile import NamedTemporaryFile
 import nose.tools
 import unittest
@@ -120,27 +120,29 @@ class TestVaultBackend(unittest.TestCase):
 
     def test_vault_backend_get(self):
         self.write_key("secret/foo", bar="baz")
-        self.assertEqual(self.vault.get_value("secret.foo.bar"), "baz")
+        setting = Setting(key="secret.foo.bar", _type=str)
+        self.assertEqual(self.vault.get_value(setting), "baz")
 
     def test_vault_backend_get_no_node(self):
         with self.assertRaises(KeyError):
-            self.vault.get_value("secret.foo.bar")
+            self.vault.get_value(Setting(key="secret.foo.bar", _type=str))
 
     def test_vault_backend_get_no_value(self):
         self.write_key("secret/foo", bar="baz")
         with self.assertRaises(KeyError):
-            self.vault.get_value("secret.foo.baz")
+            self.vault.get_value(Setting(key="secret.foo.baz", _type=str))
 
     def test_vault_backend_get_no_access(self):
         self.write_key("secret/foo", bar="baz")
         with self.assertRaises(KeyError):
             self.vault.client.token = self.deny_token
-            self.vault.get_value("secret.foo.bar")
+            self.vault.get_value(Setting(key="secret.foo.bar", _type=str))
 
     def test_vault_backend_get_with_prefix(self):
         self.write_key("secret/foo", bar="baz")
         self.vault.prefix = "secret"
-        self.assertEqual(self.vault.get_value("foo.bar"), "baz")
+        setting = Setting(key="foo.bar", _type=str)
+        self.assertEqual(self.vault.get_value(setting), "baz")
 
     def test_vault_backend_without_prefix_or_basepath(self):
         vault = VaultBackend(url="http://localhost:18200",
