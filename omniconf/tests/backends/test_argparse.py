@@ -37,12 +37,12 @@ PREFIX_ARGS_FILE = [
 ]
 
 CONFIGS = [
-    ("foo", "bar", None),
-    ("section.bar", "baz", None),
-    ("section.subsection.baz", "foo", None),
-    ("", None, KeyError),
-    ("section", None, KeyError),
-    ("unknown", None, KeyError)
+    (Setting(key="foo", _type=str), "bar", None),
+    (Setting(key="section.bar", _type=str), "baz", None),
+    (Setting(key="section.subsection.baz", _type=str), "foo", None),
+    (Setting(key="", _type=str), None, KeyError),
+    (Setting(key="section", _type=str), None, KeyError),
+    (Setting(key="unknown", _type=str), None, KeyError),
 ]
 
 
@@ -59,16 +59,15 @@ def test_argparse_backend_autoconfigure():
 
 
 def test_argparse_backend_get_value():
-    for key, value, sideeffect in CONFIGS:
-        yield _test_get_value, key, value, sideeffect, None
-        yield _test_get_value, key, value, sideeffect, 'prefix'
+    for setting, value, sideeffect in CONFIGS:
+        yield _test_get_value, setting, value, sideeffect, None
+        yield _test_get_value, setting, value, sideeffect, 'prefix'
 
 
-def _test_get_value(key, value, sideeffect, prefix):
+def _test_get_value(setting, value, sideeffect, prefix):
     with patch('omniconf.backends.argparse.ARGPARSE_SOURCE',
                ARGS_FILE if not prefix else PREFIX_ARGS_FILE):
         backend = ArgparseBackend(prefix=prefix)
-        setting = Setting(key=key, _type=str)
         if sideeffect:
             with nose.tools.assert_raises(sideeffect):
                 backend.get_value(setting)
