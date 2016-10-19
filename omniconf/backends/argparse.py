@@ -25,6 +25,10 @@ import sys
 ARGPARSE_SOURCE = sys.argv[1:]
 
 
+def suppress_output(*args, **kwargs):  # pragma: nocover
+    pass
+
+
 class ArgparseBackend(ConfigBackend):
     """
     Uses the current process arguments, and allows values in it to
@@ -65,6 +69,10 @@ class ArgparseBackend(ConfigBackend):
             raise KeyError("Empty keys are not allowed")
         parser = argparse.ArgumentParser()
         parser.add_argument(_arg)
+
+        # Disable forced output from argparse we don't want to display
+        parser.print_usage = suppress_output
+        parser._print_message = suppress_output
         try:
             args = parser.parse_known_args(args=ARGPARSE_SOURCE)[0]
         except SystemExit:
