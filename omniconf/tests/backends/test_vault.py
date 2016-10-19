@@ -80,7 +80,7 @@ class TestVaultBackend(unittest.TestCase):
                                         client=cls.root_client)
             try:
                 cls.manager.start()
-            except OSError:
+            except OSError:  # pragma: nocover
                 raise SkipTest("vault binary not present in PATH.")
 
             try:
