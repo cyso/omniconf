@@ -26,14 +26,16 @@ ARGS_FILE = [
     "script.py",
     "--foo", "bar",
     "--section-bar", "baz",
-    "--section-subsection-baz", "foo"
+    "--section-subsection-baz", "foo",
+    "--missing-value"
 ]
 
 PREFIX_ARGS_FILE = [
     "script.py",
     "--prefix-foo", "bar",
     "--prefix-section-bar", "baz",
-    "--prefix-section-subsection-baz", "foo"
+    "--prefix-section-subsection-baz", "foo",
+    "--missing-value"
 ]
 
 CONFIGS = [
@@ -43,6 +45,8 @@ CONFIGS = [
     (Setting(key="", _type=str), None, KeyError),
     (Setting(key="section", _type=str), None, KeyError),
     (Setting(key="unknown", _type=str), None, KeyError),
+
+    (Setting(key="missing.value", _type=str), None, KeyError),
 ]
 
 

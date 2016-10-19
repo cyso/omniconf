@@ -65,7 +65,11 @@ class ArgparseBackend(ConfigBackend):
             raise KeyError("Empty keys are not allowed")
         parser = argparse.ArgumentParser()
         parser.add_argument(_arg)
-        args = parser.parse_known_args(args=ARGPARSE_SOURCE)[0]
+        try:
+            args = parser.parse_known_args(args=ARGPARSE_SOURCE)[0]
+        except SystemExit:
+            raise KeyError("Error parsing value for {0}".format(setting.key))
+
         if getattr(args, _prop) is None:
-            raise KeyError("{0} has no value".format(_key))
+            raise KeyError("{0} has no value".format(setting.key))
         return getattr(args, _prop)
