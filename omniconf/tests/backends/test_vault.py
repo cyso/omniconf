@@ -19,6 +19,7 @@
 import hvac
 from hvac.tests.util import ServerManager
 from mock import patch, ANY
+from nose.plugins.skip import SkipTest
 from omniconf.backends import available_backends
 from omniconf.backends.vault import VaultBackend
 from omniconf.config import ConfigRegistry
@@ -77,7 +78,10 @@ class TestVaultBackend(unittest.TestCase):
             cls.root_client = hvac.Client(url="http://localhost:18200")
             cls.manager = ServerManager(config_path=f.name,
                                         client=cls.root_client)
-            cls.manager.start()
+            try:
+                cls.manager.start()
+            except OSError:
+                raise SkipTest("vault binary not present in PATH.")
 
             try:
                 cls.manager.initialize()
