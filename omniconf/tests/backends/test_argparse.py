@@ -27,7 +27,10 @@ ARGS_FILE = [
     "--foo", "bar",
     "--section-bar", "baz",
     "--section-subsection-baz", "foo",
-    "--missing-value"
+    "--bool-normal", "1",
+    "--bool-true",
+    "--bool-false",
+    "--missing-value"  # Has to be the last because we're omitting the value
 ]
 
 PREFIX_ARGS_FILE = [
@@ -35,7 +38,11 @@ PREFIX_ARGS_FILE = [
     "--prefix-foo", "bar",
     "--prefix-section-bar", "baz",
     "--prefix-section-subsection-baz", "foo",
-    "--missing-value"
+    "--prefix-bool-normal", "1",
+    "--prefix-bool-true",
+    "--prefix-bool-false",
+    "--prefix-missing-value"  # Has to be the last because we're
+                              # omitting the value
 ]
 
 CONFIGS = [
@@ -47,6 +54,12 @@ CONFIGS = [
     (Setting(key="unknown", _type=str), None, KeyError),
 
     (Setting(key="missing.value", _type=str), None, KeyError),
+
+    (Setting(key="bool.normal", _type=bool), "1", None),
+    (Setting(key="bool.true", _type=bool, default=False), True, None),
+    (Setting(key="bool.false", _type=bool, default=True), False, None),
+    (Setting(key="bool.default.true", _type=bool, default=True), True, None),
+    (Setting(key="bool.default.false", _type=bool, default=False), False, None)
 ]
 
 

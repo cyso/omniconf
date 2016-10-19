@@ -47,7 +47,7 @@ class ArgparseBackend(ConfigBackend):
 
     def get_value(self, setting):
         """
-        Retrieves the value for the given :class:``.Setting`. Keys are
+        Retrieves the value for the given :class:`.Setting`. Keys are
         converted as follows:
 
         * Dots are replaced by dashes (-).
@@ -57,6 +57,16 @@ class ArgparseBackend(ConfigBackend):
         This means that a key like section.value will be queried like
         ``--prefix-section-value``. When no prefix is specified,
         ``--section-value`` is queried instead.
+
+        Special handling is added for boolean Settings with a default
+        specified, which works as follows:
+
+        * Settings with `_type=bool` and no default will be processed
+          as normal.
+        * Settings with `_type=bool`, and where the default value is True will
+          be specified as an argparse argument with `action=store_false`.
+        * Settings with `_type=bool`, and where the default value is False will
+          be specified as an argparse argument with `action=store_true`.
         """
         _key = setting.key.replace(".", "-").lower()
         _prop = setting.key.replace(".", "_").lower()
@@ -68,11 +78,21 @@ class ArgparseBackend(ConfigBackend):
         if not _key:
             raise KeyError("Empty keys are not allowed")
         parser = argparse.ArgumentParser()
-        parser.add_argument(_arg)
 
         # Disable forced output from argparse we don't want to display
         parser.print_usage = suppress_output
         parser._print_message = suppress_output
+
+        if setting.type is bool:
+            if setting.default is None:
+                parser.add_argument(_arg)
+            elif setting.default is True:
+                parser.add_argument(_arg, action="store_false")
+            else:
+                parser.add_argument(_arg, action="store_true")
+        else:
+            parser.add_argument(_arg)
+
         try:
             args = parser.parse_known_args(args=ARGPARSE_SOURCE)[0]
         except SystemExit:
