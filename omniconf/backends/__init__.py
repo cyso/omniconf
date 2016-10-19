@@ -34,6 +34,12 @@ try:
 except ImportError:  # pragma: nocover
     pass
 
+try:
+    from omniconf.backends.vault import VaultBackend
+    available_backends.append(VaultBackend)
+except ImportError:  # pragma: nocover
+    pass
+
 available_backends += [JsonBackend, EnvBackend, ArgparseBackend]
 autodetection_backends = [EnvBackend, ArgparseBackend]
 

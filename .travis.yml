@@ -17,8 +17,13 @@ env:
     - TOX_ENV=flake8
 
 before_install:
+    - mkdir $HOME/bin
     - export JYTHON_URL='http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar'
     - if [ "$TOX_ENV" == "jython" ]; then wget $JYTHON_URL -O jython_installer.jar; java -jar jython_installer.jar -s -d $HOME/jython; fi
+    - if [ `uname -m` == "x86_64" ] || [ `uname -m` == "amd64" ]; then export ARCH="amd64"; else export ARCH="386"; fi
+    - export PLATFORM=`uname -s | tr '[:upper:]' '[:lower:]'`
+    - export VAULT_URL="https://releases.hashicorp.com/vault/0.6.1/vault_0.6.1_${PLATFORM}_${ARCH}.zip"
+    - wget $VAULT_URL -O vault.zip; unzip -o vault.zip; mv vault $HOME/bin; rm vault.zip
 
 install:
     - pip install tox python-coveralls

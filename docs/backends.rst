@@ -5,11 +5,7 @@ Supported backends
 
 The following backends are supported as of version |version|:
 
-* commandline arguments (using argparse)
-* environment variables
-* ConfigObj files
-* JSON files
-* YAML files (using PyYAML)
+.. contents :: :local:
 
 backend interface
 -----------------
@@ -63,4 +59,13 @@ Files in YAML format are supported. This backend is only enabled if `omniconf.ya
 All YAML documents in the file are consumed.
 
 .. autoclass :: omniconf.backends.yaml.YamlBackend
+   :members:
+
+Hashicorp Vault
+---------------
+
+Hashicorp's Vault is supported by using its API. This backend requires several configuration keys to be defined during
+setup, see the documentation below for details.
+
+.. autoclass :: omniconf.backends.vault.VaultBackend
    :members:
