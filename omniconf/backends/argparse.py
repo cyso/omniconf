@@ -57,6 +57,18 @@ class ArgparseBackend(ConfigBackend):
         return ArgparseBackend(prefix=conf.get(join_key(autoconfigure_prefix,
                                                         "prefix")))
 
+    @classmethod
+    def add_argument(cls, parser, argument, setting):
+        if setting.type is bool:
+            if setting.default is None:
+                return parser.add_argument(argument)
+            elif setting.default is True:
+                return parser.add_argument(argument, action="store_false")
+            else:
+                return parser.add_argument(argument, action="store_true")
+        else:
+            return parser.add_argument(argument)
+
     def get_value(self, setting):
         """
         Retrieves the value for the given :class:`.Setting`. Keys are
@@ -90,15 +102,7 @@ class ArgparseBackend(ConfigBackend):
         parser.print_usage = suppress_output
         parser._print_message = suppress_output
 
-        if setting.type is bool:
-            if setting.default is None:
-                parser.add_argument(_arg)
-            elif setting.default is True:
-                parser.add_argument(_arg, action="store_false")
-            else:
-                parser.add_argument(_arg, action="store_true")
-        else:
-            parser.add_argument(_arg)
+        ArgparseBackend.add_argument(parser, _arg, setting)
 
         try:
             args = parser.parse_known_args(args=ARGPARSE_SOURCE)[0]
