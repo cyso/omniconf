@@ -140,14 +140,14 @@ class ArgparseUsageInformation(object):
 
     def print_usage(self, out=None):
         keys, groups = self.group_settings()
-        help_argparse = argparse.ArgumentParser(
+        usage_argparse = argparse.ArgumentParser(
             description=self.top_message, prog=self.name, add_help=False)
 
         for group, keys in groups.items():
             if group == "_":
-                group_argparse = help_argparse
+                group_argparse = usage_argparse
             else:
-                group_argparse = help_argparse.add_argument_group(group)
+                group_argparse = usage_argparse.add_argument_group(group)
 
             for key in keys:
                 _, _, _arg = format_argparse_key(key)
@@ -160,4 +160,4 @@ class ArgparseUsageInformation(object):
                     help=setting.help
                 )
 
-        help_argparse.print_help(file=out)
+        usage_argparse.print_help(file=out)
