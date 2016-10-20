@@ -17,6 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from __future__ import absolute_import
+from collections import OrderedDict
 from omniconf.backends.generic import ConfigBackend
 from omniconf.keys import join_key
 import argparse
@@ -107,3 +108,52 @@ class ArgparseBackend(ConfigBackend):
         if getattr(args, _prop) is None:
             raise KeyError("{0} has no value".format(setting.key))
         return getattr(args, _prop)
+
+
+class ArgparseUsageInformation(object):
+    def __init__(self, setting_registry, name=None, top_message=None,
+                 bottom_message=None):
+        self.registry = setting_registry
+        self.name = name if name else sys.argv[0]
+        self.top_message = top_message
+        self.bottom_message = bottom_message
+
+    def _sortable_key(self, key):
+        if "." not in key:
+            key = "_." + key
+        return key
+
+    def group_settings(self):
+        keys = sorted(self.registry.keys(), key=lambda x: self._sortable_key(x))
+        groups = OrderedDict()
+        for key in keys:
+            parts = key.split(".")
+            group = parts[0] if len(parts) > 1 else "_"
+            if not group in groups:
+                groups[group] = []
+            groups[group].append(key)
+        return keys, groups
+
+    def print_usage(self, out=None):
+        keys, groups = self.group_settings()
+        help_argparse = argparse.ArgumentParser(
+            description=self.top_message, prog=self.name, add_help=False)
+
+        for group, keys in groups.items():
+            if group == "_":
+                group_argparse = help_argparse
+            else:
+                group_argparse = help_argparse.add_argument_group(group)
+
+            for key in keys:
+                _, _, _arg = format_argparse_key(key)
+                setting = self.registry.get(key)
+                group_argparse.add_argument(
+                    _arg,
+                    default=setting.default,
+                    type=setting.type,
+                    required=setting.required,
+                    help=setting.help
+                )
+
+        help_argparse.print_help(file=out)
