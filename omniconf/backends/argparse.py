@@ -127,13 +127,23 @@ class ArgparseUsageInformation(object):
             key = "_." + key
         return key
 
+    def _short_metavar_name(self, prop):
+        prop = prop.upper()
+        if "_" in prop:
+            parts = prop.split("_")
+            prop = "".join([part[0] for part in parts])
+        elif len(prop) > 3:
+            prop = prop[0:3]
+        return prop
+
     def group_settings(self):
-        keys = sorted(self.registry.keys(), key=lambda x: self._sortable_key(x))
+        keys = sorted(self.registry.keys(),
+                      key=lambda x: self._sortable_key(x))
         groups = OrderedDict()
         for key in keys:
             parts = key.split(".")
             group = parts[0] if len(parts) > 1 else "_"
-            if not group in groups:
+            if group not in groups:
                 groups[group] = []
             groups[group].append(key)
         return keys, groups
@@ -159,7 +169,7 @@ class ArgparseUsageInformation(object):
                 )
                 argument.default = setting.default
                 argument.type = setting.type
-                argument.metavar = _prop
+                argument.metavar = self._short_metavar_name(_prop)
                 argument.required = setting.required
                 argument.help = setting.help
 
