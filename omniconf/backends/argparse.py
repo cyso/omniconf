@@ -96,7 +96,7 @@ class ArgparseBackend(ConfigBackend):
 
         if not _key:
             raise KeyError("Empty keys are not allowed")
-        parser = argparse.ArgumentParser()
+        parser = argparse.ArgumentParser(add_help=False)
 
         # Disable forced output from argparse we don't want to display
         parser.print_usage = suppress_output
