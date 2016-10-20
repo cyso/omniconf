@@ -174,3 +174,11 @@ class ArgparseUsageInformation(object):
                 argument.help = setting.help
 
         usage_argparse.print_help(file=out)
+
+    @classmethod
+    def check_flag(cls, flags):
+        flag_argparse = argparse.ArgumentParser(add_help=False)
+        flag_argparse.add_argument(*flags, dest="flag",
+                                   action="store_true")
+
+        return flag_argparse.parse_known_args()[0].flag
