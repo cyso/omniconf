@@ -150,14 +150,17 @@ class ArgparseUsageInformation(object):
                 group_argparse = usage_argparse.add_argument_group(group)
 
             for key in keys:
-                _, _, _arg = format_argparse_key(key)
+                _, _prop, _arg = format_argparse_key(key)
                 setting = self.registry.get(key)
-                group_argparse.add_argument(
-                    _arg,
-                    default=setting.default,
-                    type=setting.type,
-                    required=setting.required,
-                    help=setting.help
+                argument = ArgparseBackend.add_argument(
+                    parser=group_argparse,
+                    argument=_arg,
+                    setting=setting
                 )
+                argument.default = setting.default
+                argument.type = setting.type
+                argument.metavar = _prop
+                argument.required = setting.required
+                argument.help = setting.help
 
         usage_argparse.print_help(file=out)
