@@ -29,6 +29,17 @@ def suppress_output(*args, **kwargs):  # pragma: nocover
     pass
 
 
+def format_argparse_key(key, prefix=None):
+    _key = key.replace(".", "-").lower()
+    _prop = key.replace(".", "_").lower()
+    if prefix:
+        _key = "{0}-{1}".format(prefix, _key)
+        _prop = "{0}_{1}".format(prefix, _prop)
+    _arg = "--{0}".format(_key)
+
+    return _key, _prop, _arg
+
+
 class ArgparseBackend(ConfigBackend):
     """
     Uses the current process arguments, and allows values in it to
@@ -68,12 +79,7 @@ class ArgparseBackend(ConfigBackend):
         * Settings with `_type=bool`, and where the default value is False will
           be specified as an argparse argument with `action=store_true`.
         """
-        _key = setting.key.replace(".", "-").lower()
-        _prop = setting.key.replace(".", "_").lower()
-        if self.prefix:
-            _key = "{0}-{1}".format(self.prefix, _key)
-            _prop = "{0}_{1}".format(self.prefix, _prop)
-        _arg = "--{0}".format(_key)
+        _key, _prop, _arg = format_argparse_key(setting.key, self.prefix)
 
         if not _key:
             raise KeyError("Empty keys are not allowed")
