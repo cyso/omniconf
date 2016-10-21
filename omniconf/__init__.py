@@ -19,7 +19,8 @@
 from omniconf.config import config
 from omniconf.setting import setting
 from omniconf.loader import omniconf_load
-from omniconf.usage import help_requested, version_requested, show_usage
+from omniconf.usage import help_requested, version_requested, flag_requested, \
+                            show_usage
 
 __all__ = ["config", "setting", "omniconf_load", "help_requested",
-           "version_requested", "show_usage"]
+           "version_requested", "flag_requested", "show_usage"]

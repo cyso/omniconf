@@ -188,3 +188,54 @@ Example 4
    foo
 
 No backend prefix is set. This means that the setting for `db.url` is looked up in `DB_URL`, which is also set.
+
+Outputting usage information
+----------------------------
+
+To output :mod:`.argparse`-like usage information based on :class:`.Setting` objects contained in a
+:class:`.SettingRegistry`, use the :func:`show_usage` function.
+
+.. autofunction :: omniconf.show_usage
+
+For instance, the output for this piece of code:
+
+.. code-block:: python
+
+   from omniconf import setting, show_usage
+
+   setting("verbose", _type=bool, default=False, help="Enable verbose mode.")
+   setting("section1.setting", help="An optional setting")
+   setting("section1.other_setting", help="A different optional setting.")
+   setting("section2.setting", required=True, help="A required setting.")
+
+   show_usage(name="usage_example")
+
+Looks like this:
+
+.. code-block:: bash
+
+   usage: usage_example [--verbose] [--section1-other_setting SOS]
+                     [--section1-setting SS] --section2-setting SS
+
+   optional arguments:
+   --verbose             Enable verbose mode.
+
+   section1:
+   --section1-other_setting SOS
+                        A different optional setting.
+   --section1-setting SS
+                        An optional setting
+
+   section2:
+   --section2-setting SS
+                        A required setting.
+
+An user who wants to show usage information, usually specifies a command line flag like ``--help``. To detect this,
+|project| provides a convenience method:
+
+.. autofunction :: omniconf.help_requested
+
+Two other methods are also provided, one to detect a version flag, and one to detect any flag:
+
+.. autofunction :: omniconf.version_requested
+.. autofunction :: omniconf.flag_requested

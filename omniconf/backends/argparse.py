@@ -115,6 +115,14 @@ class ArgparseBackend(ConfigBackend):
 
 
 class ArgparseUsageInformation(object):
+    """
+    Formats the settings in :class:`.SettingRegistry`, and formats a typical
+    Unix usage message for output to console.
+
+    If no name is specified, the value in `sys.argv[0]` will be used.
+    Additionally, a custom header and footer can be specified using the
+    `top_message` and `bottom_message` parameters.
+    """
     def __init__(self, setting_registry, name=None, top_message=None,
                  bottom_message=None):
         self.registry = setting_registry
@@ -123,11 +131,21 @@ class ArgparseUsageInformation(object):
         self.bottom_message = bottom_message
 
     def _sortable_key(self, key):
+        """
+        Prefixes keys without a section with an underscore. This will cause
+        options like `verbose` to be mentioned before all other options.
+        """
         if "." not in key:
             key = "_." + key
         return key
 
     def _short_metavar_name(self, prop):
+        """
+        Creates a shortened metavar based on the name of a property. The passed
+        property is first uppercased, and split on underscores. Then the first
+        letter of each part is used. An property named "foo_bar_baz" will
+        result in a metavar named "FBB".
+        """
         prop = prop.upper()
         if "_" in prop:
             parts = prop.split("_")
@@ -137,6 +155,10 @@ class ArgparseUsageInformation(object):
         return prop
 
     def group_settings(self):
+        """
+        Orders all registered :class:`.Setting` objects by key, and then groups
+        then based on the first part of the key.
+        """
         keys = sorted(self.registry.keys(),
                       key=lambda x: self._sortable_key(x))
         groups = OrderedDict()
@@ -149,6 +171,9 @@ class ArgparseUsageInformation(object):
         return keys, groups
 
     def print_usage(self, out=None):
+        """
+        Leverages :mod:`argparse` to create human readable usage information.
+        """
         keys, groups = self.group_settings()
         usage_argparse = argparse.ArgumentParser(
             description=self.top_message, prog=self.name, add_help=False)
@@ -177,6 +202,10 @@ class ArgparseUsageInformation(object):
 
     @classmethod
     def check_flag(cls, flags):
+        """
+        Convenience method to quickly check if the specified flags were
+        provided on the command line.
+        """
         flag_argparse = argparse.ArgumentParser(add_help=False)
         flag_argparse.add_argument(*flags, dest="flag",
                                    action="store_true")

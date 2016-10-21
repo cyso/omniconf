@@ -22,20 +22,46 @@ from omniconf.setting import DEFAULT_REGISTRY as SETTING_REGISTRY
 import sys
 
 
-def help_requested(flags=None):
-    if not flags:
-        flags = ["-h", "--help"]
-    return ArgparseUsageInformation.check_flag(flags)
+def help_requested():
+    """
+    Returns True if `-h` or `--help` was specified on the command line.
+    """
+    return flag_requested(["-h", "--help"])
 
 
-def version_requested(flags=None):
-    if not flags:
-        flags = ["-v", "--version"]
+def version_requested():
+    """
+    Returns True if `-v` or `--version` was specified on the command line.
+    """
+    return flag_requested(["-v", "--version"])
+
+
+def flag_requested(flags):
+    """
+    Returns True if the specified list of flags were specified on the
+    command line.
+    """
     return ArgparseUsageInformation.check_flag(flags)
 
 
 def show_usage(setting_registry=None, name=None, top_message=None,
                bottom_message=None, out=None, exit=0):
+    """
+    Prints usage information based on :class:`.Setting` objects in the given
+    :class:`.SettingRegistry`. If no `setting_registry` is specified, the
+    default :class:`.SettingRegistry` is used.
+
+    If no `name` is specified, `sys.argv[0]` is used. Additionally, a header
+    and footer message may be supplied using `top_message` and `bottom_message`
+    message respectively.
+
+    By default the usage information is output to `sys.stderr`. This can be
+    overidden by specifying a different File-like object to `out`.
+
+    By default, this function will call `sys.exit` and stop the program with
+    exit code 0. This can be overridden by a specifying different value to
+    `exit`. Set to False to not exit.
+    """
     if not setting_registry:
         setting_registry = SETTING_REGISTRY
 
