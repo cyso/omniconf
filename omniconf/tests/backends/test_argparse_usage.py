@@ -17,6 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from collections import OrderedDict
+from mock import patch
 from omniconf.backends.argparse import ArgparseUsageInformation, \
                                         format_argparse_key
 from omniconf.setting import SettingRegistry, Setting
@@ -92,3 +93,10 @@ class TestArgparseUsageInformation(unittest.TestCase):
             if group == "_":
                 group = "optional arguments"
             self.assertIn(group + ":", message)
+
+    def test_argparse_usage_check_flag_not_specified(self):
+        self.assertFalse(self.usage.check_flag(["--nope"]))
+
+    def test_argparse_usage_check_flag_specified(self):
+        with patch('omniconf.backends.argparse.ARGPARSE_SOURCE', ["--yep"]):
+            self.assertTrue(self.usage.check_flag(["--yep"]))

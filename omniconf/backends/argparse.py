@@ -210,4 +210,4 @@ class ArgparseUsageInformation(object):
         flag_argparse.add_argument(*flags, dest="flag",
                                    action="store_true")
 
-        return flag_argparse.parse_known_args()[0].flag
+        return flag_argparse.parse_known_args(args=ARGPARSE_SOURCE)[0].flag
