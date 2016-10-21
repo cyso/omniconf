@@ -204,8 +204,8 @@ class VaultBackend(ConfigBackend):
 
         return None
 
-    def get_value(self, key):
-        parts = key.split(".")
+    def get_value(self, setting):
+        parts = setting.key.split(".")
         if self.prefix:
             parts.insert(0, self.prefix)
 

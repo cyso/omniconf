@@ -112,7 +112,7 @@ class ConfigRegistry(object):
                 continue
             for backend in backends:
                 try:
-                    self.set(setting.key, backend.get_value(setting.key))
+                    self.set(setting.key, backend.get_value(setting))
                 except KeyError:
                     pass
 

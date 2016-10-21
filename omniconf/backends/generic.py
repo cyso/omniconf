@@ -43,11 +43,11 @@ class ConfigBackend(object):
         """
         raise NotImplementedError("This method must be implemented")
 
-    def get_value(self, key):
+    def get_value(self, setting):
         """
-        Retrieves the value for the given key.
+        Retrieves the value for the given :class:`.Setting`.
         """
         section = self.config
-        for _key in key.split("."):
+        for _key in setting.key.split("."):
             section = section[_key]
         return section
