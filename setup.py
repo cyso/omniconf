@@ -25,8 +25,8 @@ DESCRIPTION = "A Python library that makes configuring your application "\
               "independent from your configuration backend."
 LONG_DESCRIPTION = open('README.rst').read()
 NAME = "omniconf"
-VERSION = "1.0.1"
-BUILD = "48437d1"
+VERSION = "1.1.0"
+BUILD = "f7d50ed"
 
 
 setup(
@@ -44,6 +44,9 @@ setup(
     extras_require={
         "configobj": [
             "configobj"
+        ],
+        "vault": [
+            "hvac"
         ],
         "yaml": [
             "PyYAML"

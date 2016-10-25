@@ -112,9 +112,12 @@ class ConfigRegistry(object):
                 continue
             for backend in backends:
                 try:
-                    self.set(setting.key, backend.get_value(setting.key))
+                    self.set(setting.key, backend.get_value(setting))
                 except KeyError:
                     pass
+                except ValueError as ve:
+                    raise ValueError("An invalid value was specified for "
+                                     "{0}: {1}".format(setting.key, str(ve)))
 
             if not self.has(setting.key) and setting.required:
                 raise UnconfiguredSettingError("No value was configured for "

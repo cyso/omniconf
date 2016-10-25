@@ -16,7 +16,9 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from omniconf.backends import available_backends
 from omniconf.backends.env import EnvBackend
+from omniconf.setting import Setting
 from mock import patch
 import nose.tools
 import os
@@ -63,6 +65,10 @@ CONFIGS = [
 ]
 
 
+def test_env_backend_in_available_backends():
+    nose.tools.assert_in(EnvBackend, available_backends)
+
+
 def test_env_backend_autoconfigure():
     prefix = "testconf"
     backend = EnvBackend.autoconfigure(
@@ -79,8 +85,9 @@ def test_env_backend_get_value():
 def _test_get_value(key, value, sideeffect):
     with patch.dict(os.environ, ENV_FILE):
         backend = EnvBackend(prefix="TEST")
+        setting = Setting(key=key, _type=str)
         if sideeffect:
             with nose.tools.assert_raises(sideeffect):
-                backend.get_value(key)
+                backend.get_value(setting)
         else:
-            nose.tools.assert_equal(backend.get_value(key), value)
+            nose.tools.assert_equal(backend.get_value(setting), value)

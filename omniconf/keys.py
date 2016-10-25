@@ -22,4 +22,12 @@ def join_key(*args):
     Convenience builder for dotted keys. Will join all True-ish positional
     arguments by dots.
     """
-    return ".".join([arg for arg in args if arg])
+    return join_key_parts(separator=".", parts=args)
+
+
+def join_key_parts(separator, parts):
+    """
+    Convenience builder for keys and paths. Will join all True-ish parts
+    using the given separator.
+    """
+    return separator.join([part for part in parts if part])

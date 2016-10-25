@@ -28,10 +28,13 @@ import nose.tools
 
 class TestConfigRegistry(unittest.TestCase):
     def setUp(self):
+        self.test_settings = [
+            Setting("key", _type=str, required=True),
+            Setting("default", _type=str, default="present")
+        ]
         self.setting_registry = SettingRegistry()
-        self.setting_registry.add(Setting("key", _type=str, required=True))
-        self.setting_registry.add(Setting("default", _type=str,
-                                          default="present"))
+        for setting in self.test_settings:
+            self.setting_registry.add(setting)
         self.config_registry = ConfigRegistry(
                                 setting_registry=self.setting_registry)
 
@@ -87,8 +90,8 @@ class TestConfigRegistry(unittest.TestCase):
         mock_backend.get_value.return_value = "value"
         self.config_registry.load([mock_backend])
 
-        mock_backend.get_value.assert_has_calls([call("key"), call("default")],
-                                                any_order=True)
+        mock_backend.get_value.assert_has_calls(
+            [call(setting) for setting in self.test_settings], any_order=True)
         self.assertEqual(self.config_registry.get("key"), "value")
         self.assertEqual(self.config_registry.get("default"), "value")
 
@@ -108,6 +111,13 @@ class TestConfigRegistry(unittest.TestCase):
         mock_backend.get_value.side_effect = KeyError("No value")
 
         with self.assertRaises(UnconfiguredSettingError):
+            self.config_registry.load([mock_backend])
+
+    def test_config_registry_load_value_error(self):
+        mock_backend = Mock()
+        mock_backend.get_value.side_effect = ValueError("Invalid value")
+
+        with self.assertRaises(ValueError):
             self.config_registry.load([mock_backend])
 
 

@@ -16,12 +16,13 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from omniconf.backends import available_backends
 from omniconf.backends.configobj import ConfigObjBackend
 from omniconf.config import ConfigRegistry
-from omniconf.setting import SettingRegistry
+from omniconf.setting import SettingRegistry, Setting
 try:
     from StringIO import StringIO
-except ImportError:
+except ImportError:  # pragma: nocover
     from io import StringIO
 import nose.tools
 
@@ -45,6 +46,10 @@ CONFIGS = [
 ]
 
 
+def test_configobj_backend_in_available_backends():
+    nose.tools.assert_in(ConfigObjBackend, available_backends)
+
+
 def test_configobj_backend_autoconfigure():
     prefix = "testconf"
     settings = SettingRegistry()
@@ -66,8 +71,9 @@ def test_configobj_backend_get_value():
 
 def _test_get_value(key, value, sideeffect):
     backend = ConfigObjBackend(StringIO(CONFIGOBJ_FILE))
+    setting = Setting(key=key, _type=str)
     if sideeffect:
         with nose.tools.assert_raises(sideeffect):
-            backend.get_value(key)
+            backend.get_value(setting)
     else:
-        nose.tools.assert_equal(backend.get_value(key), value)
+        nose.tools.assert_equal(backend.get_value(setting), value)

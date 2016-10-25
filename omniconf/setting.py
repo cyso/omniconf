@@ -52,6 +52,12 @@ class SettingRegistry(object):
         """
         return self.registry[key]
 
+    def keys(self):
+        """
+        Returns the registered keys.
+        """
+        return list(self.registry.keys())
+
     def list(self):
         """
         Returns the configured Settings as a list.
