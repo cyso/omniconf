@@ -57,6 +57,10 @@ class TestSettingsRegistry(unittest.TestCase):
     def test_setting_registry_get(self):
         self.assertEqual(self.registry.get("foo"), self.setting)
 
+    def test_setting_registry_keys(self):
+        self.assertEqual(self.registry.keys(),
+                         list(self.registry.registry.keys()))
+
     def test_setting_registry_list(self):
         self.assertEqual(self.registry.list(),
                          list(self.registry.registry.values()))
