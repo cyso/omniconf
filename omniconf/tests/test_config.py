@@ -113,6 +113,13 @@ class TestConfigRegistry(unittest.TestCase):
         with self.assertRaises(UnconfiguredSettingError):
             self.config_registry.load([mock_backend])
 
+    def test_config_registry_load_value_error(self):
+        mock_backend = Mock()
+        mock_backend.get_value.side_effect = ValueError("Invalid value")
+
+        with self.assertRaises(ValueError):
+            self.config_registry.load([mock_backend])
+
 
 class TestConfigMethod(unittest.TestCase):
     def setUp(self):
