@@ -154,6 +154,7 @@ class TestConfigMethod(unittest.TestCase):
         DEFAULT_REGISTRY.unset("foo")
         SETTING_REGISTRY.remove(_setting)
 
+
 VALUE_TESTS = [
     # Normal values
     ("foobar", "foobar", str, None),
