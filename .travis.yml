@@ -35,7 +35,6 @@ before_install:
     - if [ `uname -m` == "x86_64" ] || [ `uname -m` == "amd64" ]; then export ARCH="amd64"; else export ARCH="386"; fi
     - export PLATFORM=`uname -s | tr '[:upper:]' '[:lower:]'`
     - export VAULT_URL="https://releases.hashicorp.com/vault/0.6.1/vault_0.6.1_${PLATFORM}_${ARCH}.zip"
-    - wget $VAULT_URL -O vault.zip; unzip -o vault.zip; mv vault $HOME/bin; rm vault.zip
     - curl -vv -tlsv1 -o vault.zip $VAULT_URL; unzip -o vault.zip; mv vault $HOME/bin; rm vault.zip
 
 install:
