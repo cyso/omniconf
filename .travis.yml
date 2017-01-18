@@ -19,11 +19,14 @@ addons:
             - python3.4-dev
             - python3.5
             - python3.5-dev
+            - python3.6
+            - python3.6-dev
 env:
     - TOX_ENV=py27
     - TOX_ENV=py33
     - TOX_ENV=py34
     - TOX_ENV=py35
+    - TOX_ENV=py36
     - TOX_ENV=pypy
     - TOX_ENV=jython
     - TOX_ENV=flake8
