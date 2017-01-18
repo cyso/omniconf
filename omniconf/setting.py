@@ -70,6 +70,7 @@ class SettingRegistry(object):
         """
         del self.registry[self._key(setting)]
 
+
 DEFAULT_REGISTRY = SettingRegistry()
 """
 Global :class:`.SettingRegistry` which will be used when no specific

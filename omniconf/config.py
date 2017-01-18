@@ -123,6 +123,7 @@ class ConfigRegistry(object):
                 raise UnconfiguredSettingError("No value was configured for "
                                                "{0}".format(setting.key))
 
+
 DEFAULT_REGISTRY = ConfigRegistry()
 """
 Global :class:`.ConfigRegistry` which will be used when no specific
