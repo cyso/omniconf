@@ -1,3 +1,4 @@
+dist: trusty
 sudo: false
 language: python
 addons:
@@ -5,6 +6,9 @@ addons:
         sources:
             - deadsnakes
         packages:
+            - ca-certificates
+            - curl
+            - openssl
             - python3.5
             - python3.5-dev
 env:
