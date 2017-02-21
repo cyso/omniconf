@@ -50,7 +50,7 @@ methods (not yet implemented).
 This library aims to make configuring the application easier, and allows you to use multiple configuration backends
 transparently.
 
-For up-to-date examples, take a look at `Read the Docs <http://omniconf.readthedocs.io/en/latest/examples.html>`_.
+For up-to-date examples, take a look `here <http://omniconf.readthedocs.io/en/latest/examples.html>`_.
 
 License
 -------

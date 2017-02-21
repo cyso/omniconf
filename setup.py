@@ -25,8 +25,8 @@ DESCRIPTION = "A Python library that makes configuring your application "\
               "independent from your configuration backend."
 LONG_DESCRIPTION = open('README.rst').read()
 NAME = "omniconf"
-VERSION = "1.1.0"
-BUILD = "f7d50ed"
+VERSION = "1.1.1"
+BUILD = "1064891"
 
 
 setup(
@@ -68,6 +68,7 @@ setup(
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
         "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: "
             "Implementation :: CPython",
         "Programming Language :: Python :: "
