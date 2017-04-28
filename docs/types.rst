@@ -58,3 +58,14 @@ classes can also be used. Any class that has exactly one (mandatory) parameter i
    class CustomType(object):
       def __init__(self, src, foo=bar):
          self.src = src
+
+Some custom types are provided with |project|, which may be used as-is, but also serve as examples.
+
+Separator Sequence
+^^^^^^^^^^^^^^^^^^
+
+A somewhat fancy name for what one might normally call a comma separated list. The implementation is not
+limited to just commas however, and can use any string.
+
+.. autofunction :: omniconf.types.separator_sequence
+.. autoclass :: omniconf.types.SeparatorSequence
