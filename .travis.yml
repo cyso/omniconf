@@ -29,10 +29,10 @@ install:
     - curl -fSL -tlsv1 -o vault.zip $VAULT_URL && unzip -o vault.zip && mv vault $HOME/bin && rm vault.zip
     - if [ -n "$JYTHON_VERSION" ]; then export JYTHON_URL="http://search.maven.org/remotecontent?filepath=org/python/jython-installer/${JYTHON_VERSION}/jython-installer-${JYTHON_VERSION}.jar"; fi
     - if [ -n "$JYTHON_VERSION" ]; then curl -fSL -o jython_installer.jar $JYTHON_URL && echo "$JYTHON_SHASUM *jython_installer.jar" | shasum -c - && java -jar jython_installer.jar -s -d $HOME/jython && rm jython_installer.jar; fi
-    - if [ -n "$JYTHON_VERISON" ]; then export PATH=$HOME/jython/bin:$PATH; fi
 
 before_script:
     - pip install -U pip setuptools tox python-coveralls
+    - if [ -n "$JYTHON_VERSION" ]; then export PATH=$HOME/jython/bin:$PATH; fi
     - tox -e setup
 
 script:
