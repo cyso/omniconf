@@ -1,54 +1,43 @@
 dist: trusty
 sudo: false
 language: python
-addons:
-    apt:
-        sources:
-            - deadsnakes
-        packages:
-            - ca-certificates
-            - curl
-            - openssl
-            - pypy
-            - pypy-dev
-            - python2.7
-            - python2.7-dev
-            - python3.3
-            - python3.3-dev
-            - python3.4
-            - python3.4-dev
-            - python3.5
-            - python3.5-dev
-            - python3.6
-            - python3.6-dev
-env:
-    - TOX_ENV=py27
-    - TOX_ENV=py33
-    - TOX_ENV=py34
-    - TOX_ENV=py35
-    - TOX_ENV=py36
-    - TOX_ENV=pypy
-    - TOX_ENV=jython
-    - TOX_ENV=flake8
+python:
+  - 2.7
+  - 3.3
+  - 3.4
+  - 3.5
+  - 3.6
+  - pypy
+matrix:
+  include:
+    - python: 2.7
+      env:
+        - JYTHON_VERSION=2.7.0
+        - JYTHON_SHASUM=b08d73b5df7d95e35e7b8dcaf1558025cf24f0f1
+        - TOX_ENV=jython
+    - python: 3.4
+      env:
+        - TOX_ENV=flake8
 
 before_install:
-    - mkdir $HOME/bin
-    - export JYTHON_URL='http://search.maven.org/remotecontent?filepath=org/python/jython-installer/2.7.0/jython-installer-2.7.0.jar'
-    - if [ "$TOX_ENV" == "jython" ]; then wget $JYTHON_URL -O jython_installer.jar; java -jar jython_installer.jar -s -d $HOME/jython; fi
     - if [ `uname -m` == "x86_64" ] || [ `uname -m` == "amd64" ]; then export ARCH="amd64"; else export ARCH="386"; fi
     - export PLATFORM=`uname -s | tr '[:upper:]' '[:lower:]'`
     - export VAULT_URL="https://releases.hashicorp.com/vault/0.6.1/vault_0.6.1_${PLATFORM}_${ARCH}.zip"
-    - curl -vv -tlsv1 -o vault.zip $VAULT_URL; unzip -o vault.zip; mv vault $HOME/bin; rm vault.zip
+    - mkdir $HOME/bin
 
 install:
-    - pip install tox python-coveralls
+    - curl -fSL -tlsv1 -o vault.zip $VAULT_URL && unzip -o vault.zip && mv vault $HOME/bin && rm vault.zip
+    - if [ -n "$JYTHON_VERSION" ]; then export JYTHON_URL="http://search.maven.org/remotecontent?filepath=org/python/jython-installer/${JYTHON_VERSION}/jython-installer-${JYTHON_VERSION}.jar"; fi
+    - if [ -n "$JYTHON_VERSION" ]; then curl -fSL -o jython_installer.jar $JYTHON_URL && echo "$JYTHON_SHASUM *jython_installer.jar" | shasum -c - && java -jar jython_installer.jar -s -d $HOME/jython && rm jython_installer.jar; fi
+    - if [ -n "$JYTHON_VERISON" ]; then export PATH=$HOME/jython/bin:$PATH; fi
 
 before_script:
-    - if [ "$TOX_ENV" == "jython" ]; then export PATH=$HOME/jython/bin:$PATH; fi
+    - pip install -U pip setuptools tox python-coveralls
     - tox -e setup
 
 script:
-    - tox -e $TOX_ENV
+    - if [ -z "$TOX_ENV" ]; then tox -e py; fi
+    - if [ -n "$TOX_ENV" ]; then tox -e $TOX_ENV; fi
 
 after_success:
     - coveralls -i -d reports/coverage-*.dat
