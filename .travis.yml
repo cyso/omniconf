@@ -36,8 +36,8 @@ before_script:
     - tox -e setup
 
 script:
-    - if [ -z "$TOX_ENV" ]; then tox -e py; fi
-    - if [ -n "$TOX_ENV" ]; then tox -e $TOX_ENV; fi
+    - if [ -z "$TOX_ENV" ]; then export TOX_ENV=py; fi
+    - tox -e $TOX_ENV
 
 after_success:
     - coveralls -i -d reports/coverage-*.dat
