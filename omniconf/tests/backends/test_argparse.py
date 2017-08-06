@@ -18,7 +18,8 @@
 
 from omniconf.backends import available_backends
 from omniconf.backends.argparse import ArgparseBackend
-from omniconf.setting import Setting
+from omniconf.config import ConfigRegistry
+from omniconf.setting import Setting, SettingRegistry
 from mock import patch
 import nose.tools
 
@@ -90,3 +91,24 @@ def _test_get_value(setting, value, sideeffect, prefix):
                 backend.get_value(setting)
         else:
             nose.tools.assert_equal(backend.get_value(setting), value)
+
+
+def test_mixed_flags_and_settings():
+    MIXED_ARGS = [
+        "script.py",
+        "--verbose",
+        "--foo bar",
+        "--bar baz"
+    ]
+
+    settings = SettingRegistry()
+    settings.add(Setting(key="verbose", _type=bool, default=False))
+    settings.add(Setting(key="foo", _type=str))
+    configs = ConfigRegistry(setting_registry=settings)
+
+    with patch('omniconf.backends.argparse.ARGPARSE_SOURCE', MIXED_ARGS):
+        backend = ArgparseBackend(prefix=None)
+        configs.load([backend])
+
+        nose.tools.assert_true(configs.get("verbose"))
+        nose.tools.assert_equal(configs.get("foo"), "bar")
