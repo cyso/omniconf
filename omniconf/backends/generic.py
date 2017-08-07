@@ -59,5 +59,8 @@ class ConfigBackend(object):
         """
         values = []
         for setting in settings:
-            values.append((setting, self.get_value(setting)))
+            try:
+                values.append((setting, self.get_value(setting)))
+            except KeyError:
+                pass
         return values

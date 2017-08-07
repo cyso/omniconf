@@ -114,8 +114,6 @@ class ConfigRegistry(object):
                     continue
                 try:
                     self.set(setting.key, value)
-                except KeyError:
-                    pass
                 except ValueError as ve:
                     raise ValueError("An invalid value was specified for "
                                      "{0}: {1}".format(setting.key, ve))

@@ -17,6 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 from omniconf.backends.generic import ConfigBackend
+from omniconf.setting import Setting
 import nose.tools
 
 
@@ -27,3 +28,21 @@ def test_config_backend_autoconfigure():
 
 def test_config_backend_autodetect_settings():
     nose.tools.assert_equal(ConfigBackend.autodetect_settings(None), ())
+
+
+def test_config_backend_get_values_no_settings():
+    nose.tools.assert_equal(ConfigBackend().get_values([]), [])
+
+
+def test_config_backend_missing_value():
+    backend = ConfigBackend(conf={})
+    setting = Setting("foo", _type=str)
+    values = backend.get_values([setting])
+    nose.tools.assert_equal(values, [])
+
+
+def test_config_backend_get_values():
+    backend = ConfigBackend(conf={"foo": "bar"})
+    setting = Setting("foo", _type=str)
+    values = backend.get_values([setting])
+    nose.tools.assert_equal(values, [(setting, "bar")])

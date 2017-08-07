@@ -110,15 +110,18 @@ class TestConfigRegistry(unittest.TestCase):
 
     def test_config_registry_load_with_unavailable_values(self):
         mock_backend = Mock(autospec=ConfigBackend)
-        mock_backend.get_values.side_effect = \
-            UnconfiguredSettingError("No value")
+        mock_backend.get_values.return_value = []
 
         with self.assertRaises(UnconfiguredSettingError):
             self.config_registry.load([mock_backend])
 
     def test_config_registry_load_value_error(self):
+        int_setting = Setting(key="foo", _type=int)
+        self.setting_registry.add(int_setting)
+
         mock_backend = Mock(autospec=ConfigBackend)
-        mock_backend.get_values.side_effect = ValueError("Invalid value")
+        mock_backend.get_values.return_value = [
+            (int_setting, "bar")]
 
         with self.assertRaises(ValueError):
             self.config_registry.load([mock_backend])
