@@ -24,7 +24,6 @@ from mock import patch
 import nose.tools
 
 ARGS_FILE = [
-    "script.py",
     "--foo", "bar",
     "--section-bar", "baz",
     "--section-subsection-baz", "foo",
@@ -35,7 +34,6 @@ ARGS_FILE = [
 ]
 
 PREFIX_ARGS_FILE = [
-    "script.py",
     "--prefix-foo", "bar",
     "--prefix-section-bar", "baz",
     "--prefix-section-subsection-baz", "foo",
@@ -50,10 +48,8 @@ CONFIGS = [
     (Setting(key="foo", _type=str), "bar", None),
     (Setting(key="section.bar", _type=str), "baz", None),
     (Setting(key="section.subsection.baz", _type=str), "foo", None),
-    (Setting(key="", _type=str), None, KeyError),
-    (Setting(key="section", _type=str), None, KeyError),
-    (Setting(key="unknown", _type=str), None, KeyError),
 
+    (Setting(key="", _type=str), None, KeyError),
     (Setting(key="missing.value", _type=str), None, KeyError),
 
     (Setting(key="bool.normal", _type=bool), "1", None),
@@ -77,33 +73,39 @@ def test_argparse_backend_autoconfigure():
 
 
 def test_argparse_backend_get_value():
+    with nose.tools.assert_raises(NotImplementedError):
+        backend = ArgparseBackend()
+        backend.get_value(None)
+
+
+def test_argparse_backend_get_values():
     for setting, value, sideeffect in CONFIGS:
-        yield _test_get_value, setting, value, sideeffect, None
-        yield _test_get_value, setting, value, sideeffect, 'prefix'
+        yield _test_get_values, setting, value, sideeffect, None
+        yield _test_get_values, setting, value, sideeffect, 'prefix'
 
 
-def _test_get_value(setting, value, sideeffect, prefix):
+def _test_get_values(setting, value, sideeffect, prefix):
     with patch('omniconf.backends.argparse.ARGPARSE_SOURCE',
                ARGS_FILE if not prefix else PREFIX_ARGS_FILE):
         backend = ArgparseBackend(prefix=prefix)
         if sideeffect:
             with nose.tools.assert_raises(sideeffect):
-                backend.get_value(setting)
+                backend.get_values([setting])
         else:
-            nose.tools.assert_equal(backend.get_value(setting), value)
+            nose.tools.assert_equal(backend.get_values([setting])[0][1], value)
 
 
 def test_mixed_flags_and_settings():
     MIXED_ARGS = [
-        "script.py",
-        "--verbose",
-        "--foo bar",
-        "--bar baz"
+        "--verbose", "--loud",
+        "--foo-bar", "baz",
+        "--bar", "baz"
     ]
 
     settings = SettingRegistry()
     settings.add(Setting(key="verbose", _type=bool, default=False))
-    settings.add(Setting(key="foo", _type=str))
+    settings.add(Setting(key="loud", _type=bool, default=True))
+    settings.add(Setting(key="foo.bar", _type=str))
     configs = ConfigRegistry(setting_registry=settings)
 
     with patch('omniconf.backends.argparse.ARGPARSE_SOURCE', MIXED_ARGS):
@@ -111,4 +113,5 @@ def test_mixed_flags_and_settings():
         configs.load([backend])
 
         nose.tools.assert_true(configs.get("verbose"))
-        nose.tools.assert_equal(configs.get("foo"), "bar")
+        nose.tools.assert_false(configs.get("loud"))
+        nose.tools.assert_equal(configs.get("foo.bar"), "baz")
