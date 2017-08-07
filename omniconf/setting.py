@@ -16,13 +16,15 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from collections import OrderedDict
+
 
 class SettingRegistry(object):
     """
     A registry of defined :class:`Setting` objects.
     """
     def __init__(self):
-        self.registry = {}
+        self.registry = OrderedDict()
 
     def _key(self, setting):
         if isinstance(setting, str):
@@ -31,7 +33,7 @@ class SettingRegistry(object):
             return setting.key
 
     def clear(self):
-        self.registry = {}
+        self.registry = OrderedDict()
 
     def add(self, setting):
         """
