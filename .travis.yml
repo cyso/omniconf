@@ -7,7 +7,7 @@ python:
   - 3.4
   - 3.5
   - 3.6
-  - pypy-5.4.1  # PyPy2.7, latest available on Travis
+  - pypy-5.7.1     # Python 2.7 compatible
 matrix:
   include:
     - python: 2.7
