@@ -34,7 +34,7 @@ def test_config_backend_get_values_no_settings():
     nose.tools.assert_equal(ConfigBackend().get_values([]), [])
 
 
-def test_config_backend_missing_value():
+def test_config_backend_get_values_missing_value():
     backend = ConfigBackend(conf={})
     setting = Setting("foo", _type=str)
     values = backend.get_values([setting])
