@@ -13,8 +13,8 @@ matrix:
   include:
     - python: 2.7
       env:
-        - JYTHON_VERSION=2.7.0
-        - JYTHON_SHASUM=b08d73b5df7d95e35e7b8dcaf1558025cf24f0f1
+        - JYTHON_VERSION=2.7.1
+        - JYTHON_SHASUM=392119a4c89fa1b234225d83775e38dbd149989f
         - TOX_ENV=jython
     - python: 3.4
       env:
