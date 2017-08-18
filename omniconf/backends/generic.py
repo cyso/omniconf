@@ -51,3 +51,16 @@ class ConfigBackend(object):
         for _key in setting.key.split("."):
             section = section[_key]
         return section
+
+    def get_values(self, settings):
+        """
+        Retrieves a list of :class:`.Setting`s all at once. Values are returned
+        as a list of tuples containing the :class:`.Setting` and value.
+        """
+        values = []
+        for setting in settings:
+            try:
+                values.append((setting, self.get_value(setting)))
+            except KeyError:
+                pass
+        return values

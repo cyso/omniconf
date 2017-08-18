@@ -1,0 +1,175 @@
+CHANGES
+=======
+
+* Update Travis Jython to version 2.7.1
+* Add Travis PyPy3.5 version 5.8.0
+* Update Travis PyPy to version 5.7.1
+* Test all arguments
+* Clarify ArgparseBackend.get\_values documentation
+* Fix test naming consistency
+* Upgrade setuptools in a separate step on Travis
+* Don't error when bin directory already exists
+* Remove obsolete code paths and update tests
+* Reimplement Argparse config loading to load all Settings in one pass
+* Refactor Setting value loading to allow backend to load all Settings at once
+* Add test to reproduce argparse flag parsing bug
+* Move metadata and requirements to setup.cfg, and enable pbr
+* Avoid double if statement
+* Override PATH after installing tox, but before running tests
+* Specify specific version of PyPy to test
+* Restructure Travis CI YAML file to use normal python stages
+* Fix Jython tests by pinning an older version of requests
+
+1.1.1
+-----
+
+* Bump version
+* Add Python 3.6 to supported Python list
+* Add Python 3.6 to envlist and Travis
+* Enable rednose output
+* Remove useless dependency on coverage
+* Avoid requests 2.12 on Jython
+* Enable rednose colouring for test result output
+* Remove redundant call to wget
+* Fix new stricter flake8 errors
+* Install all Python versions explicitely
+* Use curl to download Vault
+* Switch to Trusty image
+* Fix README links and add check to tox
+
+1.1.0
+-----
+
+* Update README.rst
+* Bump version
+* Enhance ValueErrors thrown by Backends with the key that is currently being handled
+* Cover missing lines
+* Provide documentation for usage functionality
+* Add help\_requested, version\_requested and show\_usage
+* Add convenience method to quickly check for a single flag
+* Do not automatically add -h/--help flags in ArgparseBackend.get\_value
+* Shorten metavar name to improve readability
+* Use refactored Argparse.add\_argument method
+* Rename help\_argparse to usage\_argparse
+* Refactor ArgparseBackend argument building logic to separate method
+* Add ArgparseUsageInformation for creating CLI help information
+* Add SettingRegistry.keys()
+* Refactor argparse key formatting logic to separate function
+* Support CLI flags
+* Disable confusing output from argparse
+* Handle CLI arguments with an unexpected missing argument
+* Refactor argparse tests to use Setting objects directly
+* Refactor new Vault backend's get\_value method
+* Update tests
+* Refactor Backend.get\_value to use a Setting object directly
+* Mark SkipTest as no cover
+* Handle unavailability of vault gracefully during tests
+* Remove client.is\_authenticated assertion from setUp
+* Documentation for the new behaviour
+* Fix flake8 errors
+* Support multiple documents in yaml file
+* Actually read file contents
+* Make list of supported backends dynamic
+* Don't cover StringIO import error case and Manager stopping on error
+* Add documentation to VaultBackend
+* Allow overriding the Vault base path
+* Add VaultBackend to available\_backends, and add tests that checks this for all backends
+* Restore Python 3 compatibility by using items() instead of iteritems()
+* Fix Flake8 errors in Vault backend and tests
+* Test VaultBackend autoconfiguration
+* Test Vault setup and key retrieval
+* Setup Vault on Travis
+* Add first implementation of Vault backend
+* Add dependency on hvac
+* Lower shields max cache age to 15 minutes
+* Fix mistakes in examples
+
+1.0.1
+-----
+
+* Ignore PyPi build directories
+* Fix description
+* Bump version
+* Add Python implementation batch to README
+* Convert README to ReST format
+* Only generate universal wheel packages
+
+1.0
+---
+
+* Bump version
+* Also add major Python versions to classifier list
+* Add license and contribution information to README
+* Update README with badges and documentation link
+* Add coveralls support
+* Add Travis CI config
+* Add extra documentation on prefixes
+* Set theme to default
+* Add requirements.txt for ReadTheDocs
+* Actually use the backends parameter of omniconf\_load
+* Add SettingRegistry.clear()
+* Test all codepaths of unrepr
+* Add test for ConfigRegistry.clear()
+* Avoid calling unrepr on values of the right type
+* Retrieve autoconfigure Settings from all available backends
+* Offload key building logic to join\_key
+* Make autoconfigure\_prefix check specifically for None
+* Ignore \_\_pycache\_\_ files and directories
+* Small documentation fixes
+* Add documentation on how prefixes are used
+* Cover missed line in ConfigBackend
+* Fix flake8 errors
+* Remove invalid use of global
+* Allow configurable prefix for autoconfigure and change autodetect\_settings to a method
+* Add flake8 tox target
+* Merged feature/python-3-support into develop
+* Add Python 3.3 and Jython to tox envlist
+* Add missing dependencies for Sphinx step
+* Add specific build step for Jython
+* Add classifiers to setup.py
+* Remove setup\_requires, we use tox now
+* Add coverage and Sphinx steps to tox.ini
+* Add pypy to envlist
+* Allow patching of sys.argv
+* Cast dict.values() to list()
+* Import StringIO from io on Python 3
+* Include all omniconf packages
+* Add tox config
+* Cross-reference code and documentation
+* Remove modindex
+* Add documentation
+* Include Sphinx and add base docs folder
+* Fix flake8 errors
+* Also test failures when converting types
+* Remove reference to removed class
+* Convert certain types using ast
+* Add unit tests for loading logic, and fix bugs
+* Also include autodetection\_backends in \_\_all\_\_
+* Add tests for Registry get and list methods
+* Define a generic ConfigBackend, and refactor all existing backends
+* Do not cover ImportErrors during Backend discovery
+* Fix signature of setting()
+* Actually test YamlBackend with YAML
+* Add autoconfigure functionality
+* EnvBackend no longer assumes a prefix
+* Determine available backends based on available dependencies
+* Allow settings to be marked as required
+* Add ConfigRegistry.clear
+* Consistently name SettingRegistry and ConfigRegistry
+* Also test ArgparseBackend with prefix
+* Add argparse env support
+* Properly name test methods
+* Add Env backend support
+* Add YAML backend support
+* Add JSON backend support
+* Add ConfigObj backend support
+* Add basic documentation
+* Test all the things and fix related bugs
+* Fix license header
+* First implementation of config.py
+* Change to instance rather that static class
+* Add starting point for config.py and setting.py
+* Add setup.py and LICENSE
+* Add .gitignore
+* Add initial design as a README file
+* Initial commit
