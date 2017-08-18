@@ -99,13 +99,14 @@ def test_mixed_flags_and_settings():
     MIXED_ARGS = [
         "--verbose", "--loud",
         "--foo-bar", "baz",
-        "--bar", "baz"
+        "--bar", "buzz"
     ]
 
     settings = SettingRegistry()
     settings.add(Setting(key="verbose", _type=bool, default=False))
     settings.add(Setting(key="loud", _type=bool, default=True))
     settings.add(Setting(key="foo.bar", _type=str))
+    settings.add(Setting(key="bar", _type=str))
     configs = ConfigRegistry(setting_registry=settings)
 
     with patch('omniconf.backends.argparse.ARGPARSE_SOURCE', MIXED_ARGS):
@@ -115,3 +116,4 @@ def test_mixed_flags_and_settings():
         nose.tools.assert_true(configs.get("verbose"))
         nose.tools.assert_false(configs.get("loud"))
         nose.tools.assert_equal(configs.get("foo.bar"), "baz")
+        nose.tools.assert_equal(configs.get("bar"), "buzz")
