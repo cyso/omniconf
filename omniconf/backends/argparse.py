@@ -66,13 +66,16 @@ class ArgparseBackend(ConfigBackend):
                 return parser.add_argument(argument, action="store_false")
             else:
                 return parser.add_argument(argument, action="store_true")
-        else:
-            return parser.add_argument(argument)
+        return parser.add_argument(argument)
 
     def get_value(self, setting):
+        raise NotImplementedError("get_value is not implemented for "
+                                  "ArgparseBackend, use get_values instead.")
+
+    def get_values(self, settings):
         """
-        Retrieves the value for the given :class:`.Setting`. Keys are
-        converted as follows:
+        Process the given list :class:`.Setting` objects, and retrieve the
+        values. Keys are converted as follows:
 
         * Dots are replaced by dashes (-).
         * The key is lowercased.
@@ -92,26 +95,31 @@ class ArgparseBackend(ConfigBackend):
         * Settings with `_type=bool`, and where the default value is False will
           be specified as an argparse argument with `action=store_true`.
         """
-        _key, _prop, _arg = format_argparse_key(setting.key, self.prefix)
-
-        if not _key:
-            raise KeyError("Empty keys are not allowed")
         parser = argparse.ArgumentParser(add_help=False)
 
         # Disable forced output from argparse we don't want to display
         parser.print_usage = suppress_output
         parser._print_message = suppress_output
 
-        ArgparseBackend.add_argument(parser, _arg, setting)
+        for setting in settings:
+            if not setting.key:
+                raise KeyError("Empty keys are not allowed")
+            _key, _prop, _arg = format_argparse_key(setting.key, self.prefix)
+            ArgparseBackend.add_argument(parser, _arg, setting)
 
         try:
             args = parser.parse_known_args(args=ARGPARSE_SOURCE)[0]
         except SystemExit:
             raise KeyError("Error parsing value for {0}".format(setting.key))
 
-        if getattr(args, _prop) is None:
-            raise KeyError("{0} has no value".format(setting.key))
-        return getattr(args, _prop)
+        arguments = vars(args)
+        values = []
+        for setting in settings:
+            _, _prop, _ = format_argparse_key(setting.key, self.prefix)
+            if _prop in arguments:
+                values.append((setting, arguments[_prop]))
+
+        return values
 
 
 class ArgparseUsageInformation(object):

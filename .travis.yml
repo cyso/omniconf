@@ -23,7 +23,7 @@ before_install:
     - if [ `uname -m` == "x86_64" ] || [ `uname -m` == "amd64" ]; then export ARCH="amd64"; else export ARCH="386"; fi
     - export PLATFORM=`uname -s | tr '[:upper:]' '[:lower:]'`
     - export VAULT_URL="https://releases.hashicorp.com/vault/0.6.1/vault_0.6.1_${PLATFORM}_${ARCH}.zip"
-    - mkdir $HOME/bin
+    - mkdir -p $HOME/bin
 
 install:
     - curl -fSL -tlsv1 -o vault.zip $VAULT_URL && unzip -o vault.zip && mv vault $HOME/bin && rm vault.zip
@@ -31,7 +31,9 @@ install:
     - if [ -n "$JYTHON_VERSION" ]; then curl -fSL -o jython_installer.jar $JYTHON_URL && echo "$JYTHON_SHASUM *jython_installer.jar" | shasum -c - && java -jar jython_installer.jar -s -d $HOME/jython && rm jython_installer.jar; fi
 
 before_script:
-    - pip install -U pip setuptools tox python-coveralls
+    - pip install -U setuptools
+    - pip install -U pip tox python-coveralls
+    - pip freeze --all
     - if [ -n "$JYTHON_VERSION" ]; then export PATH=$HOME/jython/bin:$PATH; fi
     - tox -e setup
 

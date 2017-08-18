@@ -17,12 +17,13 @@
 # <http://www.gnu.org/licenses/>.
 
 import unittest
+from omniconf.backends.generic import ConfigBackend
 from omniconf.config import ConfigRegistry, config, DEFAULT_REGISTRY, \
                             SETTING_REGISTRY
 from omniconf.exceptions import UnknownSettingError, \
                                 UnconfiguredSettingError
 from omniconf.setting import SettingRegistry, Setting
-from mock import Mock, call
+from mock import Mock
 import nose.tools
 
 
@@ -86,18 +87,19 @@ class TestConfigRegistry(unittest.TestCase):
             self.config_registry.get("key")
 
     def test_config_registry_load(self):
-        mock_backend = Mock()
-        mock_backend.get_value.return_value = "value"
+        mock_backend = Mock(autospec=ConfigBackend)
+        mock_backend.get_values.return_value = [(s, "value")
+                                                for s in self.test_settings]
         self.config_registry.load([mock_backend])
 
-        mock_backend.get_value.assert_has_calls(
-            [call(setting) for setting in self.test_settings], any_order=True)
+        mock_backend.get_values.assert_called_once_with(self.test_settings)
         self.assertEqual(self.config_registry.get("key"), "value")
         self.assertEqual(self.config_registry.get("default"), "value")
 
     def test_config_registry_load_with_previous_values(self):
-        mock_backend = Mock()
-        mock_backend.get_value.return_value = "value"
+        mock_backend = Mock(autospec=ConfigBackend)
+        mock_backend.get_values.return_value = [(s, "value")
+                                                for s in self.test_settings]
         self.config_registry.set("key", "other")
         self.config_registry.set("default", "other")
 
@@ -107,15 +109,19 @@ class TestConfigRegistry(unittest.TestCase):
         self.assertEqual(self.config_registry.get("default"), "other")
 
     def test_config_registry_load_with_unavailable_values(self):
-        mock_backend = Mock()
-        mock_backend.get_value.side_effect = KeyError("No value")
+        mock_backend = Mock(autospec=ConfigBackend)
+        mock_backend.get_values.return_value = []
 
         with self.assertRaises(UnconfiguredSettingError):
             self.config_registry.load([mock_backend])
 
     def test_config_registry_load_value_error(self):
-        mock_backend = Mock()
-        mock_backend.get_value.side_effect = ValueError("Invalid value")
+        int_setting = Setting(key="foo", _type=int)
+        self.setting_registry.add(int_setting)
+
+        mock_backend = Mock(autospec=ConfigBackend)
+        mock_backend.get_values.return_value = [
+            (int_setting, "bar")]
 
         with self.assertRaises(ValueError):
             self.config_registry.load([mock_backend])

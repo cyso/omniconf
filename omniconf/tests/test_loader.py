@@ -23,10 +23,12 @@ from mock import Mock, patch
 import unittest
 
 autodetection_mock = Mock(autospec=ConfigBackend)
+autodetection_mock().get_values.return_value = []
 
 autoconfigure_mock = Mock(autospec=ConfigBackend)
+autoconfigure_mock().get_values.return_value = []
 autoconfigure_mock.autodetect_settings.return_value = [
-    Setting("omniconf.foo", _type=str, required=True)]
+    Setting("omniconf.foo", _type=str)]
 autoconfigure_mock.autoconfigure.return_value = autoconfigure_mock
 
 

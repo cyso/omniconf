@@ -16,6 +16,7 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
+from collections import OrderedDict
 from omniconf.exceptions import UnknownSettingError, UnconfiguredSettingError
 from omniconf.setting import DEFAULT_REGISTRY as SETTING_REGISTRY
 import ast
@@ -41,7 +42,7 @@ class ConfigRegistry(object):
         self.clear()
 
     def clear(self):
-        self.registry = {}
+        self.registry = OrderedDict()
 
     def set(self, key, value):
         """
@@ -107,21 +108,24 @@ class ConfigRegistry(object):
         was attempting to load, and no value found and no default was set, an
         UnconfiguredSettingError is raised.
         """
-        for setting in self.settings.list():
-            if setting.key in self.registry:
-                continue
-            for backend in backends:
+        for backend in backends:
+            for setting, value in backend.get_values(self.settings.list()):
+                if setting.key in self.registry:
+                    continue
                 try:
-                    self.set(setting.key, backend.get_value(setting))
-                except KeyError:
-                    pass
+                    self.set(setting.key, value)
                 except ValueError as ve:
                     raise ValueError("An invalid value was specified for "
-                                     "{0}: {1}".format(setting.key, str(ve)))
+                                     "{0}: {1}".format(setting.key, ve))
 
+        missing_settings = []
+        for setting in self.settings.list():
             if not self.has(setting.key) and setting.required:
-                raise UnconfiguredSettingError("No value was configured for "
-                                               "{0}".format(setting.key))
+                missing_settings.append(setting.key)
+        if missing_settings:
+            raise UnconfiguredSettingError("No value was configured for: {0}"
+                                           .format(", "
+                                                   .join(missing_settings)))
 
 
 DEFAULT_REGISTRY = ConfigRegistry()
