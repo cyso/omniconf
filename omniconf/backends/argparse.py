@@ -74,8 +74,8 @@ class ArgparseBackend(ConfigBackend):
 
     def get_values(self, settings):
         """
-        Retrieves the value for the given :class:`.Setting`. Keys are
-        converted as follows:
+        Process the given list :class:`.Setting` objects, and retrieve the
+        values. Keys are converted as follows:
 
         * Dots are replaced by dashes (-).
         * The key is lowercased.
