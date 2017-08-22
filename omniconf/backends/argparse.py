@@ -116,7 +116,7 @@ class ArgparseBackend(ConfigBackend):
         values = []
         for setting in settings:
             _, _prop, _ = format_argparse_key(setting.key, self.prefix)
-            if _prop in arguments:
+            if _prop in arguments and arguments[_prop] is not None:
                 values.append((setting, arguments[_prop]))
 
         return values

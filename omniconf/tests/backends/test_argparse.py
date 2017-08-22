@@ -51,6 +51,7 @@ CONFIGS = [
 
     (Setting(key="", _type=str), None, KeyError),
     (Setting(key="missing.value", _type=str), None, KeyError),
+    (Setting(key="missing.arg", _type=str), None, IndexError),  # Raise in test
 
     (Setting(key="bool.normal", _type=bool), "1", None),
     (Setting(key="bool.true", _type=bool, default=False), True, None),
@@ -90,9 +91,10 @@ def _test_get_values(setting, value, sideeffect, prefix):
         backend = ArgparseBackend(prefix=prefix)
         if sideeffect:
             with nose.tools.assert_raises(sideeffect):
-                backend.get_values([setting])
+                setting, config = backend.get_values([setting])[0]
         else:
-            nose.tools.assert_equal(backend.get_values([setting])[0][1], value)
+            setting, config = backend.get_values([setting])[0]
+            nose.tools.assert_equal(config, value)
 
 
 def test_mixed_flags_and_settings():
