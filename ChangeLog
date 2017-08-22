@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+* Only set values from ArgparseBackend if they are not None
+
+1.2.0
+-----
+
+* Add AUTHORS and ChangeLog
 * Update Travis Jython to version 2.7.1
 * Add Travis PyPy3.5 version 5.8.0
 * Update Travis PyPy to version 5.7.1
