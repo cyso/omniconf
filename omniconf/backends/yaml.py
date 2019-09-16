@@ -31,7 +31,7 @@ class YamlBackend(ConfigBackend):
 
     def __init__(self, conf):
         loaded_conf = {}
-        for doc in yaml.load_all(conf):
+        for doc in yaml.full_load_all(conf):
             loaded_conf.update(doc)
 
         super(YamlBackend, self).__init__(loaded_conf)
