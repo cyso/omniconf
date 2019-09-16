@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import hvac
-from hvac.tests.util import ServerManager
+from hvac.tests.utils import ServerManager
 from mock import patch, ANY
 from nose.plugins.skip import SkipTest
 from omniconf.backends import available_backends
@@ -90,9 +90,9 @@ class TestVaultBackend(unittest.TestCase):
                 cls.root_client.set_policy("deny", DENY_POLICY)
                 cls.root_client.set_policy("normal", NORMAL_POLICY)
                 cls.deny_token = cls.root_client.create_token(
-                    id="DENY", policies=["deny"])['auth']['client_token']
+                    token_id="DENY", policies=["deny"])['auth']['client_token']
                 cls.normal_token = cls.root_client.create_token(
-                    id="NORMAL", policies=["normal"])['auth']['client_token']
+                    token_id="NORMAL", policies=["normal"])['auth']['client_token']
             except:  # pragma: nocover
                 cls.manager.stop()
                 raise
