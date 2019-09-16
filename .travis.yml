@@ -3,10 +3,10 @@ sudo: false
 language: python
 python:
   - 2.7
-  - 3.3
   - 3.4
   - 3.5
   - 3.6
+  - 3.7
   - pypy-5.7.1     # Python 2.7 compatible
   - pypy3.5-5.8.0  # Python 3.5 compatible
 matrix:
@@ -16,7 +16,7 @@ matrix:
         - JYTHON_VERSION=2.7.1
         - JYTHON_SHASUM=392119a4c89fa1b234225d83775e38dbd149989f
         - TOX_ENV=jython
-    - python: 3.4
+    - python: 3.7
       env:
         - TOX_ENV=flake8
 
