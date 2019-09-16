@@ -29,13 +29,13 @@ before_install:
 install:
     - curl -fSL -tlsv1 -o vault.zip $VAULT_URL && unzip -o vault.zip && mv vault $HOME/bin && rm vault.zip
     - if [ -n "$JYTHON_VERSION" ]; then pyenv install jython-$JYTHON_VERSION; pyenv global jython-$JYTHON_VERSION; pyenv rehash; fi
+    - pip install -U setuptools pip
+    - pip install -U tox python-coveralls
+    - pip freeze --all
     - if [ -n "$JYTHON_VERSION" ]; then export "PATH=/opt/pyenv/shims:$PATH"; fi
     - pyenv version; python --version; which python; which jython; which pip
 
 before_script:
-    - pip install -U setuptools pip
-    - pip install -U tox python-coveralls
-    - pip freeze --all
     - tox -e setup
 
 script:
