@@ -7,8 +7,9 @@ python:
   - 3.5
   - 3.6
   - 3.7
-  - pypy-5.7.1     # Python 2.7 compatible
-  - pypy3.5-5.8.0  # Python 3.5 compatible
+  - pypy        # Python 2.7 compatible
+  - pypy3.5     # Python 3.5 compatible
+  - pypy3       # Python 3.6 compatible
 matrix:
   include:
     - python: 2.7
