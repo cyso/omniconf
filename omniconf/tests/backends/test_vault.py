@@ -90,10 +90,12 @@ class TestVaultBackend(unittest.TestCase):
                 cls.root_client.set_policy("deny", DENY_POLICY)
                 cls.root_client.set_policy("normal", NORMAL_POLICY)
                 cls.deny_token = cls.root_client.create_token(
-                    token_id="DENY", policies=["deny"])['auth']['client_token']
+                    token_id="DENY",
+                    policies=["deny"])['auth']['client_token']
                 cls.normal_token = cls.root_client.create_token(
-                    token_id="NORMAL", policies=["normal"])['auth']['client_token']
-            except:  # pragma: nocover
+                    token_id="NORMAL",
+                    policies=["normal"])['auth']['client_token']
+            except Exception:  # pragma: nocover
                 cls.manager.stop()
                 raise
 
