@@ -1,6 +1,26 @@
 CHANGES
 =======
 
+* Update README
+* Use yaml full\_load\_all
+* Add string\_bool and string\_or\_false
+* Add enum type
+* Add SeparatorSequence
+* Add documentation about the type system
+* Fix Flake8 errors
+* Install older version of tox to work around Jython issue
+* Switch to Jython at the last moment
+* Force pyenv shims as first in PATH
+* Install Jython using pyenv
+* Update testable versions of PyPy
+* Use Ubuntu Xenial test runners
+* Dropped support for Python 3.3 and 3.4
+* Pin version of hvac to test with and use new signature
+
+1.2.1
+-----
+
+* Update Changelog
 * Only set values from ArgparseBackend if they are not None
 
 1.2.0
