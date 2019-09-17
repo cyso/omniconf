@@ -44,9 +44,7 @@ By default, all Settings defined using :func:`setting` will be stored as :class:
    setting("app.firstname", _type=unicode)
    setting("app.load_order", _type=list)
 
-Any class can be used. Special cases are added to support :class:`dict`, :class:`list`, :func:`tuple` and
-:class:`bool`, which are processed by :mod:`ast`. The class or function passed to `_type` will be called with the value
-to process as its only parameter.
+Any class can be used. See :ref:`setting-types` for more information.
 
 Advanced usage
 --------------

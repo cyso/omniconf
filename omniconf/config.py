@@ -22,12 +22,16 @@ from omniconf.setting import DEFAULT_REGISTRY as SETTING_REGISTRY
 import ast
 
 
-def unrepr(s, _type):
-    if isinstance(s, _type):
-        return s
-    if not s:
-        return s
-    return ast.literal_eval(s)
+def unrepr(src, _type):
+    """
+    Returns an interpreted value based on ``src``. If ``source`` is already an
+    instance of ``_type``, no interpretation is performed.
+    """
+    if isinstance(src, _type):
+        return src
+    if not src:
+        return src
+    return ast.literal_eval(src)
 
 
 class ConfigRegistry(object):
