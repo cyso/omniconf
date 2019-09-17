@@ -1,22 +1,22 @@
-dist: trusty
+dist: xenial
 sudo: false
 language: python
 python:
   - 2.7
-  - 3.3
   - 3.4
   - 3.5
   - 3.6
-  - pypy-5.7.1     # Python 2.7 compatible
-  - pypy3.5-5.8.0  # Python 3.5 compatible
+  - 3.7
+  - pypy        # Python 2.7 compatible
+  - pypy3.5     # Python 3.5 compatible
+  - pypy3       # Python 3.6 compatible
 matrix:
   include:
     - python: 2.7
       env:
         - JYTHON_VERSION=2.7.1
-        - JYTHON_SHASUM=392119a4c89fa1b234225d83775e38dbd149989f
         - TOX_ENV=jython
-    - python: 3.4
+    - python: 3.7
       env:
         - TOX_ENV=flake8
 
@@ -24,18 +24,18 @@ before_install:
     - if [ `uname -m` == "x86_64" ] || [ `uname -m` == "amd64" ]; then export ARCH="amd64"; else export ARCH="386"; fi
     - export PLATFORM=`uname -s | tr '[:upper:]' '[:lower:]'`
     - export VAULT_URL="https://releases.hashicorp.com/vault/0.6.1/vault_0.6.1_${PLATFORM}_${ARCH}.zip"
-    - mkdir -p $HOME/bin
+    - echo $PATH
 
 install:
     - curl -fSL -tlsv1 -o vault.zip $VAULT_URL && unzip -o vault.zip && mv vault $HOME/bin && rm vault.zip
-    - if [ -n "$JYTHON_VERSION" ]; then export JYTHON_URL="http://search.maven.org/remotecontent?filepath=org/python/jython-installer/${JYTHON_VERSION}/jython-installer-${JYTHON_VERSION}.jar"; fi
-    - if [ -n "$JYTHON_VERSION" ]; then curl -fSL -o jython_installer.jar $JYTHON_URL && echo "$JYTHON_SHASUM *jython_installer.jar" | shasum -c - && java -jar jython_installer.jar -s -d $HOME/jython && rm jython_installer.jar; fi
+    - if [ -n "$JYTHON_VERSION" ]; then pyenv install jython-$JYTHON_VERSION; pyenv global jython-$JYTHON_VERSION; pyenv rehash; fi
+    - pip install -U setuptools pip
+    - pip install -U 'tox<3.10.0' python-coveralls
+    - pip freeze --all
+    - if [ -n "$JYTHON_VERSION" ]; then export "PATH=/opt/pyenv/shims:$PATH"; fi
+    - pyenv version; python --version; which python; which jython; which pip
 
 before_script:
-    - pip install -U setuptools
-    - pip install -U pip tox python-coveralls
-    - pip freeze --all
-    - if [ -n "$JYTHON_VERSION" ]; then export PATH=$HOME/jython/bin:$PATH; fi
     - tox -e setup
 
 script:

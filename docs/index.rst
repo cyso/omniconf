@@ -13,6 +13,7 @@ Contents:
 
    design
    backends
+   types
    examples
 
 
