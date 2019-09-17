@@ -52,6 +52,15 @@ transparently.
 
 For up-to-date examples, take a look `here <http://omniconf.readthedocs.io/en/latest/examples.html>`_.
 
+Changes
+-------
+
+For an up-to-date changelog, see `ChangeLog`_.
+
+.. _ChangeLog: ChangeLog
+
+Support for Python 3.3 was dropped in version 1.3.0 .
+
 License
 -------
 
