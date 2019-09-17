@@ -16,7 +16,7 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-from omniconf.types import separator_sequence
+from omniconf.types import separator_sequence, enum
 import nose.tools
 
 
@@ -39,3 +39,25 @@ def _test_separator_sequence(_in, _sep, _out):
 def test_separator_sequence():
     for _in, _sep, _out in SEPARATOR_SEQUENCES:
         yield _test_separator_sequence, _in, _sep, _out
+
+
+ENUM = enum(["foo", "bar", "baz"])
+ENUMS = [
+    ("foo", "foo", None),
+    ("bar", "bar", None),
+    ("baz", "baz", None),
+    ("fun", None, RuntimeError)
+]
+
+
+def _test_enum(_in, _out, _exc):
+    if _exc:
+        with nose.tools.assert_raises(_exc):
+            ENUM(_in)
+    else:
+        nose.tools.assert_equal(ENUM(_in), _out)
+
+
+def test_enum():
+    for _in, _out, _exc in ENUMS:
+        yield _test_enum, _in, _out, _exc

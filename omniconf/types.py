@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Cyso < development [at] cyso . com >
+# Copyright (c) 2019 Cyso < development [at] cyso . com >
 #
 # This file is part of omniconf, a.k.a. python-omniconf .
 #
@@ -67,4 +67,27 @@ def separator_sequence(separator):
                 not isinstance(value, string_types):
             return value
         return SeparatorSequence(value, separator)
+    return factory
+
+
+def enum(values):
+    """
+    Returns the original value if it is present in values, otherwise raises a
+    RuntimeError.
+
+    .. code-block:: python
+
+        enum_func = enum(["foo", "bar"])
+        print enum_func("foo")
+        # "foo"
+        print enum_func("baz")
+        # ...
+        # RuntimeError: Invalid value specified, must be one of: foo, bar
+
+    """
+    def factory(value):
+        if value not in values:
+            raise RuntimeError("Invalid value specified, must be one of: {}"
+                               .format(", ".join(values)))
+        return value
     return factory

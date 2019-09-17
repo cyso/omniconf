@@ -61,6 +61,11 @@ classes can also be used. Any class that has exactly one (mandatory) parameter i
 
 Some custom types are provided with |project|, which may be used as-is, but also serve as examples.
 
+Enum
+^^^^
+
+.. autofunction :: omniconf.types.enum
+
 Separator Sequence
 ^^^^^^^^^^^^^^^^^^
 
