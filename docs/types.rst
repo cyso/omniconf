@@ -74,3 +74,13 @@ limited to just commas however, and can use any string.
 
 .. autofunction :: omniconf.types.separator_sequence
 .. autoclass :: omniconf.types.SeparatorSequence
+
+String Boolean
+^^^^^^^^^^^^^^
+
+.. autofunction :: omniconf.types.string_bool
+
+String or False
+^^^^^^^^^^^^^^^
+
+.. autofunction :: omniconf.types.string_or_false

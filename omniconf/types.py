@@ -70,6 +70,30 @@ def separator_sequence(separator):
     return factory
 
 
+def string_or_false(value):
+    """
+    Returns the given value as-is, unless the values equals "False". In that
+    case, boolean False is returned.
+    """
+    if value == "False":
+        return False
+    return value
+
+
+def string_bool(value):
+    """
+    Returns False if the value is Falsish or "False", True if value is "True",
+    or the original value otherwise.
+    """
+    if isinstance(value, bool):
+        return value
+    if not value or value == "False":
+        return False
+    if value == "True":
+        return True
+    return value
+
+
 def enum(values):
     """
     Returns the original value if it is present in values, otherwise raises a
