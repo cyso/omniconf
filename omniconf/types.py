@@ -16,7 +16,10 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-import collections
+try:
+    from collections import abc
+except ImportError:  # pragma: nocover
+    import collections as abc
 
 try:
     string_types = (str, unicode)
@@ -24,7 +27,7 @@ except NameError:  # pragma: nocover
     string_types = (str, bytes)
 
 
-class SeparatorSequence(collections.Sequence):
+class SeparatorSequence(abc.Sequence):
     """
     Splits the given string using the given separator, and provides a
     the result with a read-only Sequence interface.
@@ -63,7 +66,7 @@ def separator_sequence(separator):
     and can be used as one would normally use a (read-only) tuple or list.
     """
     def factory(value):
-        if isinstance(value, collections.Sequence) and \
+        if isinstance(value, abc.Sequence) and \
                 not isinstance(value, string_types):
             return value
         return SeparatorSequence(value, separator)
