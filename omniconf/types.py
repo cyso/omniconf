@@ -17,9 +17,9 @@
 # <http://www.gnu.org/licenses/>.
 
 try:
-   from collections import abc
+    from collections import abc
 except ImportError:  # pragma: nocover
-   import collections as abc
+    import collections as abc
 
 try:
     string_types = (str, unicode)
