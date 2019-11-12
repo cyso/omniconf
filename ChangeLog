@@ -1,6 +1,16 @@
 CHANGES
 =======
 
+* Update ChangeLog
+* Update README
+* Fix Flake8 error
+* Add Python 3.8 to test suite
+* Avoid collections deprecation warning when using abc classes
+
+1.3.0
+-----
+
+* Update ChangeLog and AUTHORS
 * Update README
 * Use yaml full\_load\_all
 * Add string\_bool and string\_or\_false
