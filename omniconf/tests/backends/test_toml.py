@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Cyso < development [at] cyso . com >
+# Copyright (c) 2020 Cyso < development [at] cyso . com >
 #
 # This file is part of omniconf, a.k.a. python-omniconf .
 #
@@ -18,26 +18,33 @@
 
 from __future__ import unicode_literals
 from omniconf.backends import available_backends
-from omniconf.backends.yaml import YamlBackend
+from omniconf.backends.toml import TomlBackend
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry, Setting
 from mock import mock_open
+try:
+    from io import StringIO
+except ImportError:  # pragma: nocover
+    from StringIO import StringIO
 import nose.tools
 
-YAML_FILE = """
----
-foo: bar
-section:
-  bar: baz
-  subsection:
-    baz: foo
----
-bar:
-  sub: bar-sub-value
+TOML_FILE = """
+foo = "bar"
+dotted.keys.are = "supported"
+
+[section]
+bar = "baz"
+
+[section.subsection]
+baz = "foo"
+
+[bar]
+sub = "bar-sub-value"
 """
 
 CONFIGS = [
     ("foo", "bar", None),
+    ("dotted.keys.are", "supported", None),
     ("section.bar", "baz", None),
     ("section.subsection.baz", "foo", None),
     ("", None, KeyError),
@@ -47,33 +54,34 @@ CONFIGS = [
 ]
 
 
-def test_yaml_backend_in_available_backends():
-    nose.tools.assert_in(YamlBackend, available_backends)
+def test_toml_backend_in_available_backends():
+    nose.tools.assert_in(TomlBackend, available_backends)
 
 
-def test_yaml_backend_autoconfigure():
-    from omniconf.backends import yaml as omniconf_backend_yaml
-    omniconf_backend_yaml.open = mock_open(read_data=YAML_FILE)
+def test_toml_backend_autoconfigure():
+    from omniconf.backends import toml as omniconf_backend_toml
+    omniconf_backend_toml.open = mock_open(read_data=TOML_FILE)
     prefix = "testconf"
     settings = SettingRegistry()
-    settings.add(YamlBackend.autodetect_settings(prefix)[0])
+    settings.add(TomlBackend.autodetect_settings(prefix)[0])
     conf = ConfigRegistry(setting_registry=settings)
 
-    backend = YamlBackend.autoconfigure(conf, prefix)
+    backend = TomlBackend.autoconfigure(conf, prefix)
     nose.tools.assert_is(backend, None)
 
-    conf.set("{0}.yaml.filename".format(prefix), "bar")
-    backend = YamlBackend.autoconfigure(conf, prefix)
-    nose.tools.assert_is_instance(backend, YamlBackend)
+    conf.set("{0}.toml.filename".format(prefix), "bar")
+    backend = TomlBackend.autoconfigure(conf, prefix)
+    nose.tools.assert_is_instance(backend, TomlBackend)
 
 
-def test_yaml_backend_get_value():
+def test_toml_backend_get_value():
     for key, value, sideeffect in CONFIGS:
         yield _test_get_value, key, value, sideeffect
 
 
 def _test_get_value(key, value, sideeffect):
-    backend = YamlBackend(YAML_FILE)
+    f = StringIO(TOML_FILE)
+    backend = TomlBackend(f)
     setting = Setting(key=key, _type=str)
     if sideeffect:
         with nose.tools.assert_raises(sideeffect):
