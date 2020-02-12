@@ -38,7 +38,7 @@ Why omniconf?
 Configuring applications is hard, and it doesn't help that there are many different (and valid) ways to do it:
 
 * cli arguments
-* config files: ConfigObj (.ini like), JSON, YAML
+* config files: ConfigObj (.ini like), JSON, YAML, TOML
 * environment variables
 * key/value stores: etcd, consul, vault
 
