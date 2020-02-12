@@ -8,14 +8,9 @@ python:
   - 3.7
   - 3.8
   - pypy        # Python 2.7 compatible
-  - pypy3.5     # Python 3.5 compatible
   - pypy3       # Python 3.6 compatible
 matrix:
   include:
-    - python: 2.7
-      env:
-        - JYTHON_VERSION=2.7.1
-        - TOX_ENV=jython
     - python: 3.7
       env:
         - TOX_ENV=flake8
@@ -28,12 +23,10 @@ before_install:
 
 install:
     - curl -fSL -tlsv1 -o vault.zip $VAULT_URL && unzip -o vault.zip && mv vault $HOME/bin && rm vault.zip
-    - if [ -n "$JYTHON_VERSION" ]; then pyenv install jython-$JYTHON_VERSION; pyenv global jython-$JYTHON_VERSION; pyenv rehash; fi
     - pip install -U setuptools pip
-    - pip install -U 'tox<3.10.0' python-coveralls
+    - pip install -U tox python-coveralls
     - pip freeze --all
-    - if [ -n "$JYTHON_VERSION" ]; then export "PATH=/opt/pyenv/shims:$PATH"; fi
-    - pyenv version; python --version; which python; which jython; which pip
+    - pyenv version; python --version; which python; which pip
 
 before_script:
     - tox -e setup
