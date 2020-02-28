@@ -35,6 +35,12 @@ except ImportError:  # pragma: nocover
     pass
 
 try:
+    from omniconf.backends.toml import TomlBackend
+    available_backends.append(TomlBackend)
+except ImportError:  # pragma: nocover
+    pass
+
+try:
     from omniconf.backends.vault import VaultBackend
     available_backends.append(VaultBackend)
 except ImportError:  # pragma: nocover
