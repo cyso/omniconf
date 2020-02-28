@@ -61,6 +61,8 @@ For an up-to-date changelog, see `ChangeLog`_.
 
 Support for Python 3.3 was dropped in version 1.3.0 .
 Support for Python 3.8 was added in version 1.3.1 .
+Support for Python 3.4 was dropped in version 1.4.0 .
+Support for Jython was dropped in version 1.4.0 .
 
 License
 -------
@@ -80,7 +82,7 @@ want to run just a few of them at a time, use the -e switch for that:
 .. code-block:: bash
 
    $ tox -e py27
-   $ tox -e py34
+   $ tox -e py37
 
 To check for style issues, run flake8:
 
