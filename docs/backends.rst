@@ -52,6 +52,14 @@ Files in JSON format are supported. This backend is only enabled if `omniconf.js
 .. autoclass :: omniconf.backends.json.JsonBackend
    :members:
 
+TOML files
+----------
+
+Files in TOML format are supported. This backend is only enabled if `omniconf.toml.filename` is specified during setup.
+
+.. autoclass :: omniconf.backends.toml.TomlBackend
+   :members:
+
 YAML files
 ----------
 
