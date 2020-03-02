@@ -59,10 +59,10 @@ For an up-to-date changelog, see `ChangeLog`_.
 
 .. _ChangeLog: ChangeLog
 
-Support for Python 3.3 was dropped in version 1.3.0 .
-Support for Python 3.8 was added in version 1.3.1 .
-Support for Python 3.4 was dropped in version 1.4.0 .
-Support for Jython was dropped in version 1.4.0 .
+* Support for Python 3.3 was dropped in version 1.3.0 .
+* Support for Python 3.8 was added in version 1.3.1 .
+* Support for Python 3.4 was dropped in version 1.4.0 .
+* Support for Jython was dropped in version 1.4.0 .
 
 License
 -------
