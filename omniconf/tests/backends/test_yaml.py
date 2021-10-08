@@ -18,7 +18,11 @@
 
 from __future__ import unicode_literals
 from omniconf.backends import available_backends
-from omniconf.backends.yaml import YamlBackend
+try:
+    from omniconf.backends.yaml import YamlBackend
+except ImportError:
+    from nose.plugins.skip import SkipTest
+    raise SkipTest("pyyaml library not installed.")
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry, Setting
 from mock import mock_open

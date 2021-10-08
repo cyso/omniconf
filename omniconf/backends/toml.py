@@ -20,7 +20,10 @@ from __future__ import absolute_import
 from omniconf.backends.generic import ConfigBackend
 from omniconf.keys import join_key
 from omniconf.setting import Setting
-import toml
+try:
+    import toml
+except ImportError:
+    import tomli as toml
 
 
 class TomlBackend(ConfigBackend):

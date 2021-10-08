@@ -32,7 +32,7 @@ before_script:
     - tox -e setup
 
 script:
-    - if [ -z "$TOX_ENV" ]; then export TOX_ENV=py; fi
+    - if [ -z "$TOX_ENV" ]; then export TOX_ENV=py,tomli; fi
     - tox -e $TOX_ENV
 
 after_success:

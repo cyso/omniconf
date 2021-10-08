@@ -17,7 +17,11 @@
 # <http://www.gnu.org/licenses/>.
 
 from omniconf.backends import available_backends
-from omniconf.backends.configobj import ConfigObjBackend
+try:
+    from omniconf.backends.configobj import ConfigObjBackend
+except ImportError:
+    from nose.plugins.skip import SkipTest
+    raise SkipTest("configobj library not installed.")
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry, Setting
 try:

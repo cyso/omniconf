@@ -18,7 +18,11 @@
 
 from __future__ import unicode_literals
 from omniconf.backends import available_backends
-from omniconf.backends.toml import TomlBackend
+try:
+    from omniconf.backends.toml import TomlBackend
+except ImportError:
+    from nose.plugins.skip import SkipTest
+    raise SkipTest("toml or tomli library not installed.")
 from omniconf.config import ConfigRegistry
 from omniconf.setting import SettingRegistry, Setting
 from mock import mock_open

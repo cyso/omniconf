@@ -16,12 +16,15 @@
 # License along with this library. If not, see
 # <http://www.gnu.org/licenses/>.
 
-import hvac
-from hvac.tests.utils import ServerManager
 from mock import patch, ANY
 from nose.plugins.skip import SkipTest
 from omniconf.backends import available_backends
-from omniconf.backends.vault import VaultBackend
+try:
+    import hvac
+    from hvac.tests.utils import ServerManager
+    from omniconf.backends.vault import VaultBackend
+except ImportError:
+    raise SkipTest("hvac library not installed.")
 from omniconf.config import ConfigRegistry
 from omniconf.exceptions import InvalidBackendConfiguration
 from omniconf.setting import SettingRegistry, Setting
